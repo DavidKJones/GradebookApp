@@ -5,12 +5,12 @@ public class Student implements Serializable{
 	private String name;
 	private String grade;
 	private double gpa;
+	private Assignments assignments;
 	
-	public Student(String id, String name, String grade, double gpa) {
+	public Student(String id, String name) {
 		this.idNumber = id;
 		this.name = name;
-		this.grade = grade;
-		this.gpa = gpa;
+		
 	}
 
 	public String getIdNumber() {
@@ -43,6 +43,14 @@ public class Student implements Serializable{
 
 	public void setGpa(double gpa) {
 		this.gpa = gpa;
+	}
+	
+	public Assignments getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(Assignments assignments) {
+		this.assignments = assignments;
 	}
 	
 	@Override
