@@ -11,6 +11,7 @@ public class GradeBookGUI {
 
 	private JFrame frame;
 	private JTable table;
+	private Object[][] rowData = null; 
 
 	/**
 	 * Launch the application.
@@ -54,21 +55,50 @@ public class GradeBookGUI {
 		 * Set up the table
 		 */
 		String columnNames[] = {"Student ID", "Name", "GPA", "Letter Grade"};
-		//Rows (Added dynamically)
-		Object[][] rowData = {{student.get(0).getIdNumber(), student.get(0).getName(), null, null}
-							 ,{student.get(1).getIdNumber(), student.get(1).getName(), null, null}
-							 ,{student.get(2).getIdNumber(), student.get(2).getName(), null, null}
-							 ,{student.get(3).getIdNumber(), student.get(3).getName(), null, null}};
-//		for(int i = 0;i<student.size();i++)
-//		{
-//			rowData[i] = student.toArray();
-//		}
 		
+		addStudentToTable(student.get(0));
+		addStudentToTable(student.get(1));
+		addStudentToTable(student.get(3));
 		
 		frame.setSize(800, 500);
 		table = new JTable(rowData, columnNames);
 		JScrollPane scrollPane = new JScrollPane(table);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.setVisible(true);
+	}
+	
+	/*
+	 * Add student to multi-demensional array dynamically
+	 */
+	void addStudentToTable( Student student )
+	{
+		/*
+		 * Adding student to multi-dimensional array
+		 */	
+		if(rowData == null)
+		{
+			Object[][] newRowData = {{ student.getIdNumber(), student.getName(), null, null}};
+			rowData = newRowData;
+		}
+		else
+		{
+			int rows = rowData.length;
+			Object[][] newRowData = new Object[rows + 1][4];
+			
+			for(int j = 0; j < rowData.length; j++)
+			{
+				newRowData[j][0] = rowData[j][0].toString();
+				newRowData[j][1] = rowData[j][1].toString();
+				newRowData[j][2] = null;
+				newRowData[j][3] = null;
+			}
+			
+			newRowData[rows][0] = student.getIdNumber();
+			newRowData[rows][1] = student.getName();
+			newRowData[rows][2] = null;
+			newRowData[rows][3] = null;
+			
+			rowData = newRowData;	
+		}	
 	}
 }
