@@ -1,10 +1,11 @@
 import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
-import javax.swing.table.DefaultTableModel;
-import java.awt.Color;
+import java.awt.BorderLayout;
 
 public class GradeBookGUI {
 
@@ -41,20 +42,33 @@ public class GradeBookGUI {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 167);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"Hello", "World", "I'm", "Alive"},
-			},
-			new String[] {
-				"Student ID", "Name", "Grade", "GPA"
-				
-			}
-		));
-		table.setBackground(Color.WHITE);
-		table.setBounds(12, 13, 758, 94);
-		frame.getContentPane().add(table);
+		//Testing adding student object to table
+		ArrayList<Student> student = new ArrayList<Student>();
+		student.add(new Student("S0001", "John Doe"));
+		student.add(new Student("S0002", "Jane Doe"));
+		student.add(new Student("S0003", "Bob Joe"));
+		student.add(new Student("S0004", "Nathan Smith"));
+		
+		/*
+		 * Set up the table
+		 */
+		String columnNames[] = {"Student ID", "Name", "GPA", "Letter Grade"};
+		//Rows (Added dynamically)
+		Object[][] rowData = {{student.get(0).getIdNumber(), student.get(0).getName(), null, null}
+							 ,{student.get(1).getIdNumber(), student.get(1).getName(), null, null}
+							 ,{student.get(2).getIdNumber(), student.get(2).getName(), null, null}
+							 ,{student.get(3).getIdNumber(), student.get(3).getName(), null, null}};
+//		for(int i = 0;i<student.size();i++)
+//		{
+//			rowData[i] = student.toArray();
+//		}
+		
+		
+		frame.setSize(800, 500);
+		table = new JTable(rowData, columnNames);
+		JScrollPane scrollPane = new JScrollPane(table);
+		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		frame.setVisible(true);
 	}
 }
