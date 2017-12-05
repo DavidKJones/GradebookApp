@@ -10,14 +10,27 @@ public class Assignments
 	static private ArrayList<Assignment> assignments;
 	
 	//Methods
+	/**
+	 * <h1><i>getAssignments</i></h1>
+	 * <p>
+	 * Get the entire list of assignments.
+	 * @param none
+	 * @return array list of assignments
+	 * @see Assignment
+	 */
 	static public ArrayList<Assignment> getAssignments()
 	{
+		//Integer integer = Integer.
 		return assignments;
 	}
 	
 	/**
-	 * Gets a specific assignment by index.
-	 * @return
+	 * <h1><i>getAssignment</i></h1>
+	 * <p>
+	 * Gets the assignment from the list at the index.
+	 * @param index
+	 * @return assignment at index
+	 * @see Assignment
 	 */
 	static public Assignment getAssignment( int index )
 	{

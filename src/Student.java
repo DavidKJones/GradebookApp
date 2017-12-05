@@ -9,8 +9,7 @@ public class Student implements Serializable{
 	
 	public Student(String id, String name) {
 		this.idNumber = id;
-		this.name = name;
-		
+		this.name = name;		
 	}
 
 	public String getIdNumber() {
