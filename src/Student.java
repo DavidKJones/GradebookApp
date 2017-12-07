@@ -139,16 +139,16 @@ public class Student implements Serializable{
 	//Adding all the points from their assignments
 	//and dividing it by their total points times 100 to get the percentage.
 	//needs studentScore in Assignment class
-//	public void calculatePercentage() {
-//		double totalpoints = 0;
-//		double studentTotal = 0;
-//		for(int i = 0; i < studentAssignments.size(); i++)
-//		{
-//		totalpoints += studentAssignments.get(i).getTotalPoints();
-//		studentTotal += studentAssignments.get(i).getStudentScore();
-//		}
-//		percentage = (studentTotal / totalpoints) * 100;
-//	}
+	public void calculatePercentage() {
+		double totalpoints = 0;
+		double studentTotal = 0;
+		for(int i = 0; i < studentAssignments.size(); i++)
+		{
+		totalpoints += studentAssignments.get(i).getTotalScore();
+		studentTotal += studentAssignments.get(i).getStudentScore();
+		}
+		percentage = (studentTotal / totalpoints) * 100;
+	}
 	
 	public Assignment getAssignment(int index) {
 		return studentAssignments.get(index);
