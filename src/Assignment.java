@@ -3,8 +3,9 @@ public class Assignment
 {
 	//fields
 	private String name;
-	private int totalPoints;
-	//Create a date class//
+	private int totalScore;
+	private int studentScore;
+	private Date dueDate;
 	
 	//default constructor
 	/**
@@ -13,7 +14,8 @@ public class Assignment
 	public Assignment()
 	{
 		name = "New Assignment";
-		totalPoints = 0;
+		dueDate = new Date();
+		totalScore = 0;
 	}
 	
 	//parameterized constructors
@@ -25,28 +27,46 @@ public class Assignment
 	public Assignment( String name, int totalPoints )
 	{
 		this.name = name;
-		this.totalPoints = totalPoints;
+		this.totalScore = totalPoints;
 	}
 	
 	/**
 	 * Assignment constructor.
 	 * @param name
-	 * @param totalPoints
+	 * @param totalScore
 	 */
 	public Assignment (String name)
 	{
 		this.name = name;
-		totalPoints = 0;
+		totalScore = 0;
 	}
 	
 	//methods
 	/**
-	 * Get total points for the assignment.
+	 * Get the total score for the assignment.
 	 * @return integer value of points
 	 */
-	public int getTotalPoints()
+	public int getTotalScore()
 	{
-		return totalPoints;
+		return totalScore;
+	}
+	
+	/**
+	 * Get the student score from the assignment.
+	 * @return 
+	 */
+	public int getStudentScore()
+	{
+		return studentScore;
+	}
+	
+	/**
+	 * Set the student score for the assignment.
+	 * @return 
+	 */
+	public void setStudentScore( int score)
+	{
+		studentScore = score;
 	}
 	
 	/**
@@ -54,9 +74,9 @@ public class Assignment
 	 * @param points
 	 * @return nothing
 	 */
-	public void setTotalPoints( int points )
+	public void setTotalScore( int score )
 	{
-		totalPoints = points;
+		totalScore = score;
 	}
 	
 	/**
