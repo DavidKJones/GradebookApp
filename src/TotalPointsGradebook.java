@@ -1,6 +1,6 @@
 /**
  * <h1>TotalPointsGradebook</h1>
- * Simple grade book class that calculates grade by totalpoints.
+ * Simple grade book class that calculates grade by total points.
  * @author david
  *
  */
@@ -30,7 +30,7 @@ public class TotalPointsGradeBook extends GradeBook
 	 * 
 	 */
 	@Override
-	public void addAssignment()
+	public void addAssignment( Assignment assignment )
 	{
 		getAssignments().add(new Assignment());
 	}

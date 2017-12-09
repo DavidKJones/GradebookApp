@@ -129,9 +129,15 @@ public class CategoryGradebook extends GradeBook
 	 * 
 	 */
 	@Override
-	public double calculateStudentGrade() 
+	public double calculateStudentPercentage( Student student ) 
 	{
 		return 0;
+	}
+	
+	@Override
+	public String getGrade( Student student ) 
+	{
+		return "";
 	}
 	
 }

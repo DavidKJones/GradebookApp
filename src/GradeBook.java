@@ -24,12 +24,21 @@ public abstract class GradeBook implements Serializable
 	}
 	
 	/**
-	 * 
+	 * Add student to the grade book.
 	 * @param student
 	 */
 	public void addStudent( Student student )
 	{
-		students.add(student);
+		getStudents().add(student);
+		for( int i = 0; i < getAssignments().size(); i++)
+		{
+			Assignment assignment = getAssignmentAt(i);
+			if(!assignment.isExtraCredit())
+			{
+				assignment.setStudentScore(assignment.getTotalScore());
+				student.addAssignment(assignment);	
+			}
+		}
 	}
 	
 	/**
@@ -87,7 +96,7 @@ public abstract class GradeBook implements Serializable
 	/**
 	 * 
 	 */
-	public abstract void addAssignment ();
+	public abstract void addAssignment ( Assignment assignment );
 	
 	/**
 	 * 
