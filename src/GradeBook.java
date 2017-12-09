@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Grade book abstract class.
  * @author david
  */
-public abstract class Gradebook 
+public abstract class GradeBook 
 {
 	private ArrayList<Student> students;
 	private ArrayList<Assignment> assignments;
@@ -15,7 +15,7 @@ public abstract class Gradebook
 	/**
 	 * 
 	 */
-	public Gradebook()
+	public GradeBook()
 	{
 		students = new ArrayList<Student>();
 		assignments = new ArrayList<Assignment>();

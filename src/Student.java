@@ -92,7 +92,8 @@ public class Student implements Serializable{
 	 * @param none
 	 * @returns String letter grade
 	 */
-	public String getGrade() {
+	public String getGrade() 
+	{
 		if(percentage <= 100 && percentage >= 97)
 			grade = "A+";
 		else if(percentage <= 96 && percentage >= 93)

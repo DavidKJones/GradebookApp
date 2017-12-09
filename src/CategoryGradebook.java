@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author david
  *
  */
-public class CategoryGradebook extends Gradebook 
+public class CategoryGradebook extends GradeBook 
 {
 	//private fields
 	public ArrayList<GradebookCategory> categories;

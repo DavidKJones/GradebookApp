@@ -5,7 +5,6 @@ public class Assignment
 	private String name;
 	private int totalScore;
 	private int studentScore;
-	private Date dueDate;
 	
 	//default constructor
 	/**
@@ -14,7 +13,6 @@ public class Assignment
 	public Assignment()
 	{
 		name = "New Assignment";
-		dueDate = new Date();
 		totalScore = 0;
 	}
 	
@@ -96,5 +94,64 @@ public class Assignment
 	public String setName( String name )
 	{
 		return name;
+	}
+	
+	/**
+	 * Get the percentage grade on the assignment.
+	 * @return
+	 */
+	public double getPercentScore()
+	{
+		double percentage = 0;
+		
+		try
+		{
+			percentage = studentScore / totalScore;
+		}
+		catch(ArithmeticException ex)
+		{
+			System.out.println(ex);
+		}
+		
+		return percentage;
+	}
+	
+	/**
+	 * Get the letter grade of the assignment.
+	 * @return
+	 */
+	public String getLetterScore()
+	{
+		double percentage = getPercentScore();
+		String grade = null;
+		
+		if(percentage <= 100 && percentage >= 97)
+			grade = "A+";
+		else if(percentage <= 96 && percentage >= 93)
+			grade = "A";
+		else if(percentage <= 93 && percentage >= 90)
+			grade = "A-";
+		else if(percentage <= 89 && percentage >= 87)
+			grade = "B+";
+		else if(percentage <= 86 && percentage >= 83)
+			grade = "B";
+		else if(percentage <= 82 && percentage >= 80)
+			grade = "B-";
+		else if(percentage <= 79 && percentage >= 77)
+			grade = "C+";
+		else if(percentage <= 76 && percentage >= 73)
+			grade = "C";
+		else if(percentage <= 72 && percentage >= 70)
+			grade = "C-";
+		else if(percentage <= 69 && percentage >= 67)
+			grade = "D+";
+		else if(percentage <= 66 && percentage >= 63)
+			grade = "D";
+		else if(percentage <= 62 && percentage >= 60)
+			grade = "D-";
+		else
+			grade = "F";
+		
+		return grade;
 	}
 }

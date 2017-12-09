@@ -6,7 +6,7 @@
  * @author david
  *
  */
-public class TotalPointsGradebook extends Gradebook 
+public class TotalPointsGradebook extends GradeBook 
 {
 	//constructors
 	/**
