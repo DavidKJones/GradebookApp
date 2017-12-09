@@ -38,7 +38,8 @@ public class GradeBookGUI {
 	private JScrollPane scrollPaneAssignments;
 	private JTable tableStudents;
 	private JTable tableAssignments;
-	private DefaultTableModel model;
+	private DefaultTableModel modelAssignments;
+	private DefaultTableModel modelStudents;
 	private ArrayList<Student> student = new ArrayList<Student>();
 	private JMenuBar menuBar;
 	private JMenu mnFile;
@@ -79,6 +80,7 @@ public class GradeBookGUI {
 		
 		
 		frame = new JFrame("Students");
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 167);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 500);
@@ -93,8 +95,7 @@ public class GradeBookGUI {
 		});
 		
 		tableAssignments.setSelectionMode(0);
-		model = (DefaultTableModel)tableAssignments.getModel();
-		buildTable();
+		modelAssignments = (DefaultTableModel)tableAssignments.getModel();
 		scrollPaneAssignments = new JScrollPane(tableAssignments);
 		scrollPaneAssignments.setBounds(384, 248, 386, 132);
 		frame.getContentPane().add(scrollPaneAssignments);
@@ -108,13 +109,12 @@ public class GradeBookGUI {
 		});
 		
 		tableStudents.setSelectionMode(0);
-		model = (DefaultTableModel)tableStudents.getModel();
+		modelStudents = (DefaultTableModel)tableStudents.getModel();
 		tableStudents.getColumnModel().getColumn(0).setPreferredWidth(53);
 		tableStudents.getColumnModel().getColumn(1).setPreferredWidth(156);
 		tableStudents.getColumnModel().getColumn(2).setPreferredWidth(40);
 		tableStudents.getColumnModel().getColumn(3).setPreferredWidth(30);
 		tableStudents.setAutoCreateRowSorter(true);
-		buildTable();
 		scrollPaneStudents = new JScrollPane(tableStudents);
 		scrollPaneStudents.setBounds(10, 12, 368, 368);
 		frame.getContentPane().add(scrollPaneStudents);
@@ -243,15 +243,7 @@ public class GradeBookGUI {
 				int temp = Integer.parseInt(value)+1;
 				String formatted = String.format("%04d", temp);
 				student.add(new Student("S"+formatted, name));
-				model.addRow(new Object[] {student.get(student.size()-1).getIdNumber(), student.get(student.size()-1).getName(), 100.00, "A+"});
-			}
-		});
-		
-		btnEdit.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				buildTable();
+				modelStudents.addRow(new Object[] {student.get(student.size()-1).getIdNumber(), student.get(student.size()-1).getName(), 100.00, "A+"});
 			}
 		});
 		
@@ -267,18 +259,18 @@ public class GradeBookGUI {
 	/*
 	 * Set up the table
 	 */
-	void buildTable()
+	void buildStudentTable()
 	{
-		if(model.getRowCount()>0)
+		if(modelStudents.getRowCount()>0)
 		{
-			for(int i = 0;i<model.getRowCount();i++)
+			for(int i = 0;i<modelStudents.getRowCount();i++)
 			{
-				model.removeRow(i);
+				modelStudents.removeRow(i);
 			}
 		}
 		for(int i = 0; i < student.size();i++)
 		{
-			model.addRow(new Object[] {student.get(i).getIdNumber(), student.get(i).getName(), null, null});
+			modelStudents.addRow(new Object[] {student.get(i).getIdNumber(), student.get(i).getName(), null, null});
 		}
 	}
 	
