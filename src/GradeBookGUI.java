@@ -1,23 +1,15 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import org.omg.CORBA.INITIALIZE;
-
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -28,9 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import java.awt.ScrollPane;
-import java.awt.Panel;
+import javax.swing.JComboBox;
 
 public class GradeBookGUI {
 
@@ -43,7 +33,7 @@ public class GradeBookGUI {
 	private JPanel addStudent = new JPanel();
 	private DefaultTableModel modelAssignments;
 	private DefaultTableModel modelStudents;
-	private ArrayList<Student> student = new ArrayList<Student>();
+	private TotalPointsGradeBook totalGradeBook;
 	private JMenuBar menuBar;
 	private JMenu mnFile;
 	private JMenuItem mntmExit;
@@ -51,6 +41,7 @@ public class GradeBookGUI {
 	private JTextField txtStudentId;
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
+	private ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
 	private JTextField first = new JTextField(7);
     private JTextField last = new JTextField(7);
 
@@ -82,13 +73,14 @@ public class GradeBookGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		totalGradeBook = new TotalPointsGradeBook();
 		frame = new JFrame("Students");
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 167);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(848, 500);
 		frame.getContentPane().setLayout(null);
-		student.add(new Student("S0000", null, null));
+		totalGradeBook.addStudent(new Student("S0000", null, null));
 		
 		//add student dialog 
 		addStudent.add(new JLabel("First:"));
@@ -116,7 +108,7 @@ public class GradeBookGUI {
 		tableStudents.getColumnModel().getColumn(4).setPreferredWidth(30);
 		tableStudents.setAutoCreateRowSorter(true);
 		scrollPaneStudents = new JScrollPane(tableStudents);
-		scrollPaneStudents.setBounds(10, 12, 422, 377);
+		scrollPaneStudents.setBounds(10, 44, 422, 345);
 		frame.getContentPane().add(scrollPaneStudents);
 		
 		/*
@@ -203,6 +195,11 @@ public class GradeBookGUI {
 		frame.getContentPane().add(txtPercentage);
 		txtPercentage.setColumns(10);
 		
+		JComboBox cbGradeBookSelect = new JComboBox();
+		cbGradeBookSelect.setToolTipText("Select a Gradebook");
+		cbGradeBookSelect.setBounds(10, 12, 116, 25);
+		frame.getContentPane().add(cbGradeBookSelect);
+		
 		menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
@@ -271,15 +268,15 @@ public class GradeBookGUI {
 			    	{
 			    		String firstName = first.getText();
 				    	String lastName = last.getText();
-				    	String value = student.get(student.size()-1).getIdNumber().replaceAll("[^0-9]", "");
+				    	String value = totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber().replaceAll("[^0-9]", "");
 						int temp = Integer.parseInt(value)+1;
 						String formatted = String.format("%04d", temp);
-						student.add(new Student("S"+formatted, firstName, lastName));
-						modelStudents.addRow(new Object[] {student.get(student.size()-1).getIdNumber(), 
-														   student.get(student.size()-1).getFirstName(), 
-														   student.get(student.size()-1).getLastName(), 
-														   student.get(student.size()-1).getPercentage(),
-														   student.get(student.size()-1).getGrade()});
+						totalGradeBook.addStudent(new Student("S"+formatted, firstName, lastName));
+						modelStudents.addRow(new Object[] {totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber(), 
+								totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getFirstName(), 
+								totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getLastName(), 
+								totalGradeBook.calculateStudentPercentage(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1)),
+								totalGradeBook.getGrade(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1))});
 			    	} else {
 			    		JOptionPane.showMessageDialog(null, "Student must have a first and last name containing only letters. \n"
 			    									+ "                                        Please try agian."
@@ -296,25 +293,51 @@ public class GradeBookGUI {
 				createAssignnmentFrame();
 			}
 		});
+		
+		mntmOpen.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				GradeBookSerialization.openGradeBooks();
+			}
+		});
+		
+		mntmSaveAs.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				GradeBookSerialization.saveGradeBooks(gradebook, gradebook.toString());
+			}
+		});
+		
+		mntmSave.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				GradeBookSerialization.saveGradeBooks(gradebook, gradebook.toString());
+			}
+		});
 	}
+	
+	
 	
 	/*
 	 * Set up the table
 	 */
-	void buildStudentTable()
-	{
-		if(modelStudents.getRowCount()>0)
-		{
-			for(int i = 0;i<modelStudents.getRowCount();i++)
-			{
-				modelStudents.removeRow(i);
-			}
-		}
-		for(int i = 0; i < student.size();i++)
-		{
-			modelStudents.addRow(new Object[] {student.get(i).getIdNumber(), student.get(i).getFirstName(), student.get(i).getLastName(), null, null});
-		}
-	}
+//	void buildStudentTable()
+//	{
+//		if(modelStudents.getRowCount()>0)
+//		{
+//			for(int i = 0;i<modelStudents.getRowCount();i++)
+//			{
+//				modelStudents.removeRow(i);
+//			}
+//		}
+//		for(int i = 0; i < student.size();i++)
+//		{
+//			modelStudents.addRow(new Object[] {student.get(i).getIdNumber(), student.get(i).getFirstName(), student.get(i).getLastName(), null, null});
+//		}
+//	}
 	
 	private void createAssignnmentFrame()
 	{

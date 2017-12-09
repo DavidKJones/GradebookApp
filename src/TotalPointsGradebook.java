@@ -5,13 +5,13 @@
  *
  */
 @SuppressWarnings("serial")
-public class TotalPointsGradebook extends GradeBook 
+public class TotalPointsGradeBook extends GradeBook 
 {
 	//constructors
 	/**
 	 * 
 	 */
-	public TotalPointsGradebook()
+	public TotalPointsGradeBook()
 	{
 		super();
 		setName("New Total Points Gradebook");
@@ -20,7 +20,7 @@ public class TotalPointsGradebook extends GradeBook
 	/**
 	 * 
 	 */
-	public TotalPointsGradebook( String name )
+	public TotalPointsGradeBook( String name )
 	{
 		super();
 		setName(name);
