@@ -1,4 +1,4 @@
-package Gradebook;
+
 
 /**
  * <h1>TotalPointsGradebook</h1>

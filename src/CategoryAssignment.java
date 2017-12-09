@@ -1,4 +1,4 @@
-package Gradebook;
+
 
 public class CategoryAssignment extends Assignment 
 {
