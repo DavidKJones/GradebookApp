@@ -1,12 +1,11 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Student implements Serializable{
+public class Student
+{
 	private String idNumber;
 	private String firstName;
 	private String lastName;
-	private String grade;
-	private double percentage;
 	private ArrayList<Assignment> studentAssignments;
 	
 	//default constructor
@@ -17,8 +16,6 @@ public class Student implements Serializable{
 		this.idNumber = "";
 		this.firstName = "";
 		this.lastName = "";
-		this.grade = "";
-		this.percentage = 0;
 		this.studentAssignments = Assignments.getAssignments();
 	}
 	//parameterized constructors
@@ -32,8 +29,6 @@ public class Student implements Serializable{
 		this.idNumber = id;
 		this.firstName = first;
 		this.lastName = last;
-		this.grade = "A";
-		this.percentage = 100;
 		this.studentAssignments = Assignments.getAssignments();
 	}
 	/**Student constructor with four arguments
@@ -49,8 +44,6 @@ public class Student implements Serializable{
 		this.idNumber = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.grade = grade;
-		this.percentage = percentage;
 		this.studentAssignments = Assignments.getAssignments();
 	}
 	//methods
@@ -106,70 +99,6 @@ public class Student implements Serializable{
 	public void setLastName(String last) {
 		this.lastName = last;
 	}
-
-	/**
-	/*Grabs percentage and sets letter grade depending on percentage
-	 *
-	 * @param none
-	 * @returns String letter grade
-	 */
-	public String getGrade() {
-		if(percentage <= 100 && percentage >= 97)
-			grade = "A+";
-		else if(percentage <= 96 && percentage >= 93)
-			grade = "A";
-		else if(percentage <= 93 && percentage >= 90)
-			grade = "A-";
-		else if(percentage <= 89 && percentage >= 87)
-			grade = "B+";
-		else if(percentage <= 86 && percentage >= 83)
-			grade = "B";
-		else if(percentage <= 82 && percentage >= 80)
-			grade = "B-";
-		else if(percentage <= 79 && percentage >= 77)
-			grade = "C+";
-		else if(percentage <= 76 && percentage >= 73)
-			grade = "C";
-		else if(percentage <= 72 && percentage >= 70)
-			grade = "C-";
-		else if(percentage <= 69 && percentage >= 67)
-			grade = "D+";
-		else if(percentage <= 66 && percentage >= 63)
-			grade = "D";
-		else if(percentage <= 62 && percentage >= 60)
-			grade = "D-";
-		else
-			grade = "F";
-		return grade;
-	}
-
-	public void setGrade(String grade) {
-		this.grade = grade;
-	}
-
-	/**
-	 * Calculates the total percentage grade of the student
-	 * And turns it into a percentage from decimal
-	 * 
-	 * @param none
-	 * @return The student's percentage grade
-	 */
-	public double getPercentage() {
-		return percentage;
-	}
-	//Adding all the points from their assignments
-	//and dividing it by their total points times 100 to get the percentage.
-	//needs studentScore in Assignment class
-	public void calculatePercentage() {
-		double totalpoints = 0;
-		double studentTotal = 0;
-		for(int i = 0; i < studentAssignments.size(); i++)
-		{
-		totalpoints += studentAssignments.get(i).getTotalScore();
-		studentTotal += studentAssignments.get(i).getStudentScore();
-		}
-		percentage = (studentTotal / totalpoints) * 100;
-	}
 	
 	public Assignment getAssignment(int index) {
 		return studentAssignments.get(index);
@@ -196,10 +125,4 @@ public class Student implements Serializable{
 	{
 		studentAssignments.remove(assignment);
 	}
-	
-	@Override
-    public String toString()
-    {
-    	return "Student ID: " + idNumber + ", First: " + firstName + ", Last: " + lastName + ", Grade: " + grade + ", percentage: " + percentage + "%";
-    }
 }
