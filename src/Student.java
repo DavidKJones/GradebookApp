@@ -3,7 +3,8 @@ import java.util.ArrayList;
 
 public class Student implements Serializable{
 	private String idNumber;
-	private String name;
+	private String firstName;
+	private String lastName;
 	private String grade;
 	private double percentage;
 	private ArrayList<Assignment> studentAssignments;
@@ -14,7 +15,8 @@ public class Student implements Serializable{
 	 */
 	public Student() {
 		this.idNumber = "";
-		this.name = "";
+		this.firstName = "";
+		this.lastName = "";
 		this.grade = "";
 		this.percentage = 0;
 		this.studentAssignments = Assignments.getAssignments();
@@ -26,9 +28,10 @@ public class Student implements Serializable{
 	 * @param id the Student ID
 	 * @param name the Student Name
 	 */
-	public Student(String id, String name) {
+	public Student(String id, String first, String last) {
 		this.idNumber = id;
-		this.name = name;
+		this.firstName = first;
+		this.lastName = last;
 		this.grade = "A";
 		this.percentage = 100;
 		this.studentAssignments = Assignments.getAssignments();
@@ -41,10 +44,11 @@ public class Student implements Serializable{
 	 * @param grade
 	 * @param percentage grade percentage
 	 */
-	public Student (String id, String name, String grade, double percentage)
+	public Student (String id, String firstName, String lastName, String grade, double percentage)
 	{
 		this.idNumber = id;
-		this.name = name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.grade = grade;
 		this.percentage = percentage;
 		this.studentAssignments = Assignments.getAssignments();
@@ -69,21 +73,38 @@ public class Student implements Serializable{
 		this.idNumber = idNumber;
 	}
 	
-	/**Gets the Student's name
+	/**Gets the Student's first name
 	 * 
 	 * @return String of the Student's name
 	 */
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 	
-	/**Manually set the Student's Name
+	/**Manually set the Student's first Name
 	 * 
 	 * @param name the student's name
 	 * @return nothing
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String first) {
+		this.firstName = first;
+	}
+	
+	/**Gets the Student's first name
+	 * 
+	 * @return String of the Student's name
+	 */
+	public String getFLastName() {
+		return firstName;
+	}
+	
+	/**Manually set the Student's first Name
+	 * 
+	 * @param name the student's name
+	 * @return nothing
+	 */
+	public void setLastName(String last) {
+		this.lastName = last;
 	}
 
 	/**
@@ -180,6 +201,6 @@ public class Student implements Serializable{
 	@Override
     public String toString()
     {
-    	return "Student ID: " + idNumber + ", Name: " + name + ", Grade: " + grade + ", percentage: " + percentage + "%";
+    	return "Student ID: " + idNumber + ", First: " + firstName + ", Last: " + lastName + ", Grade: " + grade + ", percentage: " + percentage + "%";
     }
 }
