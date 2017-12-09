@@ -32,7 +32,8 @@ public class TotalPointsGradeBook extends GradeBook
 	@Override
 	public void addAssignment( Assignment assignment )
 	{
-		getAssignments().add(new Assignment());
+		//getAssignments().add(assignment);
+		//add to students present
 	}
 	
 	//calculates student grade by total points system

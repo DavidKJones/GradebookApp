@@ -33,7 +33,6 @@ public class GradeBookGUI {
 	private JPanel addStudent = new JPanel();
 	private DefaultTableModel modelAssignments;
 	private DefaultTableModel modelStudents;
-	private TotalPointsGradeBook totalGradeBook;
 	private JMenuBar menuBar;
 	private JMenu mnFile;
 	private JMenuItem mntmExit;
@@ -42,6 +41,7 @@ public class GradeBookGUI {
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
 	private ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
+	private TotalPointsGradeBook totalGradeBook;
 	private JTextField first = new JTextField(7);
     private JTextField last = new JTextField(7);
 
@@ -74,12 +74,14 @@ public class GradeBookGUI {
 	 */
 	private void initialize() {
 		totalGradeBook = new TotalPointsGradeBook();
+		
 		frame = new JFrame("Students");
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 167);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(848, 500);
 		frame.getContentPane().setLayout(null);
+		totalGradeBook.addAssignment(new Assignment("test",25));
 		totalGradeBook.addStudent(new Student("S0000", null, null));
 		
 		//add student dialog 

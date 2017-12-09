@@ -27,8 +27,6 @@ public class GradeBookSerialization
 	      
 	      int result = fileChooser.showSaveDialog(null);
 	
-	      if (result == JFileChooser.CANCEL_OPTION)
-	         System.exit(1);
 	
 	      // return Path representing the selected file
 	      Path path = fileChooser.getSelectedFile().toPath();
@@ -47,9 +45,6 @@ public class GradeBookSerialization
 	         JFileChooser.FILES_AND_DIRECTORIES);
 	      
 	      int result = fileChooser.showOpenDialog(null);
-	
-	      if (result == JFileChooser.CANCEL_OPTION)
-	         System.exit(1);
 	
 	      // return Path representing the selected file
 	      Path path = fileChooser.getSelectedFile().toPath();
