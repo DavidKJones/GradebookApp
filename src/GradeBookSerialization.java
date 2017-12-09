@@ -3,7 +3,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
 
 /**
  * <h1>GradeBookSerializaton</h1>
@@ -13,11 +16,52 @@ import java.util.ArrayList;
 public class GradeBookSerialization 
 {
 	/**
+	 * Save grade book data into a .ser file.
+	 */
+	public static void saveGradeBooks( ArrayList<GradeBook> gradeBooks, String fileName )
+	{
+	      JFileChooser fileChooser = new JFileChooser();
+	      
+	      fileChooser.setFileSelectionMode(
+	         JFileChooser.FILES_AND_DIRECTORIES);
+	      
+	      int result = fileChooser.showSaveDialog(null);
+	
+	      if (result == JFileChooser.CANCEL_OPTION)
+	         System.exit(1);
+	
+	      // return Path representing the selected file
+	      Path path = fileChooser.getSelectedFile().toPath();
+	      serializeGradeBooks(gradeBooks, path.toString());
+	}
+	
+	/**
+	 * Open a serialized file to get grade book data.
+	 * @return list of grade books
+	 */
+	public static ArrayList<GradeBook> openGradeBooks()
+	{
+	      JFileChooser fileChooser = new JFileChooser();
+	      
+	      fileChooser.setFileSelectionMode(
+	         JFileChooser.FILES_AND_DIRECTORIES);
+	      
+	      int result = fileChooser.showOpenDialog(null);
+	
+	      if (result == JFileChooser.CANCEL_OPTION)
+	         System.exit(1);
+	
+	      // return Path representing the selected file
+	      Path path = fileChooser.getSelectedFile().toPath();
+	      return deserializeGradeBooks(path.toString());
+	}
+	
+	/**
 	 * Serializes the grade book into a .ser file.
 	 * @param fileName
 	 */
 	@SuppressWarnings("resource")
-	public static void serializeGradeBooks( ArrayList<GradeBook> gradeBooks, String fileName )
+	private static void serializeGradeBooks( ArrayList<GradeBook> gradeBooks, String fileName )
 	{
 		try
 		{
@@ -36,7 +80,7 @@ public class GradeBookSerialization
 	 * @param fileName
 	 * @return
 	 */
-	public static ArrayList<GradeBook> deserializedGradeBooks(String fileName)
+	private static ArrayList<GradeBook> deserializeGradeBooks(String fileName)
 	{
 		ArrayList<GradeBook> gradeBooks = null;
 		

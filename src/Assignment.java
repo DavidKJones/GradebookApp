@@ -1,10 +1,18 @@
 
+/**
+ * <h1>Assignment</h1>
+ * Assignment object class that holds the total score, current score,
+ * and name.
+ * @author david
+ *
+ */
 public class Assignment 
 {
 	//fields
 	private String name;
 	private int totalScore;
 	private int studentScore;
+	private boolean isEC;
 	
 	//default constructor
 	/**
@@ -14,6 +22,7 @@ public class Assignment
 	{
 		name = "New Assignment";
 		totalScore = 0;
+		isEC = false;
 	}
 	
 	//parameterized constructors
@@ -26,6 +35,7 @@ public class Assignment
 	{
 		this.name = name;
 		this.totalScore = totalPoints;
+		isEC = false;
 	}
 	
 	/**
@@ -37,6 +47,7 @@ public class Assignment
 	{
 		this.name = name;
 		totalScore = 0;
+		isEC = false;
 	}
 	
 	//methods
@@ -97,23 +108,41 @@ public class Assignment
 	}
 	
 	/**
-	 * Get the percentage grade on the assignment.
+	 * Returns if the assignment is extra credit or not.
 	 * @return
 	 */
-	public double getPercentScore()
+	public boolean isExtraCredit()
+	{
+		return isEC;
+	}
+	
+	/**
+	 * Sets the assignment as extra credit or not.
+	 * @param status
+	 */
+	public void setExtraCredit(boolean status)
+	{
+		isEC = status;
+	}
+
+	/**
+	 * Calculates the percentage grade on the assignment.
+	 * @return
+	 */
+	public double calculatePercentage()
 	{
 		double percentage = 0;
 		
 		try
 		{
-			percentage = studentScore / totalScore;
+			percentage = (studentScore/totalScore) * 100;
 		}
 		catch(ArithmeticException ex)
 		{
 			System.out.println(ex);
 		}
 		
-		return percentage;
+		return percentage * 100;
 	}
 	
 	/**
@@ -122,32 +151,32 @@ public class Assignment
 	 */
 	public String getLetterScore()
 	{
-		double percentage = getPercentScore();
+		double percentage = calculatePercentage();
 		String grade = null;
 		
-		if(percentage <= 100 && percentage >= 97)
+		if(percentage >= 97)
 			grade = "A+";
-		else if(percentage <= 96 && percentage >= 93)
+		else if(percentage < 97 && percentage >= 93)
 			grade = "A";
-		else if(percentage <= 93 && percentage >= 90)
+		else if(percentage < 93 && percentage >= 90)
 			grade = "A-";
-		else if(percentage <= 89 && percentage >= 87)
+		else if(percentage < 89 && percentage >= 87)
 			grade = "B+";
-		else if(percentage <= 86 && percentage >= 83)
+		else if(percentage < 86 && percentage >= 83)
 			grade = "B";
-		else if(percentage <= 82 && percentage >= 80)
+		else if(percentage < 82 && percentage >= 80)
 			grade = "B-";
-		else if(percentage <= 79 && percentage >= 77)
+		else if(percentage < 79 && percentage >= 77)
 			grade = "C+";
-		else if(percentage <= 76 && percentage >= 73)
+		else if(percentage < 76 && percentage >= 73)
 			grade = "C";
-		else if(percentage <= 72 && percentage >= 70)
+		else if(percentage < 72 && percentage >= 70)
 			grade = "C-";
-		else if(percentage <= 69 && percentage >= 67)
+		else if(percentage < 69 && percentage >= 67)
 			grade = "D+";
-		else if(percentage <= 66 && percentage >= 63)
+		else if(percentage < 66 && percentage >= 63)
 			grade = "D";
-		else if(percentage <= 62 && percentage >= 60)
+		else if(percentage < 62 && percentage >= 60)
 			grade = "D-";
 		else
 			grade = "F";

@@ -1,4 +1,5 @@
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -6,7 +7,8 @@ import java.util.ArrayList;
  * Grade book abstract class.
  * @author david
  */
-public abstract class GradeBook 
+@SuppressWarnings("serial")
+public abstract class GradeBook implements Serializable
 {
 	private ArrayList<Student> students;
 	private ArrayList<Assignment> assignments;
@@ -158,6 +160,17 @@ public abstract class GradeBook
 	
 	/**
 	 * 
+	 * Calculates the student percentage.
+	 * @return percentage value 0-100
 	 */
-	public abstract double calculateStudentGrade();
+	public abstract double calculateStudentPercentage( Student student );
+	
+	/**
+	/*Grabs percentage and sets letter grade depending on percentage
+	 *
+	 * @param none
+	 * @returns String letter grade
+	 */
+	public abstract String getGrade( Student student );
+	
 }
