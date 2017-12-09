@@ -103,6 +103,15 @@ public class Student
 	public Assignment getAssignment(int index) {
 		return studentAssignments.get(index);
 	}
+	
+	/**
+	 * Sets all of the students assignments.
+	 * @param assignments
+	 */
+	public void setAssignments(ArrayList<Assignment> assignments)
+	{
+		this.studentAssignments = assignments;
+	}
 
 	/**
 	/*
