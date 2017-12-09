@@ -80,6 +80,7 @@ public class GradeBookSerialization
 	 * @param fileName
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private static ArrayList<GradeBook> deserializeGradeBooks(String fileName)
 	{
 		ArrayList<GradeBook> gradeBooks = null;
@@ -88,6 +89,7 @@ public class GradeBookSerialization
 		{
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
 			gradeBooks = (ArrayList<GradeBook>)in.readObject();
+			in.close();
 		}
 		catch(IOException | ClassNotFoundException exception)
 		{
