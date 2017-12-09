@@ -15,7 +15,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -38,6 +40,7 @@ public class GradeBookGUI {
 	private JScrollPane scrollPaneAssignments;
 	private JTable tableStudents;
 	private JTable tableAssignments;
+	private JPanel addStudent = new JPanel();
 	private DefaultTableModel modelAssignments;
 	private DefaultTableModel modelStudents;
 	private ArrayList<Student> student = new ArrayList<Student>();
@@ -48,6 +51,8 @@ public class GradeBookGUI {
 	private JTextField txtStudentId;
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
+	private JTextField first = new JTextField(7);
+    private JTextField last = new JTextField(7);
 
 
 	/**
@@ -77,15 +82,46 @@ public class GradeBookGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
-		
 		frame = new JFrame("Students");
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 167);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 500);
+		frame.setSize(848, 500);
 		frame.getContentPane().setLayout(null);
+		student.add(new Student("S0000", null, null));
 		
+		//add student dialog 
+		addStudent.add(new JLabel("First:"));
+		addStudent.add(first);
+		addStudent.add(new JLabel("Last:"));
+		addStudent.add(last);
+		
+		/*
+		 * creates the students table and model
+		 */
+		tableStudents = new JTable(new DefaultTableModel(new Object[]{"Student ID", "First", "Last" , "Percent", "Grade"}, 0)
+		{
+			public boolean isCellEditable(int row, int column)
+		    {
+		      return false;//This causes all cells to be not editable
+		    }
+		});
+		
+		tableStudents.setSelectionMode(0);
+		modelStudents = (DefaultTableModel)tableStudents.getModel();
+		tableStudents.getColumnModel().getColumn(0).setPreferredWidth(53);
+		tableStudents.getColumnModel().getColumn(1).setPreferredWidth(78);
+		tableStudents.getColumnModel().getColumn(2).setPreferredWidth(78);
+		tableStudents.getColumnModel().getColumn(3).setPreferredWidth(40);
+		tableStudents.getColumnModel().getColumn(4).setPreferredWidth(30);
+		tableStudents.setAutoCreateRowSorter(true);
+		scrollPaneStudents = new JScrollPane(tableStudents);
+		scrollPaneStudents.setBounds(10, 12, 422, 377);
+		frame.getContentPane().add(scrollPaneStudents);
+		
+		/*
+		 * creates the assignments table for that particular student 
+		 */
 		tableAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points" , "Percent"}, 0)
 		{
 			public boolean isCellEditable(int row, int column)
@@ -97,65 +133,49 @@ public class GradeBookGUI {
 		tableAssignments.setSelectionMode(0);
 		modelAssignments = (DefaultTableModel)tableAssignments.getModel();
 		scrollPaneAssignments = new JScrollPane(tableAssignments);
-		scrollPaneAssignments.setBounds(384, 248, 386, 132);
+		scrollPaneAssignments.setBounds(444, 248, 386, 141);
 		frame.getContentPane().add(scrollPaneAssignments);
 		
-		tableStudents = new JTable(new DefaultTableModel(new Object[]{"Student ID", "Name" , "Percent", "Grade"}, 0)
-		{
-			public boolean isCellEditable(int row, int column)
-		    {
-		      return false;//This causes all cells to be not editable
-		    }
-		});
-		
-		tableStudents.setSelectionMode(0);
-		modelStudents = (DefaultTableModel)tableStudents.getModel();
-		tableStudents.getColumnModel().getColumn(0).setPreferredWidth(53);
-		tableStudents.getColumnModel().getColumn(1).setPreferredWidth(156);
-		tableStudents.getColumnModel().getColumn(2).setPreferredWidth(40);
-		tableStudents.getColumnModel().getColumn(3).setPreferredWidth(30);
-		tableStudents.setAutoCreateRowSorter(true);
-		scrollPaneStudents = new JScrollPane(tableStudents);
-		scrollPaneStudents.setBounds(10, 12, 368, 368);
-		frame.getContentPane().add(scrollPaneStudents);
-		
-		student.add(new Student("S0000", null));
-		
+		/*
+		 * 
+		 * Buttons and Menus
+		 * 
+		 */
 		JButton btnSave = new JButton("Save");
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
-		btnSave.setBounds(673, 385, 97, 29);
+		btnSave.setBounds(733, 401, 97, 29);
 		frame.getContentPane().add(btnSave);
 		
 		JButton btnAdd = new JButton("Add");
 		btnAdd.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/file.gif")));
 		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnAdd.setBounds(455, 385, 97, 29);
+		btnAdd.setBounds(515, 401, 97, 29);
 		frame.getContentPane().add(btnAdd);
 		
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/images/wrench.gif")));
 		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnEdit.setBounds(564, 385, 97, 29);
+		btnEdit.setBounds(624, 401, 97, 29);
 		frame.getContentPane().add(btnEdit);
 		
 		JButton btnAssignments = new JButton("Assignments");
 		btnAssignments.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/DetailsView.gif")));
 		btnAssignments.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnAssignments.setBounds(10, 387, 133, 29);
+		btnAssignments.setBounds(10, 401, 133, 29);
 		frame.getContentPane().add(btnAssignments);
 		
 		JLabel lblAssignments = new JLabel("Assignments");
 		lblAssignments.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAssignments.setFont(new Font("Dialog", Font.BOLD, 24));
-		lblAssignments.setBounds(384, 210, 386, 32);
+		lblAssignments.setBounds(444, 210, 386, 32);
 		frame.getContentPane().add(lblAssignments);
 		
 		txtStudentName = new JTextField();
 		txtStudentName.setEditable(false);
 		txtStudentName.setFont(new Font("Dialog", Font.PLAIN, 56));
 		txtStudentName.setHorizontalAlignment(SwingConstants.CENTER);
-		txtStudentName.setBounds(384, 12, 386, 60);
+		txtStudentName.setBounds(444, 12, 386, 60);
 		frame.getContentPane().add(txtStudentName);
 		txtStudentName.setColumns(10);
 		
@@ -163,7 +183,7 @@ public class GradeBookGUI {
 		txtStudentId.setEditable(false);
 		txtStudentId.setFont(new Font("Dialog", Font.PLAIN, 36));
 		txtStudentId.setHorizontalAlignment(SwingConstants.CENTER);
-		txtStudentId.setBounds(384, 84, 386, 38);
+		txtStudentId.setBounds(444, 84, 386, 38);
 		frame.getContentPane().add(txtStudentId);
 		txtStudentId.setColumns(10);
 		
@@ -171,7 +191,7 @@ public class GradeBookGUI {
 		txtGrade.setEditable(false);
 		txtGrade.setFont(new Font("Dialog", Font.PLAIN, 54));
 		txtGrade.setHorizontalAlignment(SwingConstants.CENTER);
-		txtGrade.setBounds(673, 134, 97, 64);
+		txtGrade.setBounds(733, 134, 97, 64);
 		frame.getContentPane().add(txtGrade);
 		txtGrade.setColumns(10);
 		
@@ -179,7 +199,7 @@ public class GradeBookGUI {
 		txtPercentage.setEditable(false);
 		txtPercentage.setFont(new Font("Dialog", Font.PLAIN, 54));
 		txtPercentage.setHorizontalAlignment(SwingConstants.CENTER);
-		txtPercentage.setBounds(384, 134, 277, 64);
+		txtPercentage.setBounds(444, 134, 277, 64);
 		frame.getContentPane().add(txtPercentage);
 		txtPercentage.setColumns(10);
 		
@@ -219,17 +239,21 @@ public class GradeBookGUI {
 		mnHelp.add(mntmAbout);
 		frame.setVisible(true);
 		
-		
-		
-		//Action Listeners
+		/*
+		 * 
+		 * Action Listeners
+		 * 
+		 */
 		tableStudents.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 		    @Override
 		    public void valueChanged(ListSelectionEvent event) {
 		        if (tableStudents.getSelectedRow() > -1) {
-		        	txtStudentName.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 1).toString());
 		        	txtStudentId.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 0).toString());
-		        	txtPercentage.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 2).toString());
-		        	txtGrade.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 3).toString());
+		        	txtStudentName.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 1).toString()
+		        						+ " "
+		        						+ tableStudents.getValueAt(tableStudents.getSelectedRow(), 2).toString());
+		        	txtPercentage.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 3).toString());
+		        	txtGrade.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 4).toString());
 		        }
 		    }
 		});
@@ -238,12 +262,30 @@ public class GradeBookGUI {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				String name = JOptionPane.showInputDialog("Enter the students name");
-				String value = student.get(student.size()-1).getIdNumber().replaceAll("[^0-9]", "");
-				int temp = Integer.parseInt(value)+1;
-				String formatted = String.format("%04d", temp);
-				student.add(new Student("S"+formatted, name));
-				modelStudents.addRow(new Object[] {student.get(student.size()-1).getIdNumber(), student.get(student.size()-1).getName(), 100.00, "A+"});
+				first.setText(null);
+				last.setText(null);
+				int result = JOptionPane.showConfirmDialog(null, addStudent, "Please Enter Students Name", JOptionPane.OK_CANCEL_OPTION);
+			    if (result == JOptionPane.OK_OPTION)
+			    {
+			    	if (first.getText().matches("[a-zA-Z]") || last.getText().matches("[a-zA-Z]+"))
+			    	{
+			    		String firstName = first.getText();
+				    	String lastName = last.getText();
+				    	String value = student.get(student.size()-1).getIdNumber().replaceAll("[^0-9]", "");
+						int temp = Integer.parseInt(value)+1;
+						String formatted = String.format("%04d", temp);
+						student.add(new Student("S"+formatted, firstName, lastName));
+						modelStudents.addRow(new Object[] {student.get(student.size()-1).getIdNumber(), 
+														   student.get(student.size()-1).getFirstName(), 
+														   student.get(student.size()-1).getLastName(), 
+														   student.get(student.size()-1).getPercentage(),
+														   student.get(student.size()-1).getGrade()});
+			    	} else {
+			    		JOptionPane.showMessageDialog(null, "Student must have a first and last name containing only letters. \n"
+			    									+ "                                        Please try agian."
+			    									, "Error", JOptionPane.ERROR_MESSAGE);
+			    	}
+			    }
 			}
 		});
 		
@@ -270,7 +312,7 @@ public class GradeBookGUI {
 		}
 		for(int i = 0; i < student.size();i++)
 		{
-			modelStudents.addRow(new Object[] {student.get(i).getIdNumber(), student.get(i).getName(), null, null});
+			modelStudents.addRow(new Object[] {student.get(i).getIdNumber(), student.get(i).getFirstName(), student.get(i).getLastName(), null, null});
 		}
 	}
 	

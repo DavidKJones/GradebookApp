@@ -87,8 +87,8 @@ public class Student
 	 * 
 	 * @return String of the Student's name
 	 */
-	public String getFLastName() {
-		return firstName;
+	public String getLastName() {
+		return lastName;
 	}
 	
 	/**Manually set the Student's first Name
