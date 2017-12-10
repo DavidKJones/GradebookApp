@@ -31,8 +31,8 @@ public class TotalPointsGradeBook extends GradeBook
 	@Override
 	public double calculateStudentPercentage( Student student ) 
 	{
-		double totalpoints = 0;
-		double studentTotal = 0;
+		int totalpoints = 0;
+		int studentTotal = 0;
 		double percentage = 0;
 		
 		for(Assignment a : student.getAssignments())
@@ -47,7 +47,8 @@ public class TotalPointsGradeBook extends GradeBook
 		
 		try
 		{
-			percentage = (studentTotal / totalpoints) * 100;
+			percentage = ((double)studentTotal / (double)totalpoints) * 100.0;
+			System.out.println(percentage);
 		}
 		catch(ArithmeticException ex)
 		{
@@ -65,27 +66,27 @@ public class TotalPointsGradeBook extends GradeBook
 		
 		if(percentage >= 97)
 			grade = "A+";
-		else if(percentage < 96 && percentage >= 93)
+		else if(percentage < 97 && percentage >= 93)
 			grade = "A";
 		else if(percentage < 93 && percentage >= 90)
 			grade = "A-";
-		else if(percentage < 89 && percentage >= 87)
+		else if(percentage < 90 && percentage >= 87)
 			grade = "B+";
-		else if(percentage < 86 && percentage >= 83)
+		else if(percentage < 87 && percentage >= 83)
 			grade = "B";
-		else if(percentage < 82 && percentage >= 80)
+		else if(percentage < 83 && percentage >= 80)
 			grade = "B-";
-		else if(percentage < 79 && percentage >= 77)
+		else if(percentage < 80 && percentage >= 77)
 			grade = "C+";
-		else if(percentage < 76 && percentage >= 73)
+		else if(percentage < 77 && percentage >= 73)
 			grade = "C";
-		else if(percentage < 72 && percentage >= 70)
+		else if(percentage < 73 && percentage >= 70)
 			grade = "C-";
-		else if(percentage < 69 && percentage >= 67)
+		else if(percentage < 70 && percentage >= 67)
 			grade = "D+";
-		else if(percentage < 66 && percentage >= 63)
+		else if(percentage < 67 && percentage >= 63)
 			grade = "D";
-		else if(percentage < 62 && percentage >= 60)
+		else if(percentage < 63 && percentage >= 60)
 			grade = "D-";
 		else
 			grade = "F";

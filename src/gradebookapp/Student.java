@@ -111,7 +111,7 @@ public class Student
 		Assignment assignment = null;
 		try
 		{
-			studentAssignments.get(index);
+			assignment = studentAssignments.get(index);
 		}
 		catch(IndexOutOfBoundsException ex)
 		{
