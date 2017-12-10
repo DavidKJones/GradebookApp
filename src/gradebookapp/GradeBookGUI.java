@@ -1,3 +1,4 @@
+package gradebookapp;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -234,6 +235,15 @@ public class GradeBookGUI {
 		mntmExit = new JMenuItem("Exit");
 		mntmExit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/close.gif")));
 		mnFile.add(mntmExit);
+		
+		JMenu mnEdit = new JMenu("Edit");
+		menuBar.add(mnEdit);
+		
+		JMenuItem mntmAddGradebook = new JMenuItem("Add Gradebook");
+		mnEdit.add(mntmAddGradebook);
+		
+		JMenuItem mntmDeleteGradebook = new JMenuItem("Delete Gradebook");
+		mnEdit.add(mntmDeleteGradebook);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);

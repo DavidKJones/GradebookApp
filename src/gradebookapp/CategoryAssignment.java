@@ -1,3 +1,4 @@
+package gradebookapp;
 
 
 public class CategoryAssignment extends Assignment 

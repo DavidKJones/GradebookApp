@@ -1,3 +1,4 @@
+package gradebookapp;
 /**
  * <h1>TotalPointsGradebook</h1>
  * Simple grade book class that calculates grade by total points.
