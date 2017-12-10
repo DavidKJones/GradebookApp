@@ -35,7 +35,7 @@ public class GradebookCategory
 	/**
 	 * 
 	 */
-	public GradebookCategory( String name, int weight )
+	public GradebookCategory( String name, double weight )
 	{
 		this.name = name;
 		this.weight = weight;

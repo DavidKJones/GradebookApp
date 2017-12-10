@@ -126,10 +126,12 @@ public class CategoryGradebook extends GradeBook
 				{
 					numberOfAssignments++;
 					categoryPercentage += a.calculatePercentage();
+					System.out.println(a.getName() + " - " + a.calculatePercentage());
 				}
 			}
 			categoryPercentage /= (double)numberOfAssignments;
-			percentage += categoryPercentage * c.getWeight();
+			System.out.print(categoryPercentage);
+			percentage += categoryPercentage * (c.getWeight() / (double)100);
 		}
 		
 		return percentage;

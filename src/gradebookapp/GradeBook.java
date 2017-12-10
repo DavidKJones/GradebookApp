@@ -100,7 +100,7 @@ public abstract class GradeBook implements Serializable
 	public void addAssignment ( Assignment assignment )
 	{
 		assignments.add(assignment);
-		assignment.setStudentScore(assignment.getTotalScore());	
+		assignment.setStudentScore(assignment.getTotalScore());
 		for( Student s : students )
 		{
 			s.addAssignment(assignment);
