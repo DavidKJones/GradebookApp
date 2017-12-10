@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 
 public class GradeBookGUI {
 
@@ -200,6 +201,10 @@ public class GradeBookGUI {
 		JComboBox cbGradeBookSelect = new JComboBox();
 		cbGradeBookSelect.setToolTipText("Select a Gradebook");
 		cbGradeBookSelect.setBounds(10, 12, 116, 25);
+		for(int i = 0;i<gradebook.size();i++)
+		{
+			cbGradeBookSelect.addItem(gradebook.get(i));
+		}
 		frame.getContentPane().add(cbGradeBookSelect);
 		
 		menuBar = new JMenuBar();
@@ -292,7 +297,7 @@ public class GradeBookGUI {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				createAssignnmentFrame();
+
 			}
 		});
 		
@@ -326,27 +331,22 @@ public class GradeBookGUI {
 	/*
 	 * Set up the table
 	 */
-//	void buildStudentTable()
-//	{
-//		if(modelStudents.getRowCount()>0)
-//		{
-//			for(int i = 0;i<modelStudents.getRowCount();i++)
-//			{
-//				modelStudents.removeRow(i);
-//			}
-//		}
-//		for(int i = 0; i < student.size();i++)
-//		{
-//			modelStudents.addRow(new Object[] {student.get(i).getIdNumber(), student.get(i).getFirstName(), student.get(i).getLastName(), null, null});
-//		}
-//	}
-	
-	private void createAssignnmentFrame()
+	void buildStudentTable()
 	{
-		frame2 = new JFrame("Assignments");
-		frame2.getContentPane().setLayout(null);
-		frame2.setBounds(100, 100, 800, 167);
-		frame2.setSize(800, 500);
-		frame2.setVisible(true);
+		if(modelStudents.getRowCount()>0)
+		{
+			for(int i = 0;i<modelStudents.getRowCount();i++)
+			{
+				modelStudents.removeRow(i);
+			}
+		}
+		for(int i = 0; i < gradebook.size();i++)
+		{
+			modelStudents.addRow(new Object[] {totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber(), 
+					totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getFirstName(), 
+					totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getLastName(), 
+					totalGradeBook.calculateStudentPercentage(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1)),
+					totalGradeBook.getGrade(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1))});
+		}
 	}
 }

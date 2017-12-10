@@ -1,17 +1,26 @@
 import java.util.ArrayList;
 
-public class GradeBookTest {
+public class GradeBookTest{
 
 	public static void main(String[] args) {
-		ArrayList<Student> student = new ArrayList<Student>();
-		student.add(new Student("S0001","John Doe"));
-		student.add(new Student("S0002", "Apple Banana"));
-		student.add(new Student("S0003","poopy butt"));
-		student.add(new Student("S0004","poopy butt", "B" , 73.5));
-		student.add(new Student("S0005","poopy butt", "C" , 80));
-		for(int i = 0;i<student.size();i++) {
-			System.out.println(student.get(i).toString());
-		}
+		createStuff();
 	}
-
+	
+	public static ArrayList<GradeBook> createStuff() {
+		ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
+		gradebook.add(new TotalPointsGradeBook());
+		gradebook.get(0).addStudent(new Student(null, "Mason", "Parry"));
+		gradebook.get(0).addStudent(new Student(null, "Bob", "Joe"));
+		gradebook.get(0).addStudent(new Student(null, "John", "Doe"));
+		gradebook.get(0).addAssignment(new Assignment("Homework 1",25));
+		gradebook.get(0).addAssignment(new Assignment("Homework 2",20));
+		gradebook.get(0).addAssignment(new Assignment("Test 1",100));
+		
+		gradebook.add(new CategoryGradebook());
+		gradebook.get(1).addStudent(new Student(null, "David", "Jones"));
+		gradebook.get(1).addStudent(new Student(null, "Carl", "Jr"));
+		gradebook.get(1).addAssignment(new Assignment("Group Project",50));
+		gradebook.get(1).addAssignment(new Assignment("Quiz",15));
+		return gradebook;
+	}
 }
