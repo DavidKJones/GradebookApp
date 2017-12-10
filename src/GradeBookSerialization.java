@@ -27,6 +27,10 @@ public class GradeBookSerialization
 	      
 	      int result = fileChooser.showSaveDialog(null);
 	
+	      if(result == JFileChooser.CANCEL_OPTION)
+	      {
+	    	  return;
+	      }
 	
 	      // return Path representing the selected file
 	      Path path = fileChooser.getSelectedFile().toPath();
@@ -45,6 +49,11 @@ public class GradeBookSerialization
 	         JFileChooser.FILES_AND_DIRECTORIES);
 	      
 	      int result = fileChooser.showOpenDialog(null);
+	      
+	      if(result == JFileChooser.CANCEL_OPTION)
+	      {
+	    	  //cancel
+	      }
 	
 	      // return Path representing the selected file
 	      Path path = fileChooser.getSelectedFile().toPath();
@@ -55,13 +64,13 @@ public class GradeBookSerialization
 	 * Serializes the grade book into a .ser file.
 	 * @param fileName
 	 */
-	@SuppressWarnings("resource")
 	private static void serializeGradeBooks( ArrayList<GradeBook> gradeBooks, String fileName )
 	{
 		try
 		{
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName+".ser"));
 			out.writeObject(gradeBooks);
+			out.close();
 		}
 		catch(IOException exception)
 		{

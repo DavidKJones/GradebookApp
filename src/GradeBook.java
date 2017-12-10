@@ -28,7 +28,15 @@ public abstract class GradeBook implements Serializable
 	 * @param student
 	 */
 	public void addStudent( Student student )
-	{
+	{	
+		System.out.println("Assignments: " + assignments.size()+ "\nStudents: " + students.size());
+		
+		for( Assignment a : assignments)
+		{
+			a.setStudentScore(a.getTotalScore());
+			student.addAssignment(a);
+		}
+		
 		students.add(student);
 	}
 	
@@ -85,9 +93,18 @@ public abstract class GradeBook implements Serializable
 	}
 	
 	/**
-	 * 
+	 * Add assignment to the grade book.
 	 */
-	public abstract void addAssignment ( Assignment assignment );
+	public void addAssignment ( Assignment assignment )
+	{
+		assignments.add(assignment);
+		assignment.setStudentScore(assignment.getTotalScore());
+		
+		for( Student s : students )
+		{
+			s.addAssignment(assignment);
+		}	
+	}
 	
 	/**
 	 * 
