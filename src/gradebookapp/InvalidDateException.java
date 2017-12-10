@@ -18,8 +18,8 @@ public class InvalidDateException extends IOException
 	}
 
 	/**
-	 * constructor
-	 * @param arg0
+	 * constructor with one parameter
+	 * @param arg0 String
 	 */
 	public InvalidDateException(String arg0) 
 	{

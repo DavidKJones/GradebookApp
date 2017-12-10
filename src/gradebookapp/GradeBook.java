@@ -26,7 +26,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Add student to the grade book.
-	 * @param student
+	 * @param student Student
 	 */
 	public void addStudent( Student student )
 	{	
@@ -43,8 +43,8 @@ public abstract class GradeBook implements Serializable
 	}
 	
 	/**
-	 * Removes a student from the grade book.
-	 * @param student
+	 * Removes student that is passed in from the grade book.
+	 * @param student Student
 	 */
 	public void removeStudent( Student student )
 	{
@@ -53,7 +53,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Removes a student from the grade book at an index.
-	 * @param student
+	 * @param index index to be removed
 	 */
 	public void removeStudentAt( int index )
 	{
@@ -69,6 +69,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Get a student from the grade book at an index.
+	 * @param index index to get
 	 * @return student object
 	 */
 	public Student getStudent ( int index )
@@ -97,6 +98,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Add assignment to the grade book.
+	 * @param assignment Assignment to be added
 	 */
 	public void addAssignment ( Assignment assignment )
 	{
@@ -109,7 +111,8 @@ public abstract class GradeBook implements Serializable
 	}
 	
 	/**
-	 * Remove an assignment from the gradebook.
+	 * Remove the assignment passed in from the gradebook.
+	 * @param assignment Assignment to be removed
 	 */
 	public void removeAssignment ( Assignment assignment )
 	{
@@ -118,7 +121,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Remove an assignment from the grade book at an index.
-	 * @param index
+	 * @param index index to be removed
 	 */
 	public void removeAssignmentAt (int index)
 	{
@@ -134,6 +137,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Get an assignment from the gradebook at an index.
+	 * @param index index to get
 	 * @return assignment object
 	 */
 	public Assignment getAssignmentAt( int index )
@@ -153,7 +157,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Get all assignments from the grade book.
-	 * @return
+	 * @return arraylist of assignments
 	 */
 	public ArrayList<Assignment> getAssignments()
 	{
@@ -162,7 +166,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Get the name of the grade book
-	 * @return name
+	 * @return string name
 	 */
 	public String getName()
 	{
@@ -171,7 +175,7 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * Sets the name of the grade book.
-	 * @param name
+	 * @param name string
 	 */
 	public void setName( String name )
 	{
@@ -180,19 +184,23 @@ public abstract class GradeBook implements Serializable
 	
 	/**
 	 * 
-	 * Calculates the student percentage.
-	 * @return percentage value 0-100
+	 * Calculates the student percentage of the student passed in
+	 * @param student Student
+	 * @return double value of the percentage 0-100
 	 */
 	public abstract double calculateStudentPercentage( Student student );
 	
-	/**
-	/*Grabs percentage and sets letter grade depending on percentage
+	
+	/**Grabs percentage and sets letter grade depending on percentage of student passed in
 	 *
-	 * @param none
-	 * @returns String letter grade
+	 * @param student Student
+	 * @return String letter grade
 	 */
 	public abstract String getGrade( Student student );
 	
+	/**grabs the name of the gradebook
+	 * @return String of the name of the gradebook
+	 */
 	@Override
 	public String toString()
 	{

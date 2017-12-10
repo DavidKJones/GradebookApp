@@ -28,11 +28,11 @@ public class Student implements Serializable
 		this.studentAssignments = new ArrayList<Assignment>();
 	}
 	//parameterized constructors
-	/**Student constructor with only two arguments
+	/**Student constructor with three arguments
 	 * 
-	 * @return nothing
-	 * @param id the Student ID
-	 * @param name the Student Name
+	 * @param id String of the Student ID
+	 * @param first String of the student's first Name
+	 * @param last String of the student's last name
 	 */
 	public Student(String id, String first, String last) {
 		this.idNumber = id;
@@ -40,13 +40,13 @@ public class Student implements Serializable
 		this.lastName = last;
 		this.studentAssignments = new ArrayList<Assignment>();
 	}
-	/**Student constructor with four arguments
+	/**Student constructor with five arguments
 	 * 
-	 * @return nothing
-	 * @param id the Student ID
-	 * @param name the Student's name
-	 * @param grade
-	 * @param percentage grade percentage
+	 * @param id String of the Student ID
+	 * @param firstName String of the Student's first name
+	 * @param lastName String of the Student's last name
+	 * @param grade String of the Student's grade
+	 * @param percentage double of the grade percentage
 	 */
 	public Student (String id, String firstName, String lastName, String grade, double percentage)
 	{
@@ -68,8 +68,7 @@ public class Student implements Serializable
 	
 	/**Manually set the Student's ID number
 	 * 
-	 * @param idNumber student ID number
-	 * @return nothing
+	 * @param idNumber String of the student ID number
 	 */
 	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
@@ -85,8 +84,7 @@ public class Student implements Serializable
 	
 	/**Manually set the Student's first Name
 	 * 
-	 * @param name the student's name
-	 * @return nothing
+	 * @param first String of the student's first name
 	 */
 	public void setFirstName(String first) {
 		this.firstName = first;
@@ -100,10 +98,9 @@ public class Student implements Serializable
 		return lastName;
 	}
 	
-	/**Manually set the Student's first Name
+	/**Manually set the Student's Last Name
 	 * 
-	 * @param name the student's name
-	 * @return nothing
+	 * @param last String of the student's last name
 	 */
 	public void setLastName(String last) {
 		this.lastName = last;
@@ -111,8 +108,8 @@ public class Student implements Serializable
 	
 	/**
 	 * Get a student assignment at an index.
-	 * @param index
-	 * @return
+	 * @param index index of desired assignment
+	 * @return assignment at specified index
 	 */
 	public Assignment getAssignment(int index)
 	{
@@ -131,30 +128,24 @@ public class Student implements Serializable
 	
 	/**
 	 * Get the assignments for the student.
-	 * @return
+	 * @return ArrayList of all of the student's assignment
 	 */
 	public ArrayList<Assignment> getAssignments()
 	{
 		return studentAssignments;
 	}
 
-	/**
-	/*
+	/** 
 	 * Adds an assignment to the specific student
-	 * 
-	 * @param Assignment
-	 * @return nothing
+	 * @param assignment Assignment to be added
 	 */
 	public void addAssignment(Assignment assignment) 
 	{
 		studentAssignments.add(assignment);
 	}
 	/**
-	/*
 	 * removes an undesired assignment to the specific student
-	 * 
-	 * @param Assignment
-	 * @return nothing
+	 * @param assignment Assignment to be removed
 	 */
 	public void removeAssignment(Assignment assignment)
 	{

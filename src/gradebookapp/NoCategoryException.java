@@ -10,7 +10,7 @@ import java.io.IOException;
 @SuppressWarnings("serial")
 public class NoCategoryException extends IOException 
 {
-	/**
+	/**default constructor
 	 * 
 	 */
 	public NoCategoryException()
@@ -18,9 +18,9 @@ public class NoCategoryException extends IOException
 		super();
 	}
 	
-	/**
+	/**constructor with one parameter
 	 * 
-	 * @param mssg
+	 * @param mssg string
 	 */
 	public NoCategoryException(String mssg)
 	{

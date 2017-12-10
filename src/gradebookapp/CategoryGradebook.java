@@ -16,7 +16,7 @@ public class CategoryGradebook extends GradeBook
 	
 	//constructors
 	/**
-	 * 
+	 * default constructor
 	 */
 	public CategoryGradebook()
 	{
@@ -26,7 +26,8 @@ public class CategoryGradebook extends GradeBook
 	}
 	
 	/**
-	 * 
+	 * constructor with one parameter
+	 * @param name String
 	 */
 	public CategoryGradebook( String name )
 	{
@@ -36,7 +37,8 @@ public class CategoryGradebook extends GradeBook
 	}
 	
 	/**
-	 * 
+	 * adds the category that is passed in
+	 * @param category the grade book category
 	 */
 	public void addCategory(GradebookCategory category)
 	{
@@ -44,9 +46,9 @@ public class CategoryGradebook extends GradeBook
 	}
 	
 	/**
-	 * 
-	 * @param index
-	 * @return
+	 * gets the category at the specified index
+	 * @param index index to get
+	 * @return the category at specified index
 	 */
 	public GradebookCategory getCategory(int index)
 	{
@@ -64,8 +66,8 @@ public class CategoryGradebook extends GradeBook
 	}
 	
 	/**
-	 * 
-	 * @param category
+	 * removes the category passed in
+	 * @param category the grade book category
 	 */
 	public void removeCategory(GradebookCategory category)
 	{
@@ -73,8 +75,8 @@ public class CategoryGradebook extends GradeBook
 	}
 	
 	/**
-	 * 
-	 * @param index
+	 * removes category at specified index
+	 * @param index index to be removed
 	 */
 	public void removeCategoryAt(int index)
 	{
@@ -90,7 +92,7 @@ public class CategoryGradebook extends GradeBook
 	
 	/**
 	 * Check to see if all the weights from the categories add up to 100%.
-	 * @return
+	 * @return boolean
 	 */
 	public boolean weightsAddUpToHundred()
 	{
@@ -108,8 +110,9 @@ public class CategoryGradebook extends GradeBook
 		return true;
 	}
 	
-	/**
-	 * 
+	/**gets the student percentage based off of the category weight of the student passed in
+	 * @param student Student
+	 * @return double value of the student percentage
 	 */
 	@Override
 	public double calculateStudentPercentage( Student student ) 
@@ -137,6 +140,10 @@ public class CategoryGradebook extends GradeBook
 		return percentage;
 	}
 	
+	/**Gets the student grade of the student passed in
+	 * @param student Student
+	 * @return letter grade
+	 */
 	@Override
 	public String getGrade( Student student ) 
 	{

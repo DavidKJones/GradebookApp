@@ -15,7 +15,6 @@ public class Assignments
 	 * <h1><i>getAssignments</i></h1>
 	 * <p>
 	 * Get the entire list of assignments.
-	 * @param none
 	 * @return array list of assignments
 	 * @see Assignment
 	 */
@@ -29,7 +28,7 @@ public class Assignments
 	 * <h1><i>getAssignment</i></h1>
 	 * <p>
 	 * Gets the assignment from the list at the index.
-	 * @param index
+	 * @param index index of assignment
 	 * @return assignment at index
 	 * @see Assignment
 	 */
@@ -40,7 +39,7 @@ public class Assignments
 	
 	/**
 	 * Add an assignment to the assignment list.
-	 * @return
+	 * @param assignment Assignment
 	 */
 	static public void addAssignment( Assignment assignment )
 	{
@@ -49,7 +48,7 @@ public class Assignments
 	
 	/**
 	 * Remove an assignment from the assignment list.
-	 * @return
+	 * @param assignment Assignment
 	 */
 	static public void removeAssignment (Assignment assignment)
 	{
@@ -58,7 +57,7 @@ public class Assignments
 	
 	/**
 	 * Remove assignment from the list by index.
-	 * @return
+	 * @param index index of assignment to be removed
 	 */
 	static public void removeAssignmentAt( int index )
 	{

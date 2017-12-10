@@ -10,7 +10,7 @@ public class TotalPointsGradeBook extends GradeBook
 {
 	//constructors
 	/**
-	 * 
+	 * default constructor
 	 */
 	public TotalPointsGradeBook()
 	{
@@ -19,7 +19,8 @@ public class TotalPointsGradeBook extends GradeBook
 	}
 	
 	/**
-	 * 
+	 * constructor with one parameter
+	 * @param name string
 	 */
 	public TotalPointsGradeBook( String name )
 	{
@@ -27,7 +28,11 @@ public class TotalPointsGradeBook extends GradeBook
 		setName(name);
 	}
 	
-	//calculates student grade by total points system
+	/**
+	 * calculates student grade by total points system
+	 * @param student Student
+	 * @return double value of the student percentage
+	 */
 	@Override
 	public double calculateStudentPercentage( Student student ) 
 	{
@@ -58,7 +63,11 @@ public class TotalPointsGradeBook extends GradeBook
 		return percentage;
 	}
 	
-	//get the overall grade of the student
+	/**
+	 * get the overall grade of the student
+	 * @param student Student
+	 * @return letter grade of student
+	 */
 	@Override
 	public String getGrade( Student student )
 	{

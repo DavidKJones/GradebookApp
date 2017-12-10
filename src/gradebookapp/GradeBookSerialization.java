@@ -72,7 +72,7 @@ public class GradeBookSerialization
 	
 	/**
 	 * Open a serialized file to get grade book data.
-	 * @return list of grade books
+	 * returns the list of grade books
 	 */
 	public static void openGradeBooks()
 	{
@@ -108,6 +108,7 @@ public class GradeBookSerialization
 	/**
 	 * Serializes the grade book into a .ser file.
 	 * @param fileName
+	 * @serialData gradebooks
 	 */
 	private static void serializeGradeBooks( ArrayList<GradeBook> gradeBooks, String fileName )
 	{
@@ -127,7 +128,7 @@ public class GradeBookSerialization
 	/**
 	 * Deserializes file that contains grade book data.
 	 * @param fileName
-	 * @return
+	 * @return gradeBooks
 	 */
 	@SuppressWarnings("unchecked")
 	private static ArrayList<GradeBook> deserializeGradeBooks(String fileName)

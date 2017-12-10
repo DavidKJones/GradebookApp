@@ -15,7 +15,7 @@ public class GradebookCategory
 	
 	//constructors
 	/**
-	 * 
+	 * default constructor
 	 */
 	public GradebookCategory()
 	{
@@ -24,7 +24,8 @@ public class GradebookCategory
 	}
 	
 	/**
-	 * 
+	 * constructor with one parameter
+	 * @param name string
 	 */
 	public GradebookCategory( String name )
 	{
@@ -33,7 +34,9 @@ public class GradebookCategory
 	}
 	
 	/**
-	 * 
+	 * constructor with two parameters
+	 * @param name string
+	 * @param weight double
 	 */
 	public GradebookCategory( String name, double weight )
 	{
@@ -41,36 +44,32 @@ public class GradebookCategory
 		this.weight = weight;
 	}
 	
-	/**
-	 * 
-	 * @param weight
+	/** Sets the weight for a category
+	 * @param weight double
 	 */
 	public void setWeight( double weight )
 	{
 		this.weight = weight;
 	}
 	
-	/**
-	 * 
-	 * @return
+	/**get the category's weight
+	 * @return the weight of a category
 	 */
 	public double getWeight ()
 	{
 		return weight;
 	}
 	
-	/**
-	 * 
-	 * @param name
+	/**changes the name of the category
+	 * @param name string
 	 */
 	public void setName( String name )
 	{
 		this.name = name;
 	}
 	
-	/**
-	 * 
-	 * @return
+	/**get the category's name
+	 * @return name of the category
 	 */
 	public String getName()
 	{

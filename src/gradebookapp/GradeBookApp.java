@@ -12,7 +12,6 @@ public class GradeBookApp
 	/**
 	 * get all of the students
 	 * 
-	 * @param none
 	 * @return array list of the students
 	 */
 	public ArrayList<Student> getAllStudents()
@@ -35,7 +34,6 @@ public class GradeBookApp
 	 * Add another student to the list
 	 * 
 	 * @param student object with desired parameters(2/4)
-	 * @return nothing
 	 */
 	public void addStudent(Student student)
 	{

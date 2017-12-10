@@ -17,6 +17,9 @@ public class Assignment implements Serializable
 	private int totalScore;
 	private int studentScore;
 	public Date dueDate;
+	/**
+	 * is the assignment extra credit
+	 */
 	private boolean isEC;
 	
 	//default constructor
@@ -34,9 +37,9 @@ public class Assignment implements Serializable
 	
 	//parameterized constructors
 	/**
-	 * Assignment constructor.
-	 * @param name
-	 * @param totalPoints
+	 * Assignment constructor with two parameters.
+	 * @param name String
+	 * @param totalPoints int
 	 */
 	public Assignment( String name, int totalPoints )
 	{
@@ -48,10 +51,10 @@ public class Assignment implements Serializable
 	}
 	
 	/**
-	 * Assignment constructor.
-	 * @param name
-	 * @param categoryName
-	 * @param totalPoints
+	 * Assignment constructor with three parameters.
+	 * @param name String
+	 * @param categoryName String
+	 * @param totalPoints int
 	 */
 	public Assignment( String name, String categoryName, int totalPoints )
 	{
@@ -63,9 +66,8 @@ public class Assignment implements Serializable
 	}
 	
 	/**
-	 * Assignment constructor.
-	 * @param name
-	 * @param totalScore
+	 * Assignment constructor with one parameter.
+	 * @param name String
 	 */
 	public Assignment (String name)
 	{
@@ -79,7 +81,7 @@ public class Assignment implements Serializable
 	//methods
 	/**
 	 * Get the total score for the assignment.
-	 * @return integer value of points
+	 * @return integer value of total score for an assignment
 	 */
 	public int getTotalScore()
 	{
@@ -88,7 +90,7 @@ public class Assignment implements Serializable
 	
 	/**
 	 * Get the student score from the assignment.
-	 * @return 
+	 * @return integer value of the student score
 	 */
 	public int getStudentScore()
 	{
@@ -97,7 +99,7 @@ public class Assignment implements Serializable
 	
 	/**
 	 * Set the student score for the assignment.
-	 * @return 
+	 * @param score int
 	 */
 	public void setStudentScore( int score)
 	{
@@ -106,8 +108,7 @@ public class Assignment implements Serializable
 	
 	/**
 	 * Set total points for the assignment.
-	 * @param points
-	 * @return nothing
+	 * @param score int
 	 */
 	public void setTotalScore( int score )
 	{
@@ -125,17 +126,16 @@ public class Assignment implements Serializable
 	
 	/**
 	 * Set name for the assignment.
-	 * @param name
-	 * @return nothing
+	 * @param name String
 	 */
-	public String setName( String name )
+	public void setName( String name )
 	{
-		return name;
+		this.name = name;
 	}
 	
 	/**
 	 * Returns if the assignment is extra credit or not.
-	 * @return
+	 * @return whether the assignment is extra credit or not
 	 */
 	public boolean isExtraCredit()
 	{
@@ -144,7 +144,7 @@ public class Assignment implements Serializable
 	
 	/**
 	 * Sets the assignment as extra credit or not.
-	 * @param status
+	 * @param status boolean
 	 */
 	public void setExtraCredit(boolean status)
 	{
@@ -153,7 +153,7 @@ public class Assignment implements Serializable
 
 	/**
 	 * Calculates the percentage grade on the assignment.
-	 * @return
+	 * @return double value of percentage
 	 */
 	public double calculatePercentage()
 	{
@@ -173,7 +173,7 @@ public class Assignment implements Serializable
 	
 	/**
 	 * Get the letter grade of the assignment.
-	 * @return
+	 * @return string letter grade
 	 */
 	public String getLetterScore()
 	{
@@ -212,7 +212,7 @@ public class Assignment implements Serializable
 	
 	/**
 	 * Set the due date for the assignment.
-	 * @param date
+	 * @param date Date
 	 */
 	public void setDueDate( Date date )
 	{
@@ -221,7 +221,7 @@ public class Assignment implements Serializable
 	
 	/**
 	 * Get the due date for the assignment.
-	 * @return
+	 * @return the due date
 	 */
 	public Date getDueDate ()
 	{

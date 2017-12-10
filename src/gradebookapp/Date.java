@@ -18,6 +18,9 @@ public class Date
 	
 	//default constructor
 	public Date() 
+	/**
+	 * default constructor
+	 */
 	{
 		dateString = "No Date";
 		setDate(1,1,1);
@@ -25,10 +28,10 @@ public class Date
 	
 	/**
 	 * Set the date.
-	 * @param month
-	 * @param day
-	 * @param year
-	 * @throws InvalidDateException
+	 * @param month int
+	 * @param day int
+	 * @param year int
+	 * @exception InvalidDateException if date is not valid
 	 */
 	public void setDate( int month, int day, int year )
 	{
@@ -76,6 +79,9 @@ public class Date
 		}
 	}
 	
+	/**The string value of the date
+	 * @return the date (month, day, year)
+	 */
 	@Override
 	public String toString()
 	{

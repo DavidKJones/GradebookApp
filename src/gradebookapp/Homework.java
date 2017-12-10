@@ -18,8 +18,8 @@ public class Homework extends Assignment
 
 	/**
 	 * 
-	 * @param name
-	 * @param totalPoints
+	 * @param name String
+	 * @param totalPoints int
 	 */
 	public Homework(String name, int totalPoints) 
 	{
@@ -28,7 +28,7 @@ public class Homework extends Assignment
 
 	/**
 	 * 
-	 * @param name
+	 * @param name String
 	 */
 	public Homework(String name) 
 	{

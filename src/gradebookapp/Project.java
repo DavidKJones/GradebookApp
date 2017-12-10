@@ -18,8 +18,8 @@ public class Project extends Assignment
 
 	/**
 	 * 
-	 * @param name
-	 * @param totalPoints
+	 * @param name String
+	 * @param totalPoints int
 	 */
 	public Project(String name, int totalPoints) 
 	{
@@ -28,7 +28,7 @@ public class Project extends Assignment
 
 	/**
 	 * 
-	 * @param name
+	 * @param name String
 	 */
 	public Project(String name) 
 	{
