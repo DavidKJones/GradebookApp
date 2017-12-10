@@ -23,6 +23,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.DefaultComboBoxModel;
 
 public class GradeBookGUI {
 
@@ -33,20 +34,19 @@ public class GradeBookGUI {
 	private JTable tableStudents;
 	private JTable tableAssignments;
 	private JPanel addStudent = new JPanel();
+	private JPanel addGradebook = new JPanel();
 	private DefaultTableModel modelAssignments;
 	private DefaultTableModel modelStudents;
 	private JMenuBar menuBar;
 	private JMenu mnFile;
 	private JMenuItem mntmExit;
+	private JComboBox<GradeBook> cbGradeBookSelect = new JComboBox();
 	private JTextField txtStudentName;
 	private JTextField txtStudentId;
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
-	private ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
+	public ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
 	private TotalPointsGradeBook totalGradeBook;
-	private JTextField first = new JTextField(7);
-    private JTextField last = new JTextField(7);
-
 
 	/**
 	 * Launch the application.
@@ -86,12 +86,6 @@ public class GradeBookGUI {
 		totalGradeBook.addAssignment(new Assignment("test",25));
 		totalGradeBook.addStudent(new Student("S0000", null, null));
 		
-		//add student dialog 
-		addStudent.add(new JLabel("First:"));
-		addStudent.add(first);
-		addStudent.add(new JLabel("Last:"));
-		addStudent.add(last);
-		
 		/*
 		 * creates the students table and model
 		 */
@@ -110,9 +104,8 @@ public class GradeBookGUI {
 		tableStudents.getColumnModel().getColumn(2).setPreferredWidth(78);
 		tableStudents.getColumnModel().getColumn(3).setPreferredWidth(40);
 		tableStudents.getColumnModel().getColumn(4).setPreferredWidth(30);
-		tableStudents.setAutoCreateRowSorter(true);
 		scrollPaneStudents = new JScrollPane(tableStudents);
-		scrollPaneStudents.setBounds(10, 44, 422, 345);
+		scrollPaneStudents.setBounds(10, 50, 422, 345);
 		frame.getContentPane().add(scrollPaneStudents);
 		
 		/*
@@ -129,7 +122,8 @@ public class GradeBookGUI {
 		tableAssignments.setSelectionMode(0);
 		modelAssignments = (DefaultTableModel)tableAssignments.getModel();
 		scrollPaneAssignments = new JScrollPane(tableAssignments);
-		scrollPaneAssignments.setBounds(444, 248, 386, 141);
+		scrollPaneAssignments.setToolTipText("List of assignments for the current student");
+		scrollPaneAssignments.setBounds(444, 254, 386, 141);
 		frame.getContentPane().add(scrollPaneAssignments);
 		
 		/*
@@ -138,25 +132,27 @@ public class GradeBookGUI {
 		 * 
 		 */
 		JButton btnSave = new JButton("Save");
+		btnSave.setToolTipText("Save the gradebook");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		//btnSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
 		btnSave.setBounds(733, 401, 97, 29);
 		frame.getContentPane().add(btnSave);
 		
-		JButton btnAdd = new JButton("Add");
-		//btnAdd.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/file.gif")));
-		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnAdd.setBounds(515, 401, 97, 29);
-		frame.getContentPane().add(btnAdd);
-		
 		JButton btnEdit = new JButton("Edit");
+		btnEdit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/wrench.gif")));
 		//btnEdit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/images/wrench.gif")));
 		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnEdit.setBounds(624, 401, 97, 29);
 		frame.getContentPane().add(btnEdit);
 		
 		JButton btnAssignments = new JButton("Assignments");
-		//btnAssignments.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/DetailsView.gif")));
+		btnAssignments.setToolTipText("View list of assignments");
+		btnAssignments.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/javafx/scene/web/skin/UnorderedListBullets_16x16_JFX.png")));
 		btnAssignments.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnAssignments.setBounds(10, 401, 133, 29);
 		frame.getContentPane().add(btnAssignments);
@@ -167,7 +163,24 @@ public class GradeBookGUI {
 		lblAssignments.setBounds(444, 210, 386, 32);
 		frame.getContentPane().add(lblAssignments);
 		
+		JTextField name = new JTextField(10);
+		JComboBox type = new JComboBox();
+		type.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
+		type.setModel(new DefaultComboBoxModel(new String[] {"Total Points", "Category"}));
+		addGradebook.add(new JLabel("Name:"));
+		addGradebook.add(name);
+		addGradebook.add(new JLabel("Type:"));
+		addGradebook.add(type);
+		
+		JTextField first = new JTextField(7);
+		JTextField last = new JTextField(7);
+		addStudent.add(new JLabel("First:"));
+		addStudent.add(first);
+		addStudent.add(new JLabel("Last:"));
+		addStudent.add(last);
+		
 		txtStudentName = new JTextField();
+		txtStudentName.setToolTipText("Student's Name");
 		txtStudentName.setEditable(false);
 		txtStudentName.setFont(new Font("Dialog", Font.PLAIN, 56));
 		txtStudentName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -176,6 +189,7 @@ public class GradeBookGUI {
 		txtStudentName.setColumns(10);
 		
 		txtStudentId = new JTextField();
+		txtStudentId.setToolTipText("Student's ID");
 		txtStudentId.setEditable(false);
 		txtStudentId.setFont(new Font("Dialog", Font.PLAIN, 36));
 		txtStudentId.setHorizontalAlignment(SwingConstants.CENTER);
@@ -184,6 +198,7 @@ public class GradeBookGUI {
 		txtStudentId.setColumns(10);
 		
 		txtGrade = new JTextField();
+		txtGrade.setToolTipText("Student's Grade");
 		txtGrade.setEditable(false);
 		txtGrade.setFont(new Font("Dialog", Font.PLAIN, 54));
 		txtGrade.setHorizontalAlignment(SwingConstants.CENTER);
@@ -192,6 +207,7 @@ public class GradeBookGUI {
 		txtGrade.setColumns(10);
 		
 		txtPercentage = new JTextField();
+		txtPercentage.setToolTipText("Student's Percentage");
 		txtPercentage.setEditable(false);
 		txtPercentage.setFont(new Font("Dialog", Font.PLAIN, 54));
 		txtPercentage.setHorizontalAlignment(SwingConstants.CENTER);
@@ -199,14 +215,18 @@ public class GradeBookGUI {
 		frame.getContentPane().add(txtPercentage);
 		txtPercentage.setColumns(10);
 		
-		JComboBox cbGradeBookSelect = new JComboBox();
+		
 		cbGradeBookSelect.setToolTipText("Select a Gradebook");
-		cbGradeBookSelect.setBounds(10, 12, 116, 25);
+		cbGradeBookSelect.setBounds(78, 12, 116, 25);
 		for(int i = 0;i<gradebook.size();i++)
 		{
 			cbGradeBookSelect.addItem(gradebook.get(i));
 		}
 		frame.getContentPane().add(cbGradeBookSelect);
+		
+		JLabel lblGradebook = new JLabel("Gradebook:");
+		lblGradebook.setBounds(10, 12, 71, 26);
+		frame.getContentPane().add(lblGradebook);
 		
 		menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -215,6 +235,7 @@ public class GradeBookGUI {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/Directory.gif")));
 		//mntmOpen.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/Directory.gif")));
 		mnFile.add(mntmOpen);
 		
@@ -222,33 +243,50 @@ public class GradeBookGUI {
 		mnFile.add(separator);
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
-		//mntmSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
+		mntmSave.setEnabled(false);
+		mntmSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 		mnFile.add(mntmSave);
 		
 		JMenuItem mntmSaveAs = new JMenuItem("Save As");
-		//mntmSaveAs.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/hardDrive.gif")));
+		mntmSaveAs.setEnabled(false);
+		mntmSaveAs.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/HardDrive.gif")));
 		mnFile.add(mntmSaveAs);
 		
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 		
 		mntmExit = new JMenuItem("Exit");
-		//mntmExit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/close.gif")));
+		mntmExit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/close.gif")));
 		mnFile.add(mntmExit);
 		
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 		
 		JMenuItem mntmAddGradebook = new JMenuItem("Add Gradebook");
+		mntmAddGradebook.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/add.gif")));
 		mnEdit.add(mntmAddGradebook);
 		
+		JMenuItem mntmAddStudent = new JMenuItem("Add Student");
+		mntmAddStudent.setEnabled(false);
+		mntmAddStudent.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/add.gif")));
+		mnEdit.add(mntmAddStudent);
+		
+		
 		JMenuItem mntmDeleteGradebook = new JMenuItem("Delete Gradebook");
+		mntmDeleteGradebook.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/minus.gif")));
+		mntmDeleteGradebook.setEnabled(false);
 		mnEdit.add(mntmDeleteGradebook);
+		
+		JMenuItem mntmDeleteStudent = new JMenuItem("Delete Student");
+		mntmDeleteStudent.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/minus.gif")));
+		mntmDeleteStudent.setEnabled(false);
+		mnEdit.add(mntmDeleteStudent);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
+		mntmAbout.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/about.gif")));
 		//mntmAbout.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/images/about.gif")));
 		mnHelp.add(mntmAbout);
 		frame.setVisible(true);
@@ -271,46 +309,6 @@ public class GradeBookGUI {
 		        }
 		    }
 		});
-		
-		btnAdd.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				first.setText(null);
-				last.setText(null);
-				int result = JOptionPane.showConfirmDialog(null, addStudent, "Please Enter Students Name", JOptionPane.OK_CANCEL_OPTION);
-			    if (result == JOptionPane.OK_OPTION)
-			    {
-			    	if (first.getText().matches("[a-zA-Z]") || last.getText().matches("[a-zA-Z]+"))
-			    	{
-			    		String firstName = first.getText();
-				    	String lastName = last.getText();
-				    	String value = totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber().replaceAll("[^0-9]", "");
-						int temp = Integer.parseInt(value)+1;
-						String formatted = String.format("%04d", temp);
-						totalGradeBook.addStudent(new Student("S"+formatted, firstName, lastName));
-						modelStudents.addRow(new Object[] {totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber(), 
-								totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getFirstName(), 
-								totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getLastName(), 
-								totalGradeBook.calculateStudentPercentage(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1)),
-								totalGradeBook.getGrade(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1))});
-			    	} else {
-			    		JOptionPane.showMessageDialog(null, "Student must have a first and last name containing only letters. \n"
-			    									+ "                                        Please try agian."
-			    									, "Error", JOptionPane.ERROR_MESSAGE);
-			    	}
-			    }
-			}
-		});
-		
-		btnAssignments.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-
-			}
-		});
-		
 		mntmOpen.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -334,8 +332,124 @@ public class GradeBookGUI {
 				GradeBookSerialization.saveGradeBooks(gradebook, gradebook.toString());
 			}
 		});
+		
+		mntmAddStudent.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				//add student dialog
+				first.setText(null);
+				last.setText(null);
+				int result = JOptionPane.showConfirmDialog(null, addStudent, "Please Enter Students Name", JOptionPane.OK_CANCEL_OPTION);
+			    if (result == JOptionPane.OK_OPTION)
+			    {
+			    	if (first.getText().matches("[a-zA-Z]") || last.getText().matches("[a-zA-Z]+"))
+			    	{
+			    		String firstName = first.getText();
+				    	String lastName = last.getText();
+				    	String value = totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber().replaceAll("[^0-9]", "");
+						int temp = Integer.parseInt(value)+1;
+						String formatted = String.format("%04d", temp);
+						totalGradeBook.addStudent(new Student("S"+formatted, firstName, lastName));
+						modelStudents.addRow(new Object[] {totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber(), 
+								totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getFirstName(), 
+								totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getLastName(), 
+								totalGradeBook.calculateStudentPercentage(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1)),
+								totalGradeBook.getGrade(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1))});
+						mntmDeleteStudent.setEnabled(true);
+			    	} else {
+			    		JOptionPane.showMessageDialog(null, "Student must have a first and last name containing only letters. \n"
+			    									+ "                                        Please try agian."
+			    									, "Error", JOptionPane.ERROR_MESSAGE);
+			    	}
+			    }
+			}
+		});
+		
+		mntmDeleteStudent.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				gradebook.get(cbGradeBookSelect.getSelectedIndex()).removeStudentAt(tableStudents.getSelectedRow());
+				modelStudents.removeRow(tableStudents.getSelectedRow());
+				if(gradebook.get(cbGradeBookSelect.getSelectedIndex()).getStudents().size()==0)
+				{
+					mntmDeleteStudent.setEnabled(false);
+				}
+			}
+		});
+		
+		mntmAddGradebook.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				name.setText(null);
+				type.setSelectedIndex(0);
+				
+				int result = JOptionPane.showInputDialog((null, null, "Please Enter a name and type for gradebook", JOptionPane.OK_CANCEL_OPTION);
+			    if (result == JOptionPane.OK_OPTION)
+			    {
+			    	if(type.getSelectedIndex()==1)
+			    	{
+			    		gradebook.add(new CategoryGradebook(name.getText()));
+			    		updateGradeBookComboBox();
+			    		cbGradeBookSelect.setSelectedIndex(cbGradeBookSelect.getItemCount()-1);
+			    	} else {
+			    		gradebook.add(new TotalPointsGradeBook(name.getText()));
+			    		updateGradeBookComboBox();
+			    		cbGradeBookSelect.setSelectedIndex(cbGradeBookSelect.getItemCount()-1);
+			    	}
+			    	mntmAddStudent.setEnabled(true);
+			    	mntmDeleteGradebook.setEnabled(true);
+			    }
+			}
+		});
+		
+		mntmDeleteGradebook.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete: "+gradebook.get(cbGradeBookSelect.getSelectedIndex()), "Confirm", JOptionPane.YES_NO_OPTION);
+		        if (reply == JOptionPane.YES_OPTION)
+		        {
+		        	gradebook.remove(gradebook.get(cbGradeBookSelect.getSelectedIndex()));
+		        	updateGradeBookComboBox();
+		        	if(cbGradeBookSelect.getItemCount()<1)
+		        	{
+		        		mntmDeleteGradebook.setEnabled(false);
+		        		mntmDeleteStudent.setEnabled(false);
+		        		mntmAddStudent.setEnabled(false);
+		        	}
+		        }
+			}
+		});
+		
+		btnAssignments.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+
+			}
+		});
 	}
 	
+	
+	
+	
+	/*
+	 * Update combobox with gradebooks
+	 */
+	private void updateGradeBookComboBox() {
+		if (cbGradeBookSelect.getItemCount() > 0)
+		{
+			cbGradeBookSelect.removeAllItems();
+		}
+		for(int i = 0;i<gradebook.size();i++)
+		{
+			cbGradeBookSelect.addItem(gradebook.get(i));
+		}
+	}
+
 	
 	
 	/*

@@ -191,4 +191,10 @@ public abstract class GradeBook implements Serializable
 	 */
 	public abstract String getGrade( Student student );
 	
+	@Override
+	public String toString()
+	{
+		return getName();
+	}
+	
 }
