@@ -19,19 +19,23 @@ import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
 
 public class GradeBookGUI {
 
 	private JFrame frame;
 	private JFrame frame2;
 	private JScrollPane scrollPaneStudents;
+	private JScrollPane scrollPaneStudentAssignments;
 	private JScrollPane scrollPaneAssignments;
 	private JTable tableStudents;
+	private JTable tableStudentAssignments;
 	private JTable tableAssignments;
 	private JPanel addStudent = new JPanel();
 	private JPanel addGradebook = new JPanel();
@@ -47,6 +51,8 @@ public class GradeBookGUI {
 	private JTextField txtPercentage;
 	public static ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
 	private TotalPointsGradeBook totalGradeBook;
+	String[] columns = new String[] {"Assignment name", "Total Points"};
+
 
 	/**
 	 * Launch the application.
@@ -111,7 +117,7 @@ public class GradeBookGUI {
 		/*
 		 * creates the assignments table for that particular student 
 		 */
-		tableAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points" , "Percent"}, 0)
+		tableStudentAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points" , "Percent"}, 0)
 		{
 			public boolean isCellEditable(int row, int column)
 		    {
@@ -119,12 +125,23 @@ public class GradeBookGUI {
 		    }
 		});
 		
-		tableAssignments.setSelectionMode(0);
-		modelAssignments = (DefaultTableModel)tableAssignments.getModel();
-		scrollPaneAssignments = new JScrollPane(tableAssignments);
-		scrollPaneAssignments.setToolTipText("List of assignments for the current student");
-		scrollPaneAssignments.setBounds(444, 254, 386, 141);
-		frame.getContentPane().add(scrollPaneAssignments);
+		tableStudentAssignments.setSelectionMode(0);
+		modelAssignments = (DefaultTableModel)tableStudentAssignments.getModel();
+		scrollPaneStudentAssignments = new JScrollPane(tableStudentAssignments);
+		scrollPaneStudentAssignments.setToolTipText("List of assignments for the current student");
+		scrollPaneStudentAssignments.setBounds(444, 254, 386, 141);
+		frame.getContentPane().add(scrollPaneStudentAssignments);
+		
+		/*
+		 * creates the assignments table
+		 */
+		tableAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points"}, 0)
+		{
+			public boolean isCellEditable(int row, int column)
+		    {
+		      return false;//This causes all cells to be not editable
+		    }
+		});
 		
 		/*
 		 * 
@@ -139,13 +156,11 @@ public class GradeBookGUI {
 		});
 		btnSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		//btnSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
 		btnSave.setBounds(733, 401, 97, 29);
 		frame.getContentPane().add(btnSave);
 		
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/wrench.gif")));
-		//btnEdit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/images/wrench.gif")));
 		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnEdit.setBounds(624, 401, 97, 29);
 		frame.getContentPane().add(btnEdit);
@@ -162,15 +177,6 @@ public class GradeBookGUI {
 		lblAssignments.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblAssignments.setBounds(444, 210, 386, 32);
 		frame.getContentPane().add(lblAssignments);
-		
-		JTextField name = new JTextField(10);
-		JComboBox type = new JComboBox();
-		type.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
-		type.setModel(new DefaultComboBoxModel(new String[] {"Total Points", "Category"}));
-		addGradebook.add(new JLabel("Name:"));
-		addGradebook.add(name);
-		addGradebook.add(new JLabel("Type:"));
-		addGradebook.add(type);
 		
 		JTextField first = new JTextField(7);
 		JTextField last = new JTextField(7);
@@ -236,7 +242,6 @@ public class GradeBookGUI {
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
 		mntmOpen.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/Directory.gif")));
-		//mntmOpen.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/Directory.gif")));
 		mnFile.add(mntmOpen);
 		
 		JSeparator separator = new JSeparator();
@@ -271,7 +276,6 @@ public class GradeBookGUI {
 		mntmAddStudent.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/add.gif")));
 		mnEdit.add(mntmAddStudent);
 		
-		
 		JMenuItem mntmDeleteGradebook = new JMenuItem("Delete Gradebook");
 		mntmDeleteGradebook.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/minus.gif")));
 		mntmDeleteGradebook.setEnabled(false);
@@ -287,7 +291,6 @@ public class GradeBookGUI {
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mntmAbout.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/about.gif")));
-		//mntmAbout.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/images/about.gif")));
 		mnHelp.add(mntmAbout);
 		frame.setVisible(true);
 		
@@ -383,25 +386,15 @@ public class GradeBookGUI {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				name.setText(null);
-				type.setSelectedIndex(0);
-				
-				/*int result = JOptionPane.showInputDialog((null, null, "Please Enter a name and type for gradebook", JOptionPane.OK_CANCEL_OPTION);
-			    if (result == JOptionPane.OK_OPTION)
+				String name = JOptionPane.showInputDialog(null, "Please Enter name of gradebook: ", JOptionPane.OK_CANCEL_OPTION);
+			    if (name == null)
 			    {
-			    	if(type.getSelectedIndex()==1)
-			    	{
-			    		gradebook.add(new CategoryGradebook(name.getText()));
-			    		updateGradeBookComboBox();
-			    		cbGradeBookSelect.setSelectedIndex(cbGradeBookSelect.getItemCount()-1);
-			    	} else {
-			    		gradebook.add(new TotalPointsGradeBook(name.getText()));
-			    		updateGradeBookComboBox();
-			    		cbGradeBookSelect.setSelectedIndex(cbGradeBookSelect.getItemCount()-1);
-			    	}
+			    	
+			    } else {
+			    	gradebook.add(new TotalPointsGradeBook());
 			    	mntmAddStudent.setEnabled(true);
 			    	mntmDeleteGradebook.setEnabled(true);
-			    }*/
+			    }
 			}
 		});
 		
@@ -428,13 +421,10 @@ public class GradeBookGUI {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-
+				gradebookapp.GradebookAssignmentGUI.main(null);
 			}
 		});
 	}
-	
-	
-	
 	
 	/*
 	 * Update combobox with gradebooks
