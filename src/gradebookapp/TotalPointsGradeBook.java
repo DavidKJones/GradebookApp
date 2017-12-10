@@ -59,6 +59,7 @@ public class TotalPointsGradeBook extends GradeBook
 	}
 	
 	//get the overall grade of the student
+	@Override
 	public String getGrade( Student student )
 	{
 		double percentage = calculateStudentPercentage( student );
