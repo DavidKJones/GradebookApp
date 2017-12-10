@@ -16,9 +16,9 @@ import javax.swing.table.DefaultTableModel;
 public class GradebookSpecificAssignmentGUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
+	private JTable studentList;
 	private ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
-	private ArrayList<Student> students = new ArrayList<Student>
+	private ArrayList<Student> students = new ArrayList<Student>();
 	private TotalPointsGradeBook totalGradeBook;
 
 	/**
@@ -54,16 +54,25 @@ public class GradebookSpecificAssignmentGUI extends JFrame {
 		totalGradeBook.addAssignment(new Assignment("test",25));
 		totalGradeBook.addStudent(new Student("S0000", null, null));
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		DefaultTableModel model = new DefaultTableModel();
+		studentList = new JTable(model);
+		studentList.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
 				"Student", "Score/Total", "%"
 			}
 		));
-		table.getColumnModel().getColumn(2).setResizable(false);
-		scrollPane.setViewportView(table);
+		studentList.getColumnModel().getColumn(2).setResizable(false);
+		scrollPane.setViewportView(studentList);
+		int numCols = studentList.getModel().getColumnCount();
+		Object[] Assignment = new Object[numCols + 1];
+		ArrayList<Student> students = GradeBookGUI.gradebook.get(GradeBookGUI.cbGradeBookSelect.getSelectedIndex()).getStudents();
+		for( Student a : students )
+		{
+			((DefaultTableModel) studentList.getModel()).addRow(new Object[]{a.getFirstName(),a.getLastName()});	
+		}
+		
 	}
 
 }

@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 
 import java.awt.event.ActionEvent;
 
-public class GradebookAssignmentGUI {
+public class GradebookAssignmentGUI extends JFrame{
 
 	private JFrame frame;
 	String[] columns = new String[] {"Assignment name", "Total Points"};
