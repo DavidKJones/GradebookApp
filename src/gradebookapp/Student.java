@@ -17,7 +17,7 @@ public class Student
 		this.idNumber = "";
 		this.firstName = "";
 		this.lastName = "";
-		this.studentAssignments = Assignments.getAssignments();
+		this.studentAssignments = new ArrayList<Assignment>();
 	}
 	//parameterized constructors
 	/**Student constructor with only two arguments
@@ -30,7 +30,7 @@ public class Student
 		this.idNumber = id;
 		this.firstName = first;
 		this.lastName = last;
-		this.studentAssignments = Assignments.getAssignments();
+		this.studentAssignments = new ArrayList<Assignment>();
 	}
 	/**Student constructor with four arguments
 	 * 
@@ -45,7 +45,7 @@ public class Student
 		this.idNumber = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.studentAssignments = Assignments.getAssignments();
+		this.studentAssignments = new ArrayList<Assignment>();
 	}
 	//methods
 
@@ -101,17 +101,33 @@ public class Student
 		this.lastName = last;
 	}
 	
-	public Assignment getAssignment(int index) {
-		return studentAssignments.get(index);
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public Assignment getAssignment(int index)
+	{
+		Assignment assignment = null;
+		try
+		{
+			studentAssignments.get(index);
+		}
+		catch(IndexOutOfBoundsException ex)
+		{
+			System.out.println(ex);
+		}
+		
+		return assignment;
 	}
 	
 	/**
-	 * Sets all of the students assignments.
-	 * @param assignments
+	 * Get the assignments for the student.
+	 * @return
 	 */
-	public void setAssignments(ArrayList<Assignment> assignments)
+	public ArrayList<Assignment> getAssignments()
 	{
-		this.studentAssignments = assignments;
+		return studentAssignments;
 	}
 
 	/**
@@ -121,7 +137,8 @@ public class Student
 	 * @param Assignment
 	 * @return nothing
 	 */
-	public void addAssignment(Assignment assignment) {
+	public void addAssignment(Assignment assignment) 
+	{
 		studentAssignments.add(assignment);
 	}
 	/**

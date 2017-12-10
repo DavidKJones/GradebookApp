@@ -27,16 +27,6 @@ public class TotalPointsGradeBook extends GradeBook
 		setName(name);
 	}
 	
-	/**
-	 * 
-	 */
-	@Override
-	public void addAssignment( Assignment assignment )
-	{
-		//getAssignments().add(assignment);
-		//add to students present
-	}
-	
 	//calculates student grade by total points system
 	@Override
 	public double calculateStudentPercentage( Student student ) 
@@ -45,12 +35,14 @@ public class TotalPointsGradeBook extends GradeBook
 		double studentTotal = 0;
 		double percentage = 0;
 		
-		for(int i = 0; i < getAssignments().size(); i++)
+		for(Assignment a : student.getAssignments())
 		{
-			if(!student.getAssignment(i).isExtraCredit())
-				totalpoints += student.getAssignment(i).getTotalScore();
+			if(a == null)
+				break;
 			
-			studentTotal += student.getAssignment(i).getStudentScore();
+			if(!a.isExtraCredit())
+				totalpoints += a.getTotalScore();
+			studentTotal += a.getStudentScore();
 		}
 		
 		try
