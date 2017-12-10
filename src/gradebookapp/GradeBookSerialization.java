@@ -1,4 +1,6 @@
 package gradebookapp;
+import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * <h1>GradeBookSerializaton</h1>
@@ -16,15 +19,22 @@ import javax.swing.JFileChooser;
  */
 public class GradeBookSerialization 
 {
+	public static Path savePath = null;
+	
 	/**
-	 * Save grade book data into a .ser file.
+	 * Save grade book data using JFileChooser into a .ser file.
 	 */
-	public static void saveGradeBooks( ArrayList<GradeBook> gradeBooks, String fileName )
+	public static void saveGradeBooksAs()
 	{
 	      JFileChooser fileChooser = new JFileChooser();
 	      
 	      fileChooser.setFileSelectionMode(
 	         JFileChooser.FILES_AND_DIRECTORIES);
+	      
+	      FileNameExtensionFilter filter = new FileNameExtensionFilter(
+	    		    "*.ser files", "ser");
+	      
+	      fileChooser.setFileFilter(filter);
 	      
 	      int result = fileChooser.showSaveDialog(null);
 	
@@ -35,30 +45,64 @@ public class GradeBookSerialization
 	
 	      // return Path representing the selected file
 	      Path path = fileChooser.getSelectedFile().toPath();
-	      serializeGradeBooks(gradeBooks, path.toString());
+	      
+	      if(path == null)
+	      {
+	    	  return;
+	      }
+	      
+	      serializeGradeBooks(GradeBookGUI.gradebook, path.toString());
+	      savePath = path;
+	}
+	
+	/**
+	 * Save grade book data at the latest save path.
+	 */
+	public static void saveGradeBooks()
+	{
+	      if(savePath == null)
+	      {
+	    	  saveGradeBooksAs();
+	      }
+	      else
+	      {
+		      serializeGradeBooks(GradeBookGUI.gradebook, savePath.toString());  
+	      }
 	}
 	
 	/**
 	 * Open a serialized file to get grade book data.
 	 * @return list of grade books
 	 */
-	public static ArrayList<GradeBook> openGradeBooks()
+	public static void openGradeBooks()
 	{
 	      JFileChooser fileChooser = new JFileChooser();
+	           
+	      FileNameExtensionFilter filter = new FileNameExtensionFilter(
+	    		    "*.ser files", "ser");
+	      
+	      fileChooser.setFileFilter(filter);
 	      
 	      fileChooser.setFileSelectionMode(
-	         JFileChooser.FILES_AND_DIRECTORIES);
+	 	         JFileChooser.FILES_AND_DIRECTORIES);
 	      
 	      int result = fileChooser.showOpenDialog(null);
 	      
 	      if(result == JFileChooser.CANCEL_OPTION)
 	      {
-	    	  //cancel
+	    	  return;
 	      }
 	
 	      // return Path representing the selected file
 	      Path path = fileChooser.getSelectedFile().toPath();
-	      return deserializeGradeBooks(path.toString());
+	      
+	      if(path == null)
+	      {
+	    	  return;
+	      }
+	      
+	      GradeBookGUI.gradebook = deserializeGradeBooks(path.toString());
+	      savePath = path;
 	}
 	
 	/**
@@ -69,7 +113,7 @@ public class GradeBookSerialization
 	{
 		try
 		{
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName+".ser"));
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
 			out.writeObject(gradeBooks);
 			out.close();
 		}

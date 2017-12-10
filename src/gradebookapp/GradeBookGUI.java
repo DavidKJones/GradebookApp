@@ -15,6 +15,9 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -248,12 +251,10 @@ public class GradeBookGUI {
 		mnFile.add(separator);
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
-		mntmSave.setEnabled(false);
 		mntmSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 		mnFile.add(mntmSave);
 		
 		JMenuItem mntmSaveAs = new JMenuItem("Save As");
-		mntmSaveAs.setEnabled(false);
 		mntmSaveAs.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/HardDrive.gif")));
 		mnFile.add(mntmSaveAs);
 		
@@ -317,6 +318,19 @@ public class GradeBookGUI {
 			public void actionPerformed(ActionEvent e)
 			{
 				GradeBookSerialization.openGradeBooks();
+				updateGradeBookComboBox();
+				mntmAddGradebook.setEnabled(true);
+				if(gradebook.size() > 0)
+				{
+					cbGradeBookSelect.setSelectedIndex(0);
+					mntmDeleteGradebook.setEnabled(true);
+					mntmAddStudent.setEnabled(true);
+					if(gradebook.get(cbGradeBookSelect.getSelectedIndex()).getStudents().size() > 0)
+					{
+						mntmDeleteStudent.setEnabled(true);
+					}
+					mntmSave.setToolTipText(GradeBookSerialization.savePath.toString());	
+				}
 			}
 		});
 		
@@ -324,7 +338,8 @@ public class GradeBookGUI {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				GradeBookSerialization.saveGradeBooks(gradebook, gradebook.toString());
+				GradeBookSerialization.saveGradeBooksAs();
+				mntmSave.setToolTipText(GradeBookSerialization.savePath.toString());
 			}
 		});
 		
@@ -332,7 +347,8 @@ public class GradeBookGUI {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				GradeBookSerialization.saveGradeBooks(gradebook, gradebook.toString());
+				GradeBookSerialization.saveGradeBooks();
+				mntmSave.setToolTipText(GradeBookSerialization.savePath.toString());
 			}
 		});
 		
@@ -353,12 +369,13 @@ public class GradeBookGUI {
 				    	String value = totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber().replaceAll("[^0-9]", "");
 						int temp = Integer.parseInt(value)+1;
 						String formatted = String.format("%04d", temp);
-						totalGradeBook.addStudent(new Student("S"+formatted, firstName, lastName));
-						modelStudents.addRow(new Object[] {totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber(), 
-								totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getFirstName(), 
-								totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getLastName(), 
-								totalGradeBook.calculateStudentPercentage(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1)),
-								totalGradeBook.getGrade(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1))});
+						GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
+						gb.addStudent(new Student("S"+formatted, firstName, lastName));
+						modelStudents.addRow(new Object[] {gb.getStudent(gb.getStudents().size()-1).getIdNumber(), 
+								gb.getStudent(gb.getStudents().size()-1).getFirstName(), 
+								gb.getStudent(gb.getStudents().size()-1).getLastName(), 
+								gb.calculateStudentPercentage(gb.getStudent(gb.getStudents().size()-1)),
+								gb.getGrade(gb.getStudent(gb.getStudents().size()-1))});
 						mntmDeleteStudent.setEnabled(true);
 			    	} else {
 			    		JOptionPane.showMessageDialog(null, "Student must have a first and last name containing only letters. \n"
@@ -382,18 +399,30 @@ public class GradeBookGUI {
 			}
 		});
 		
+		cbGradeBookSelect.addItemListener(new ItemListener()
+		{
+			@Override
+			public void itemStateChanged(ItemEvent itemEvent)
+			{
+				if(cbGradeBookSelect.getSelectedIndex() != -1)
+					buildStudentTable();
+			}
+		});
+		
 		mntmAddGradebook.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				String name = JOptionPane.showInputDialog(null, "Please Enter name of gradebook: ", JOptionPane.OK_CANCEL_OPTION);
-			    if (name == null)
+			    if(name != null)
 			    {
-			    	
-			    } else {
-			    	gradebook.add(new TotalPointsGradeBook());
+			    	gradebook.add(new TotalPointsGradeBook(name));
 			    	mntmAddStudent.setEnabled(true);
 			    	mntmDeleteGradebook.setEnabled(true);
+			    	updateGradeBookComboBox();
+			    	cbGradeBookSelect.setSelectedIndex(cbGradeBookSelect.getItemCount()-1);
+					mntmSave.setEnabled(true);
+					mntmSaveAs.setEnabled(true);
 			    }
 			}
 		});
@@ -429,6 +458,9 @@ public class GradeBookGUI {
 	/*
 	 * Update combobox with gradebooks
 	 */
+	/**
+	 * Updates the list of the grade book combo box list.
+	 */
 	private void updateGradeBookComboBox() {
 		if (cbGradeBookSelect.getItemCount() > 0)
 		{
@@ -445,6 +477,9 @@ public class GradeBookGUI {
 	/*
 	 * Set up the table
 	 */
+	/**
+	 * Builds the visual table of students on screen.
+	 */
 	void buildStudentTable()
 	{
 		if(modelStudents.getRowCount()>0)
@@ -454,13 +489,16 @@ public class GradeBookGUI {
 				modelStudents.removeRow(i);
 			}
 		}
-		for(int i = 0; i < gradebook.size();i++)
+		
+		
+		GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
+		for(int i = 0; i < gb.getStudents().size();i++)
 		{
-			modelStudents.addRow(new Object[] {totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber(), 
-					totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getFirstName(), 
-					totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getLastName(), 
-					totalGradeBook.calculateStudentPercentage(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1)),
-					totalGradeBook.getGrade(totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1))});
+			modelStudents.addRow(new Object[] {gb.getStudent(gb.getStudents().size()-1).getIdNumber(), 
+					gb.getStudent(gb.getStudents().size()-1).getFirstName(), 
+					gb.getStudent(gb.getStudents().size()-1).getLastName(), 
+					gb.calculateStudentPercentage(gb.getStudent(gb.getStudents().size()-1)),
+					gb.getGrade(gb.getStudent(gb.getStudents().size()-1))});
 		}
 	}
 }

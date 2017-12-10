@@ -1,5 +1,7 @@
 package gradebookapp;
 
+import java.io.Serializable;
+
 /**
  * <h1>Assignment</h1>
  * Assignment object class that holds the total score, current score,
@@ -7,7 +9,8 @@ package gradebookapp;
  * @author david
  *
  */
-public class Assignment 
+@SuppressWarnings("serial")
+public class Assignment implements Serializable
 {
 	//fields
 	private String name;

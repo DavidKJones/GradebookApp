@@ -9,7 +9,8 @@ import java.util.ArrayList;
  * @author david
  *
  */
-public class Student
+@SuppressWarnings("serial")
+public class Student implements Serializable
 {
 	private String idNumber;
 	private String firstName;
