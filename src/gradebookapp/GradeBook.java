@@ -34,8 +34,9 @@ public abstract class GradeBook implements Serializable
 		
 		for( Assignment a : assignments)
 		{
-			a.setStudentScore(a.getTotalScore());
-			student.addAssignment(a);
+			Assignment temp = new Assignment(a.getName(), a.getTotalScore());
+			temp.setStudentScore(a.getTotalScore());
+			student.addAssignment(temp);
 		}
 		
 		students.add(student);
@@ -99,8 +100,7 @@ public abstract class GradeBook implements Serializable
 	public void addAssignment ( Assignment assignment )
 	{
 		assignments.add(assignment);
-		assignment.setStudentScore(assignment.getTotalScore());
-		
+		assignment.setStudentScore(assignment.getTotalScore());	
 		for( Student s : students )
 		{
 			s.addAssignment(assignment);

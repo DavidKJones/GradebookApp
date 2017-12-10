@@ -1,6 +1,10 @@
 package gradebookapp;
 
-
+/**
+ * 
+ * @author david
+ *
+ */
 public class CategoryAssignment extends Assignment 
 {
 	private String category;

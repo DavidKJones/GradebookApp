@@ -13,6 +13,7 @@ public class Assignment
 	private String name;
 	private int totalScore;
 	private int studentScore;
+	private String categoryName;
 	private boolean isEC;
 	
 	//default constructor
@@ -22,7 +23,9 @@ public class Assignment
 	public Assignment()
 	{
 		name = "New Assignment";
+		categoryName = "";
 		totalScore = 0;
+		studentScore = 0;
 		isEC = false;
 	}
 	
@@ -36,7 +39,24 @@ public class Assignment
 	{
 		this.name = name;
 		this.totalScore = totalPoints;
+		studentScore = 0;
 		isEC = false;
+		categoryName = "";
+	}
+	
+	/**
+	 * Assignment constructor.
+	 * @param name
+	 * @param categoryName
+	 * @param totalPoints
+	 */
+	public Assignment( String name, String categoryName, int totalPoints )
+	{
+		this.name = name;
+		this.totalScore = totalPoints;
+		studentScore = 0;
+		isEC = false;
+		this.categoryName = categoryName;
 	}
 	
 	/**
@@ -47,7 +67,9 @@ public class Assignment
 	public Assignment (String name)
 	{
 		this.name = name;
+		categoryName = "";
 		totalScore = 0;
+		studentScore = 0;
 		isEC = false;
 	}
 	
@@ -125,6 +147,24 @@ public class Assignment
 	{
 		isEC = status;
 	}
+	
+	/**
+	 * Get the category name for the assignment.
+	 * @return
+	 */
+	public String getCategoryName()
+	{
+		return categoryName;
+	}
+	
+	/**
+	 * Set the category name for the assignment.
+	 * @param name
+	 */
+	public void setCategoryName(String name)
+	{
+		categoryName = name;
+	}
 
 	/**
 	 * Calculates the percentage grade on the assignment.
@@ -136,14 +176,14 @@ public class Assignment
 		
 		try
 		{
-			percentage = (studentScore/totalScore) * 100;
+			percentage = ((double)studentScore/(double)totalScore) * 100.0;
 		}
 		catch(ArithmeticException ex)
 		{
 			System.out.println(ex);
 		}
 		
-		return percentage * 100;
+		return percentage;
 	}
 	
 	/**

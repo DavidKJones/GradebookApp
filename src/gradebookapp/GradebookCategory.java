@@ -11,7 +11,7 @@ public class GradebookCategory
 {
 	//private fields
 	private String name;
-	private int weight;
+	private double weight;
 	
 	//constructors
 	/**
@@ -20,7 +20,7 @@ public class GradebookCategory
 	public GradebookCategory()
 	{
 		name = "new category";
-		weight = 0;
+		weight = 0.0;
 	}
 	
 	/**
@@ -29,7 +29,7 @@ public class GradebookCategory
 	public GradebookCategory( String name )
 	{
 		this.name = name;
-		weight = 0;
+		weight = 0.0;
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class GradebookCategory
 	 */
 	public void setWeight( double weight )
 	{
-		
+		this.weight = weight;
 	}
 	
 	/**
