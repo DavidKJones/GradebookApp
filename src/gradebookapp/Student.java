@@ -2,6 +2,13 @@ package gradebookapp;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * <h1>Student</h1>
+ * Student object class that contains id number, 
+ * first name, last name, and list of assignments.
+ * @author david
+ *
+ */
 public class Student
 {
 	private String idNumber;
@@ -102,7 +109,7 @@ public class Student
 	}
 	
 	/**
-	 * 
+	 * Get a student assignment at an index.
 	 * @param index
 	 * @return
 	 */

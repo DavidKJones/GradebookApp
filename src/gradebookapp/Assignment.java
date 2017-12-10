@@ -13,7 +13,7 @@ public class Assignment
 	private String name;
 	private int totalScore;
 	private int studentScore;
-	private String categoryName;
+	public Date dueDate;
 	private boolean isEC;
 	
 	//default constructor
@@ -23,9 +23,9 @@ public class Assignment
 	public Assignment()
 	{
 		name = "New Assignment";
-		categoryName = "";
 		totalScore = 0;
 		studentScore = 0;
+		dueDate = new Date();
 		isEC = false;
 	}
 	
@@ -40,8 +40,8 @@ public class Assignment
 		this.name = name;
 		this.totalScore = totalPoints;
 		studentScore = 0;
+		dueDate = new Date();
 		isEC = false;
-		categoryName = "";
 	}
 	
 	/**
@@ -55,8 +55,8 @@ public class Assignment
 		this.name = name;
 		this.totalScore = totalPoints;
 		studentScore = 0;
+		dueDate = new Date();
 		isEC = false;
-		this.categoryName = categoryName;
 	}
 	
 	/**
@@ -67,10 +67,10 @@ public class Assignment
 	public Assignment (String name)
 	{
 		this.name = name;
-		categoryName = "";
 		totalScore = 0;
 		studentScore = 0;
 		isEC = false;
+		dueDate = new Date();
 	}
 	
 	//methods
@@ -147,24 +147,6 @@ public class Assignment
 	{
 		isEC = status;
 	}
-	
-	/**
-	 * Get the category name for the assignment.
-	 * @return
-	 */
-	public String getCategoryName()
-	{
-		return categoryName;
-	}
-	
-	/**
-	 * Set the category name for the assignment.
-	 * @param name
-	 */
-	public void setCategoryName(String name)
-	{
-		categoryName = name;
-	}
 
 	/**
 	 * Calculates the percentage grade on the assignment.
@@ -223,5 +205,23 @@ public class Assignment
 			grade = "F";
 		
 		return grade;
+	}
+	
+	/**
+	 * Set the due date for the assignment.
+	 * @param date
+	 */
+	public void setDueDate( Date date )
+	{
+		dueDate = date;
+	}
+	
+	/**
+	 * Get the due date for the assignment.
+	 * @return
+	 */
+	public Date getDueDate ()
+	{
+		return dueDate;
 	}
 }
