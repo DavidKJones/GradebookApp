@@ -27,17 +27,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import java.awt.event.ActionEvent;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.ImageIcon;
+
 
 public class GradebookAssignmentGUI extends JFrame{
 
 	private JFrame frame;
 	String[] columns = new String[] {"Assignment name", "Total Points"};
 	private JTable table;
-	private JTable tableAssignment;
 	private JPanel addAssignment = new JPanel();
 	private JTextField assignment = new JTextField(7);
     private JTextField totalPoints = new JTextField(7);
-
+	private JScrollPane scrollPaneStudents;
+	private DefaultTableModel modelStudents;
+	private JPanel addStudent = new JPanel();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -66,96 +73,23 @@ public class GradebookAssignmentGUI extends JFrame{
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(100, 100, 557, 480);
 		
-		addAssignment.add(new JLabel("Assignment Name:"));
-		addAssignment.add(assignment);
-		addAssignment.add(new JLabel("Assignment Score:"));
-		addAssignment.add(totalPoints);
-		
-		JButton btnNewButton = new JButton("Add");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				assignment.setText(null);
-				totalPoints.setText(null);
-				int result = JOptionPane.showConfirmDialog(null, addAssignment, "Please Enter Assignment Name", JOptionPane.OK_CANCEL_OPTION);
-				if (result == JOptionPane.OK_OPTION)
-			    {
-					if (assignment.getText().matches("[a-zA-Z]") || totalPoints.getText().matches("[1-9]+"))
-			    	{
-						String assignmentName = assignment.getText();
-						String assignmentPoints = totalPoints.getText();
-						int numCols = tableAssignment.getModel().getColumnCount();
-						Object[] Assignment = new Object[numCols + 1];
-						Assignment[0] = assignmentName;
-						Assignment[1] = assignmentPoints;
-						
-						((DefaultTableModel) tableAssignment.getModel()).addRow(Assignment);
-					
-						
-						
-			    	}
-			    }
-				
-			}
+		table = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points"}, 0)
+		{
+			public boolean isCellEditable(int row, int column)
+		    {
+		      return false;//This causes all cells to be not editable
+		    }
 		});
 		
-		JButton btnNewButton_1 = new JButton("remove");
-		
-		JButton btnNewButton_2 = new JButton("edit");
-		
-		JScrollPane scrollPane = new JScrollPane();
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(137)
-							.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(10, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnNewButton_2)
-						.addComponent(btnNewButton_1)
-						.addComponent(btnNewButton)))
-		);
-		
-		DefaultTableModel model = new DefaultTableModel();
-		tableAssignment = new JTable(model);
-		tableAssignment.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Assignment", "Total Points"
-			}
-		));
-
-		scrollPane.setViewportView(tableAssignment);
-		int numCols = tableAssignment.getModel().getColumnCount();
-		Object[] Assignment = new Object[numCols + 1];
-		Assignment[0] = "hard assignment";
-		Assignment[1] = "15";
-		/*ArrayList<Assignment> assignments = GradeBookGUI.gradebook.get(GradeBookGUI.cbGradeBookSelect.getSelectedIndex()).getAssignments();
-		for( Assignment a : assignments )
-		{
-			((DefaultTableModel) tableAssignment.getModel()).addRow(new Object[]{a.getName(),a.getTotalScore()});	
-		}*/
-		frame.getContentPane().setLayout(groupLayout);
+		table.setSelectionMode(0);
+		modelStudents = (DefaultTableModel)table.getModel();
+		table.getColumnModel().getColumn(0).setPreferredWidth(53);
+		table.getColumnModel().getColumn(1).setPreferredWidth(78);
+		scrollPaneStudents = new JScrollPane(table);
+		scrollPaneStudents.setBounds(12, 13, 510, 345);
+		frame.getContentPane().add(scrollPaneStudents);
 				
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -165,7 +99,60 @@ public class GradebookAssignmentGUI extends JFrame{
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mnFile.add(mntmSave);
-		 
+		frame.getContentPane().setLayout(null);
 		
+		JButton btnAddAssignment = new JButton("Add Assignment");
+		btnAddAssignment.setIcon(new ImageIcon(GradebookAssignmentGUI.class.getResource("/image/add.gif")));
+		btnAddAssignment.setBounds(12, 371, 162, 25);
+		frame.getContentPane().add(btnAddAssignment);
+		
+		JButton btnDeleteAssignment = new JButton("Delete Assignment");
+		btnDeleteAssignment.setIcon(new ImageIcon(GradebookAssignmentGUI.class.getResource("/image/minus.gif")));
+		btnDeleteAssignment.setBounds(186, 371, 162, 25);
+		frame.getContentPane().add(btnDeleteAssignment);
+		
+		JButton btnEditAssignment = new JButton("Edit Assignment");
+		btnEditAssignment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEditAssignment.setSelectedIcon(new ImageIcon(GradebookAssignmentGUI.class.getResource("/image/wrench.gif")));
+		btnEditAssignment.setBounds(360, 371, 162, 25);
+		frame.getContentPane().add(btnEditAssignment);
+		
+		JTextField name = new JTextField(7);
+		JTextField total = new JTextField(7);
+		addStudent.add(new JLabel("Name:"));
+		addStudent.add(name);
+		addStudent.add(new JLabel("Total Points:"));
+		addStudent.add(total);
+		
+		btnAddAssignment.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				name.setText(null);
+				t.setText(null);
+				int result = JOptionPane.showConfirmDialog(null, addStudent, "Please Enter Students Name", JOptionPane.OK_CANCEL_OPTION);
+			    if (result == JOptionPane.OK_OPTION)
+			    {
+			}
+		}});
+		
+		btnEditAssignment.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				
+			}
+		});
+		
+		btnDeleteAssignment.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				
+			}
+		});
 	}
 }
