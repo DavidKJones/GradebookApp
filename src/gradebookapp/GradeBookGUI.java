@@ -40,12 +40,12 @@ public class GradeBookGUI {
 	private JMenuBar menuBar;
 	private JMenu mnFile;
 	private JMenuItem mntmExit;
-	private JComboBox<GradeBook> cbGradeBookSelect = new JComboBox();
+	public static JComboBox<GradeBook> cbGradeBookSelect = new JComboBox();
 	private JTextField txtStudentName;
 	private JTextField txtStudentId;
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
-	public ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
+	public static ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
 	private TotalPointsGradeBook totalGradeBook;
 
 	/**
@@ -386,7 +386,7 @@ public class GradeBookGUI {
 				name.setText(null);
 				type.setSelectedIndex(0);
 				
-				int result = JOptionPane.showInputDialog((null, null, "Please Enter a name and type for gradebook", JOptionPane.OK_CANCEL_OPTION);
+				/*int result = JOptionPane.showInputDialog((null, null, "Please Enter a name and type for gradebook", JOptionPane.OK_CANCEL_OPTION);
 			    if (result == JOptionPane.OK_OPTION)
 			    {
 			    	if(type.getSelectedIndex()==1)
@@ -401,7 +401,7 @@ public class GradeBookGUI {
 			    	}
 			    	mntmAddStudent.setEnabled(true);
 			    	mntmDeleteGradebook.setEnabled(true);
-			    }
+			    }*/
 			}
 		});
 		
