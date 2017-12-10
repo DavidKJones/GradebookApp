@@ -45,7 +45,7 @@ public class GradeBookGUI {
 	private JTextField txtStudentId;
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
-	private ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
+	public ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
 	private TotalPointsGradeBook totalGradeBook;
 
 	/**
@@ -104,7 +104,6 @@ public class GradeBookGUI {
 		tableStudents.getColumnModel().getColumn(2).setPreferredWidth(78);
 		tableStudents.getColumnModel().getColumn(3).setPreferredWidth(40);
 		tableStudents.getColumnModel().getColumn(4).setPreferredWidth(30);
-		tableStudents.setAutoCreateRowSorter(true);
 		scrollPaneStudents = new JScrollPane(tableStudents);
 		scrollPaneStudents.setBounds(10, 50, 422, 345);
 		frame.getContentPane().add(scrollPaneStudents);
@@ -154,7 +153,6 @@ public class GradeBookGUI {
 		JButton btnAssignments = new JButton("Assignments");
 		btnAssignments.setToolTipText("View list of assignments");
 		btnAssignments.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/javafx/scene/web/skin/UnorderedListBullets_16x16_JFX.png")));
-		//btnAssignments.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/DetailsView.gif")));
 		btnAssignments.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnAssignments.setBounds(10, 401, 133, 29);
 		frame.getContentPane().add(btnAssignments);
@@ -247,13 +245,11 @@ public class GradeBookGUI {
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.setEnabled(false);
 		mntmSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
-		//mntmSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
 		mnFile.add(mntmSave);
 		
 		JMenuItem mntmSaveAs = new JMenuItem("Save As");
 		mntmSaveAs.setEnabled(false);
 		mntmSaveAs.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/HardDrive.gif")));
-		//mntmSaveAs.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/hardDrive.gif")));
 		mnFile.add(mntmSaveAs);
 		
 		JSeparator separator_1 = new JSeparator();
@@ -261,7 +257,6 @@ public class GradeBookGUI {
 		
 		mntmExit = new JMenuItem("Exit");
 		mntmExit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/close.gif")));
-		//mntmExit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/close.gif")));
 		mnFile.add(mntmExit);
 		
 		JMenu mnEdit = new JMenu("Edit");
@@ -391,7 +386,7 @@ public class GradeBookGUI {
 				name.setText(null);
 				type.setSelectedIndex(0);
 				
-				int result = JOptionPane.showConfirmDialog(null, addGradebook, "Please Enter a name and type for gradebook", JOptionPane.OK_CANCEL_OPTION);
+				int result = JOptionPane.showInputDialog((null, null, "Please Enter a name and type for gradebook", JOptionPane.OK_CANCEL_OPTION);
 			    if (result == JOptionPane.OK_OPTION)
 			    {
 			    	if(type.getSelectedIndex()==1)
