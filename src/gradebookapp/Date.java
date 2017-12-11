@@ -1,5 +1,7 @@
 package gradebookapp;
 
+import java.io.Serializable;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -8,7 +10,7 @@ import javax.swing.JOptionPane;
  * @author david
  *
  */
-public class Date
+public class Date implements Serializable
 {
 	//fields
 	private int month;

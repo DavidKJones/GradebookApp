@@ -34,7 +34,7 @@ public class GradeBookGUI
 	private JTable tableStudents;
 	private JTable tableAssignments;
 	private JPanel addStudent = new JPanel();
-	private DefaultTableModel modelStudents;
+	private static DefaultTableModel modelStudents;
 	public static JMenuBar menuBar;
 	private JMenu mnFile;
 	private JMenuItem mntmExit;
@@ -306,6 +306,7 @@ public class GradeBookGUI
 					if(gradebook.get(cbGradeBookSelect.getSelectedIndex()).getStudents().size() > 0)
 					{
 						mntmDeleteStudent.setEnabled(true);
+						btnAssignments.setEnabled(true);
 					}
 					mntmSave.setToolTipText(GradeBookSerialization.savePath.toString());	
 				}
@@ -468,9 +469,9 @@ public class GradeBookGUI
 	/**
 	 * Builds the visual table of students on screen.
 	 */
-	void buildStudentTable()
+	public static void buildStudentTable()
 	{
-		//remove all students if they exsist from the table
+		//remove all students if they exist from the table
 		if(modelStudents.getRowCount()>0)
 		{
 			for(int i = 0;i<modelStudents.getRowCount();i++)
