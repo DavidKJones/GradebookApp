@@ -9,11 +9,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -21,6 +24,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.CellEditor;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JSpinner;
 import javax.swing.ScrollPaneConstants;
@@ -33,6 +39,7 @@ public class GradebookAssignmentGUI extends JFrame{
 	String[] columns = new String[] {"Assignment name", "Total Points"};
 	private JTable atable;
 	private JTable stable;
+	private CellEditor cell;
 	private JPanel addAssignment = new JPanel();
 	private JScrollPane scrollPaneAssignments;
 	private JScrollPane scrollPaneStudents;
@@ -118,6 +125,8 @@ public class GradebookAssignmentGUI extends JFrame{
 		scrollPaneStudents.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPaneStudents.setBounds(342, 113, 428, 289);
 		frmAssignments.getContentPane().add(scrollPaneStudents);
+		stable.setCellEditor(new DefaultCellEditor(new JTextField()));
+		cell = stable.getCellEditor();
 		
 		//Buttons
 		JButton btnAddAssignment = new JButton("Add");
@@ -193,7 +202,8 @@ public class GradebookAssignmentGUI extends JFrame{
 				int result = JOptionPane.showConfirmDialog(null, addAssignment, "Enter name and total points", JOptionPane.OK_CANCEL_OPTION);
 			    if (result == JOptionPane.OK_OPTION)
 			    {
-			    	int total = (Integer) spinner.getValue();
+				    int total = (Integer)spinner.getValue();
+			    	JOptionPane.showMessageDialog(null, "Invalid input", "Score needs to be a number", JOptionPane.ERROR_MESSAGE);
 			    	gb.addAssignment(new Assignment(name.getText(),total));
 			    	modelAssignments.addRow(new Object[] {gb.getAssignmentAt((gb.getAssignments().size()-1)).getName(),
 			    						gb.getAssignmentAt((gb.getAssignments().size()-1)).getTotalScore()});
@@ -242,8 +252,21 @@ public class GradebookAssignmentGUI extends JFrame{
 				int score;
 				for(int i = 0;i<stable.getRowCount();i++)
 				{
-					score = Integer.parseInt(stable.getValueAt(i, 1).toString());;
-					gb.getStudent(i).getAssignment(atable.getSelectedRow()).setStudentScore(score);
+					try
+					{
+						String regex = "[0-9]+";
+						if(!stable.getValueAt(i, 1).toString().matches(regex))
+						{
+							throw new InvalidScoreException();
+						}
+						
+						score = Integer.parseInt(stable.getValueAt(i, 1).toString());
+						gb.getStudent(i).getAssignment(atable.getSelectedRow()).setStudentScore(score);
+					}
+					catch(InvalidScoreException ex)
+					{
+						JOptionPane.showMessageDialog(null, stable.getValueAt(i, 0)+ "'s score has an invalid score of " + stable.getValueAt(i, 1).toString(), "invalid input", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				
 				GradeBookGUI.buildStudentTable();
@@ -269,6 +292,32 @@ public class GradebookAssignmentGUI extends JFrame{
 		    	txtTotalPoints.setText(atable.getValueAt(atable.getSelectedRow(), 1).toString());
 		    	buildStudentTable();
 		    }
+		});
+		
+		cell.addCellEditorListener(new CellEditorListener()
+		{
+
+			@Override
+			public void editingCanceled(ChangeEvent e) 
+			{
+				System.out.println("Cancel");
+			}
+
+			@Override
+			public void editingStopped(ChangeEvent e) 
+			{
+				System.out.println("Stopped");
+			}
+	
+		});
+		
+		stable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent event)
+			{
+				
+			}
 		});
 		
 		//Sets the save button to enable and disabled depending on whether a student is selected
