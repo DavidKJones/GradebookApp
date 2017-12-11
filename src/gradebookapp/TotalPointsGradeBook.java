@@ -40,6 +40,11 @@ public class TotalPointsGradeBook extends GradeBook
 		int studentTotal = 0;
 		double percentage = 0;
 		
+		if(student.getAssignments().size() < 1)
+		{
+			return 100.0;
+		}
+		
 		for(Assignment a : student.getAssignments())
 		{
 			if(a == null)
