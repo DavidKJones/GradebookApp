@@ -446,7 +446,7 @@ public class GradeBookGUI
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				gradebookapp.GradebookAssignmentGUI.main(null);
+				 gradebookapp.GradebookAssignmentGUI.create();
 			}
 		});
 	}

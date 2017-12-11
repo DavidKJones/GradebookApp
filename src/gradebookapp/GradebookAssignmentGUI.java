@@ -45,7 +45,7 @@ public class GradebookAssignmentGUI extends JFrame{
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void create() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -245,6 +245,8 @@ public class GradebookAssignmentGUI extends JFrame{
 					score = Integer.parseInt(stable.getValueAt(i, 1).toString());;
 					gb.getStudent(i).getAssignment(atable.getSelectedRow()).setStudentScore(score);
 				}
+				
+				GradeBookGUI.buildStudentTable();
 				buildStudentTable();
 			}
 		});
