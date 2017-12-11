@@ -44,7 +44,6 @@ public class GradeBookGUI
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
 	public static ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
-	private TotalPointsGradeBook totalGradeBook;
 	private DefaultTableModel modelAssignments;
 	
 	/**
@@ -76,8 +75,6 @@ public class GradeBookGUI
 	@SuppressWarnings("serial")
 	private void initialize() {
 		
-		totalGradeBook = new TotalPointsGradeBook();
-		
 		frmGradeBook = new JFrame("Students");
 		frmGradeBook.setTitle("Grade Book");
 		frmGradeBook.setResizable(false);
@@ -85,8 +82,7 @@ public class GradeBookGUI
 		frmGradeBook.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmGradeBook.setSize(848, 500);
 		frmGradeBook.getContentPane().setLayout(null);
-		totalGradeBook.addAssignment(new Assignment("test",25));
-		totalGradeBook.addStudent(new Student("S0000", null, null));
+//		totalGradeBook.addStudent(new Student("S0000", null, null));
 
 		//Student Table
 		tableStudents = new JTable(new DefaultTableModel(new Object[]{"Student ID", "First", "Last" , "Percent", "Grade"}, 0)
@@ -348,10 +344,16 @@ public class GradeBookGUI
 			    	{
 			    		String firstName = first.getText();
 				    	String lastName = last.getText();
-				    	String value = totalGradeBook.getStudent(totalGradeBook.getStudents().size()-1).getIdNumber().replaceAll("[^0-9]", "");
+				    	String value;
+				    	GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
+				    	if(gb.getStudents().size() > 0)
+				    	{
+				    		value = gb.getStudent(gb.getStudents().size()-1).getIdNumber().replaceAll("[^0-9]", "");
+				    	} else {
+				    		value = "0000";
+				    	}
 						int temp = Integer.parseInt(value)+1;
 						String formatted = String.format("%04d", temp);
-						GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
 						gb.addStudent(new Student("S"+formatted, firstName, lastName));
 						modelStudents.addRow(new Object[] {gb.getStudent(gb.getStudents().size()-1).getIdNumber(), 
 								gb.getStudent(gb.getStudents().size()-1).getFirstName(), 
@@ -478,13 +480,13 @@ public class GradeBookGUI
 
 		//rebuild the table
 		GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
-		for(int i = 1; i < gb.getStudents().size() + 1;i++)
+		for(int i = 0; i < gb.getStudents().size();i++)
 		{
-			modelStudents.addRow(new Object[] {gb.getStudent(gb.getStudents().size()-i).getIdNumber(), 
-					gb.getStudent(gb.getStudents().size()-i).getFirstName(), 
-					gb.getStudent(gb.getStudents().size()-i).getLastName(), 
-					gb.calculateStudentPercentage(gb.getStudent(gb.getStudents().size()-i)),
-					gb.getGrade(gb.getStudent(gb.getStudents().size()-i))});
+			modelStudents.addRow(new Object[] {gb.getStudent(i).getIdNumber(), 
+					gb.getStudent(i).getFirstName(), 
+					gb.getStudent(i).getLastName(), 
+					gb.calculateStudentPercentage(gb.getStudent(i)),
+					gb.getGrade(gb.getStudent(i))});
 		}
 	}
 	
