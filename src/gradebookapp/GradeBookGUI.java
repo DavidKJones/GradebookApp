@@ -31,7 +31,7 @@ public class GradeBookGUI
 	public static JFrame frmGradeBook;
 	private JScrollPane scrollPaneStudents;
 	private JScrollPane scrollPaneStudentAssignments;
-	private JTable tableStudents;
+	private static JTable tableStudents;
 	private JTable tableAssignments;
 	private JPanel addStudent = new JPanel();
 	private static DefaultTableModel modelStudents;
@@ -44,7 +44,7 @@ public class GradeBookGUI
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
 	public static ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
-	private DefaultTableModel modelAssignments;
+	private static DefaultTableModel modelAssignments;
 	
 	/**
 	 * Launch the application.
@@ -105,7 +105,7 @@ public class GradeBookGUI
 		frmGradeBook.getContentPane().add(scrollPaneStudents);
 
 		//Table of assignments for that student
-		tableAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points" , "Percent"}, 0)
+		tableAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Score" , "Percent", "Grade"}, 0)
 		{
 			public boolean isCellEditable(int row, int column)
 		    {
@@ -278,12 +278,13 @@ public class GradeBookGUI
 		        if (tableStudents.getSelectedRow() > -1) {
 		        	txtStudentId.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 0).toString());
 		        	txtStudentName.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 1).toString()
-		        						+ " "
-		        						+ tableStudents.getValueAt(tableStudents.getSelectedRow(), 2).toString());
+		        				+ " " + tableStudents.getValueAt(tableStudents.getSelectedRow(), 2).toString());
 		        	txtPercentage.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 3).toString());
 		        	txtGrade.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 4).toString());
+		        	updateAssignmentTable();
 		        }
 		    }
+
 		});
 		
 		//Open the serialized gradebook array
@@ -488,6 +489,26 @@ public class GradeBookGUI
 					gb.getStudent(i).getLastName(), 
 					gb.calculateStudentPercentage(gb.getStudent(i)),
 					gb.getGrade(gb.getStudent(i))});
+		}
+	}
+	
+	public static void updateAssignmentTable()
+	{
+		GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
+		if(modelAssignments.getRowCount()>0)
+		{
+			modelAssignments.setRowCount(0);
+		}
+		
+		if(gb.getAssignments().size()>0)
+		{
+			for(int i = 0;i<gb.getAssignments().size();i++)
+			{
+				modelAssignments.addRow(new Object[] {gb.getAssignmentAt(i).getName(),
+						gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).getStudentScore() + " / " + gb.getAssignmentAt(i).getTotalScore(),
+						gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).calculatePercentage(),
+						gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).getLetterScore()});
+			}
 		}
 	}
 	
