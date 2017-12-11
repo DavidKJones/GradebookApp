@@ -203,7 +203,6 @@ public class GradebookAssignmentGUI extends JFrame{
 			    if (result == JOptionPane.OK_OPTION)
 			    {
 				    int total = (Integer)spinner.getValue();
-			    	JOptionPane.showMessageDialog(null, "Invalid input", "Score needs to be a number", JOptionPane.ERROR_MESSAGE);
 			    	gb.addAssignment(new Assignment(name.getText(),total));
 			    	modelAssignments.addRow(new Object[] {gb.getAssignmentAt((gb.getAssignments().size()-1)).getName(),
 			    						gb.getAssignmentAt((gb.getAssignments().size()-1)).getTotalScore()});
@@ -294,32 +293,6 @@ public class GradebookAssignmentGUI extends JFrame{
 		    }
 		});
 		
-		cell.addCellEditorListener(new CellEditorListener()
-		{
-
-			@Override
-			public void editingCanceled(ChangeEvent e) 
-			{
-				System.out.println("Cancel");
-			}
-
-			@Override
-			public void editingStopped(ChangeEvent e) 
-			{
-				System.out.println("Stopped");
-			}
-	
-		});
-		
-		stable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-		{
-			@Override
-			public void valueChanged(ListSelectionEvent event)
-			{
-				
-			}
-		});
-		
 		//Sets the save button to enable and disabled depending on whether a student is selected
 				atable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
 				{
@@ -363,9 +336,9 @@ public class GradebookAssignmentGUI extends JFrame{
 	{
 		if(stable.getRowCount()>0)
 		{
-			for(int i = 0;i<modelStudents.getRowCount();i++)
+			if(modelStudents.getRowCount()>0)
 			{
-				modelStudents.removeRow(i);
+				modelStudents.setRowCount(0);
 			}
 		}
 		if(gb.getStudents().size()>0)
