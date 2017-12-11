@@ -473,21 +473,18 @@ public class GradeBookGUI
 		//remove all students if they exsist from the table
 		if(modelStudents.getRowCount()>0)
 		{
-			for(int i = 0;i<modelStudents.getRowCount();i++)
-			{
-				modelStudents.removeRow(i);
-			}
+			modelStudents.setRowCount(0);
 		}
 
 		//rebuild the table
 		GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
-		for(int i = 0; i < gb.getStudents().size();i++)
+		for(int i = 1; i < gb.getStudents().size() + 1;i++)
 		{
-			modelStudents.addRow(new Object[] {gb.getStudent(gb.getStudents().size()-1).getIdNumber(), 
-					gb.getStudent(gb.getStudents().size()-1).getFirstName(), 
-					gb.getStudent(gb.getStudents().size()-1).getLastName(), 
-					gb.calculateStudentPercentage(gb.getStudent(gb.getStudents().size()-1)),
-					gb.getGrade(gb.getStudent(gb.getStudents().size()-1))});
+			modelStudents.addRow(new Object[] {gb.getStudent(gb.getStudents().size()-i).getIdNumber(), 
+					gb.getStudent(gb.getStudents().size()-i).getFirstName(), 
+					gb.getStudent(gb.getStudents().size()-i).getLastName(), 
+					gb.calculateStudentPercentage(gb.getStudent(gb.getStudents().size()-i)),
+					gb.getGrade(gb.getStudent(gb.getStudents().size()-i))});
 		}
 	}
 	
