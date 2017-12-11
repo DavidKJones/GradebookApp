@@ -333,22 +333,19 @@ public class GradebookAssignmentGUI extends JFrame{
 	
 	//build the table
 	void buildStudentTable()
-	{
-		if(stable.getRowCount()>0)
-		{
-			if(modelStudents.getRowCount()>0)
-			{
-				modelStudents.setRowCount(0);
-			}
-		}
+	{	
+	    modelStudents.setRowCount(0);
+	    
 		if(gb.getStudents().size()>0)
 		{
-			for(int i = 0;i<gb.getStudents().size();i++)
+			//System.out.println(gb.getStudents().size());
+			for( Student s : gb.getStudents())
 			{
-				modelStudents.addRow(new Object[] {gb.getStudent(i).getFirstName() + " " + gb.getStudent(i).getLastName(),
-													gb.getStudent(i).getAssignment(atable.getSelectedRow()).getStudentScore(),
-													gb.getStudent(i).getAssignment(atable.getSelectedRow()).calculatePercentage(),
-													gb.getStudent(i).getAssignment(atable.getSelectedRow()).getLetterScore()});
+				System.out.print(s.getFirstName());
+				modelStudents.addRow(new Object[] {s.getFirstName() + " " + s.getLastName(),
+						s.getAssignment(atable.getSelectedRow()).getStudentScore(),
+						s.getAssignment(atable.getSelectedRow()).calculatePercentage(),
+						s.getAssignment(atable.getSelectedRow()).getLetterScore()});
 			}
 		}
 	}

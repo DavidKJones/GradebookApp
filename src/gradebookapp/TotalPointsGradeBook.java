@@ -58,7 +58,6 @@ public class TotalPointsGradeBook extends GradeBook
 		try
 		{
 			percentage = ((double)studentTotal / (double)totalpoints) * 100.0;
-			System.out.println(percentage);
 		}
 		catch(ArithmeticException ex)
 		{
