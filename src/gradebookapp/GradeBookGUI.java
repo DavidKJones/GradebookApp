@@ -1,4 +1,5 @@
 package gradebookapp;
+
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -17,46 +18,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.GroupLayout;
 
-public class GradeBookGUI {
-
-	private JFrame frame;
-	private JFrame frame2;
+public class GradeBookGUI
+{
+	public static JFrame frmGradeBook;
 	private JScrollPane scrollPaneStudents;
 	private JScrollPane scrollPaneStudentAssignments;
-	private JScrollPane scrollPaneAssignments;
 	private JTable tableStudents;
-	private JTable tableStudentAssignments;
 	private JTable tableAssignments;
 	private JPanel addStudent = new JPanel();
-	private JPanel addGradebook = new JPanel();
-	private DefaultTableModel modelAssignments;
 	private DefaultTableModel modelStudents;
-	private JMenuBar menuBar;
+	public static JMenuBar menuBar;
 	private JMenu mnFile;
 	private JMenuItem mntmExit;
-	public static JComboBox<GradeBook> cbGradeBookSelect = new JComboBox();
+	public static JComboBox<GradeBook> cbGradeBookSelect = new JComboBox<GradeBook>();
 	private JTextField txtStudentName;
 	private JTextField txtStudentId;
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
 	public static ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
 	private TotalPointsGradeBook totalGradeBook;
-	String[] columns = new String[] {"Assignment name", "Total Points"};
-
-
+	private DefaultTableModel modelAssignments;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -65,7 +55,7 @@ public class GradeBookGUI {
 			public void run() {
 				try {
 					GradeBookGUI window = new GradeBookGUI();
-					window.frame.setVisible(true);
+					window.frmGradeBook.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -83,21 +73,22 @@ public class GradeBookGUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
+		
 		totalGradeBook = new TotalPointsGradeBook();
 		
-		frame = new JFrame("Students");
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 800, 167);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(848, 500);
-		frame.getContentPane().setLayout(null);
+		frmGradeBook = new JFrame("Students");
+		frmGradeBook.setTitle("Grade Book");
+		frmGradeBook.setResizable(false);
+		frmGradeBook.setBounds(100, 100, 800, 167);
+		frmGradeBook.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmGradeBook.setSize(848, 500);
+		frmGradeBook.getContentPane().setLayout(null);
 		totalGradeBook.addAssignment(new Assignment("test",25));
 		totalGradeBook.addStudent(new Student("S0000", null, null));
-		
-		/*
-		 * creates the students table and model
-		 */
+
+		//Student Table
 		tableStudents = new JTable(new DefaultTableModel(new Object[]{"Student ID", "First", "Last" , "Percent", "Grade"}, 0)
 		{
 			public boolean isCellEditable(int row, int column)
@@ -115,12 +106,10 @@ public class GradeBookGUI {
 		tableStudents.getColumnModel().getColumn(4).setPreferredWidth(30);
 		scrollPaneStudents = new JScrollPane(tableStudents);
 		scrollPaneStudents.setBounds(10, 50, 422, 345);
-		frame.getContentPane().add(scrollPaneStudents);
-		
-		/*
-		 * creates the assignments table for that particular student 
-		 */
-		tableStudentAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points" , "Percent"}, 0)
+		frmGradeBook.getContentPane().add(scrollPaneStudents);
+
+		//Table of assignments for that student
+		tableAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points" , "Percent"}, 0)
 		{
 			public boolean isCellEditable(int row, int column)
 		    {
@@ -128,28 +117,15 @@ public class GradeBookGUI {
 		    }
 		});
 		
-		tableStudentAssignments.setSelectionMode(0);
-		modelAssignments = (DefaultTableModel)tableStudentAssignments.getModel();
-		scrollPaneStudentAssignments = new JScrollPane(tableStudentAssignments);
+		tableAssignments.setSelectionMode(0);
+		modelAssignments = (DefaultTableModel)tableAssignments.getModel();
+		scrollPaneStudentAssignments = new JScrollPane(tableAssignments);
 		scrollPaneStudentAssignments.setToolTipText("List of assignments for the current student");
 		scrollPaneStudentAssignments.setBounds(444, 254, 386, 141);
-		frame.getContentPane().add(scrollPaneStudentAssignments);
+		frmGradeBook.getContentPane().add(scrollPaneStudentAssignments);
 		
 		/*
-		 * creates the assignments table
-		 */
-		tableAssignments = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points"}, 0)
-		{
-			public boolean isCellEditable(int row, int column)
-		    {
-		      return false;//This causes all cells to be not editable
-		    }
-		});
-		
-		/*
-		 * 
 		 * Buttons and Menus
-		 * 
 		 */
 		JButton btnSave = new JButton("Save");
 		btnSave.setToolTipText("Save the gradebook");
@@ -160,26 +136,27 @@ public class GradeBookGUI {
 		btnSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSave.setBounds(733, 401, 97, 29);
-		frame.getContentPane().add(btnSave);
+		frmGradeBook.getContentPane().add(btnSave);
 		
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/wrench.gif")));
 		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnEdit.setBounds(624, 401, 97, 29);
-		frame.getContentPane().add(btnEdit);
+		frmGradeBook.getContentPane().add(btnEdit);
 		
 		JButton btnAssignments = new JButton("Assignments");
+		btnAssignments.setEnabled(false);
 		btnAssignments.setToolTipText("View list of assignments");
 		btnAssignments.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/javafx/scene/web/skin/UnorderedListBullets_16x16_JFX.png")));
 		btnAssignments.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnAssignments.setBounds(10, 401, 133, 29);
-		frame.getContentPane().add(btnAssignments);
+		frmGradeBook.getContentPane().add(btnAssignments);
 		
 		JLabel lblAssignments = new JLabel("Assignments");
 		lblAssignments.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAssignments.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblAssignments.setBounds(444, 210, 386, 32);
-		frame.getContentPane().add(lblAssignments);
+		frmGradeBook.getContentPane().add(lblAssignments);
 		
 		JTextField first = new JTextField(7);
 		JTextField last = new JTextField(7);
@@ -194,7 +171,7 @@ public class GradeBookGUI {
 		txtStudentName.setFont(new Font("Dialog", Font.PLAIN, 56));
 		txtStudentName.setHorizontalAlignment(SwingConstants.CENTER);
 		txtStudentName.setBounds(444, 12, 386, 60);
-		frame.getContentPane().add(txtStudentName);
+		frmGradeBook.getContentPane().add(txtStudentName);
 		txtStudentName.setColumns(10);
 		
 		txtStudentId = new JTextField();
@@ -203,7 +180,7 @@ public class GradeBookGUI {
 		txtStudentId.setFont(new Font("Dialog", Font.PLAIN, 36));
 		txtStudentId.setHorizontalAlignment(SwingConstants.CENTER);
 		txtStudentId.setBounds(444, 84, 386, 38);
-		frame.getContentPane().add(txtStudentId);
+		frmGradeBook.getContentPane().add(txtStudentId);
 		txtStudentId.setColumns(10);
 		
 		txtGrade = new JTextField();
@@ -212,7 +189,7 @@ public class GradeBookGUI {
 		txtGrade.setFont(new Font("Dialog", Font.PLAIN, 54));
 		txtGrade.setHorizontalAlignment(SwingConstants.CENTER);
 		txtGrade.setBounds(733, 134, 97, 64);
-		frame.getContentPane().add(txtGrade);
+		frmGradeBook.getContentPane().add(txtGrade);
 		txtGrade.setColumns(10);
 		
 		txtPercentage = new JTextField();
@@ -221,9 +198,8 @@ public class GradeBookGUI {
 		txtPercentage.setFont(new Font("Dialog", Font.PLAIN, 54));
 		txtPercentage.setHorizontalAlignment(SwingConstants.CENTER);
 		txtPercentage.setBounds(444, 134, 277, 64);
-		frame.getContentPane().add(txtPercentage);
+		frmGradeBook.getContentPane().add(txtPercentage);
 		txtPercentage.setColumns(10);
-		
 		
 		cbGradeBookSelect.setToolTipText("Select a Gradebook");
 		cbGradeBookSelect.setBounds(78, 12, 116, 25);
@@ -231,14 +207,14 @@ public class GradeBookGUI {
 		{
 			cbGradeBookSelect.addItem(gradebook.get(i));
 		}
-		frame.getContentPane().add(cbGradeBookSelect);
+		frmGradeBook.getContentPane().add(cbGradeBookSelect);
 		
 		JLabel lblGradebook = new JLabel("Gradebook:");
 		lblGradebook.setBounds(10, 12, 71, 26);
-		frame.getContentPane().add(lblGradebook);
+		frmGradeBook.getContentPane().add(lblGradebook);
 		
 		menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		frmGradeBook.setJMenuBar(menuBar);
 		
 		mnFile = new JMenu("File");
 		menuBar.add(mnFile);
@@ -293,13 +269,13 @@ public class GradeBookGUI {
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mntmAbout.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/about.gif")));
 		mnHelp.add(mntmAbout);
-		frame.setVisible(true);
+		frmGradeBook.setVisible(true);
 		
 		/*
-		 * 
 		 * Action Listeners
-		 * 
 		 */
+		
+		//Grabs the data from the row and populates the text on the right
 		tableStudents.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 		    @Override
 		    public void valueChanged(ListSelectionEvent event) {
@@ -313,6 +289,8 @@ public class GradeBookGUI {
 		        }
 		    }
 		});
+		
+		//Open the serialized gradebook array
 		mntmOpen.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -334,6 +312,7 @@ public class GradeBookGUI {
 			}
 		});
 		
+		//save the gradebook array
 		mntmSaveAs.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -343,6 +322,7 @@ public class GradeBookGUI {
 			}
 		});
 		
+		//save the gradebook array
 		mntmSave.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -352,6 +332,7 @@ public class GradeBookGUI {
 			}
 		});
 		
+		//add student
 		mntmAddStudent.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -362,6 +343,7 @@ public class GradeBookGUI {
 				int result = JOptionPane.showConfirmDialog(null, addStudent, "Please Enter Students Name", JOptionPane.OK_CANCEL_OPTION);
 			    if (result == JOptionPane.OK_OPTION)
 			    {
+			    	//validate the name for only letters
 			    	if (first.getText().matches("[a-zA-Z]") || last.getText().matches("[a-zA-Z]+"))
 			    	{
 			    		String firstName = first.getText();
@@ -386,6 +368,7 @@ public class GradeBookGUI {
 			}
 		});
 		
+		//delete student currently selected
 		mntmDeleteStudent.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -399,16 +382,22 @@ public class GradeBookGUI {
 			}
 		});
 		
+		//Grade Book combo box
 		cbGradeBookSelect.addItemListener(new ItemListener()
 		{
 			@Override
 			public void itemStateChanged(ItemEvent itemEvent)
 			{
+				txtStudentId.setText("");
+	        	txtStudentName.setText("");
+	        	txtPercentage.setText("");
+	        	txtGrade.setText("");
 				if(cbGradeBookSelect.getSelectedIndex() != -1)
 					buildStudentTable();
 			}
 		});
 		
+		//add grade book
 		mntmAddGradebook.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -423,10 +412,12 @@ public class GradeBookGUI {
 			    	cbGradeBookSelect.setSelectedIndex(cbGradeBookSelect.getItemCount()-1);
 					mntmSave.setEnabled(true);
 					mntmSaveAs.setEnabled(true);
+					btnAssignments.setEnabled(true);
 			    }
 			}
 		});
 		
+		//delete grade book
 		mntmDeleteGradebook.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -441,11 +432,13 @@ public class GradeBookGUI {
 		        		mntmDeleteGradebook.setEnabled(false);
 		        		mntmDeleteStudent.setEnabled(false);
 		        		mntmAddStudent.setEnabled(false);
+		        		btnAssignments.setEnabled(false);
 		        	}
 		        }
 			}
 		});
 		
+		//Goto assignments window
 		btnAssignments.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -455,33 +448,29 @@ public class GradeBookGUI {
 		});
 	}
 	
-	/*
-	 * Update combobox with gradebooks
-	 */
 	/**
 	 * Updates the list of the grade book combo box list.
 	 */
-	private void updateGradeBookComboBox() {
+	private void updateGradeBookComboBox()
+	{
+		//removes all gradebooks from the list if they exist
 		if (cbGradeBookSelect.getItemCount() > 0)
 		{
 			cbGradeBookSelect.removeAllItems();
 		}
+		//rebuilds the list for the combobox
 		for(int i = 0;i<gradebook.size();i++)
 		{
 			cbGradeBookSelect.addItem(gradebook.get(i));
 		}
 	}
 
-	
-	
-	/*
-	 * Set up the table
-	 */
 	/**
 	 * Builds the visual table of students on screen.
 	 */
 	void buildStudentTable()
 	{
+		//remove all students if they exsist from the table
 		if(modelStudents.getRowCount()>0)
 		{
 			for(int i = 0;i<modelStudents.getRowCount();i++)
@@ -489,8 +478,8 @@ public class GradeBookGUI {
 				modelStudents.removeRow(i);
 			}
 		}
-		
-		
+
+		//rebuild the table
 		GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
 		for(int i = 0; i < gb.getStudents().size();i++)
 		{
@@ -501,4 +490,6 @@ public class GradeBookGUI {
 					gb.getGrade(gb.getStudent(gb.getStudents().size()-1))});
 		}
 	}
+	
+	
 }
