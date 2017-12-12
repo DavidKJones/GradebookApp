@@ -293,17 +293,6 @@ public class GradeBookGUI
 			}
 		});
 		
-		//save as the gradebook array
-		mntmExit.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{	
-				int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to leave?", "Exit", JOptionPane.OK_OPTION);
-				if(result == JOptionPane.OK_OPTION)
-					System.exit(1);
-			}
-		});
-		
 		mntmSaveAs.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
