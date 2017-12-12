@@ -214,7 +214,12 @@ public class GradebookAssignmentGUI extends JFrame{
 			public void actionPerformed(ActionEvent e)
 			{
 				gb.removeAssignment(gb.getAssignmentAt(assignmentsTable.getSelectedRow()));
+				for(Student s : gb.getStudents())
+				{
+					s.removeAssignment(s.getAssignment(assignmentsTable.getSelectedRow()));
+				}
 				modelAssignments.removeRow(assignmentsTable.getSelectedRow());
+				
 				if(gb.getAssignments().size()==0)
 				{
 					btnDeleteAssignment.setEnabled(false);
@@ -235,6 +240,12 @@ public class GradebookAssignmentGUI extends JFrame{
 			    {
 			    	int total = (Integer) spinner.getValue();
 			    	gb.getAssignmentAt(assignmentsTable.getSelectedRow()).setName(name.getText());
+			    	gb.getAssignmentAt(assignmentsTable.getSelectedRow()).setTotalScore(total);
+			    	for( Student s : gb.getStudents())
+			    	{
+			    		s.getAssignment(assignmentsTable.getSelectedRow()).setTotalScore(total);
+			    		System.out.println(s.getAssignment(assignmentsTable.getSelectedRow()).calculatePercentage() + " " + s.getAssignment(assignmentsTable.getSelectedRow()).getLetterScore());
+			    	}
 			    	modelAssignments.setValueAt(name.getText(), assignmentsTable.getSelectedRow(), 0);
 			    	modelAssignments.setValueAt(total, assignmentsTable.getSelectedRow(), 1);
 			    }

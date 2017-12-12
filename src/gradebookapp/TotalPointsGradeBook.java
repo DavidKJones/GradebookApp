@@ -49,10 +49,10 @@ public class TotalPointsGradeBook extends GradeBook
 		{
 			if(a == null)
 				break;
+			studentTotal += a.getStudentScore();
 			
 			if(!a.isExtraCredit())
 				totalpoints += a.getTotalScore();
-			studentTotal += a.getStudentScore();
 		}
 		
 		try
