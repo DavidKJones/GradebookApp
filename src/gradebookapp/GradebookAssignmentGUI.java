@@ -73,6 +73,8 @@ public class GradebookAssignmentGUI extends JFrame{
 		GradeBookGUI.cbGradeBookSelect.setToolTipText("Close assignment window to re-enable");
 		GradeBookGUI.mnEdit.setEnabled(false);
 		GradeBookGUI.mnEdit.setToolTipText("Close assignment window to re-enable");
+		GradeBookGUI.btnAssignments.setEnabled(false);
+		GradeBookGUI.btnAssignments.setToolTipText("Close assignment window to re-enable");
 		
 		//Create the frame
 		frmAssignments = new JFrame();
@@ -305,8 +307,14 @@ public class GradebookAssignmentGUI extends JFrame{
 					btnSave.setEnabled(false);
 		    	}
 		    	
-		    	txtAsgnName.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 0).toString());
-		    	txtTotalPoints.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 1).toString());
+		    	if(assignmentsTable.getSelectedRow()>=0)
+		    	{
+			    	txtAsgnName.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 0).toString());
+			    	txtTotalPoints.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 1).toString());
+		    	} else {
+		    		txtAsgnName.setText("");
+		    		txtTotalPoints.setText("");
+		    	}
 		    	
 		    	if(assignmentsTable.getSelectedRow() != previousRowIndex)
 		    	{
@@ -322,7 +330,10 @@ public class GradebookAssignmentGUI extends JFrame{
 		    @Override
 		    public void valueChanged(ListSelectionEvent event)
 		    {
-				studentTable.editCellAt(studentTable.getSelectedRow(), 1);
+		    	if(studentTable.getSelectedRow()>= 0)
+		    	{
+		    		studentTable.editCellAt(studentTable.getSelectedRow(), 1);
+		    	}
 		    }
 		});
 		
@@ -337,6 +348,8 @@ public class GradebookAssignmentGUI extends JFrame{
 				GradeBookGUI.cbGradeBookSelect.setToolTipText("Select a Gradebook");
 				GradeBookGUI.mnEdit.setEnabled(true);
 				GradeBookGUI.mnEdit.setToolTipText("");
+				GradeBookGUI.btnAssignments.setEnabled(true);
+				GradeBookGUI.btnAssignments.setToolTipText("View list of assignments");
 		    }
 		});
 	}
@@ -363,14 +376,17 @@ public class GradebookAssignmentGUI extends JFrame{
 		int rowIndex = assignmentsTable.getSelectedRow();
 		modelStudents.setRowCount(0);
 		
-		for(int i = 0;i<gb.getStudents().size();i++)
-		{			
-			Student s = gb.getStudent(i);
-			double percent = s.getAssignment(rowIndex).calculatePercentage();
-        	String percentText = String.format("%.2f", percent);
-			modelStudents.addRow(new Object[] {s.getFirstName() + " " + gb.getStudent(i).getLastName(),
-					s.getAssignment(rowIndex).getStudentScore(),percentText,s.getAssignment(rowIndex).getLetterScore()
-			});
+		if(rowIndex >= 0)
+		{
+			for(int i = 0;i<gb.getStudents().size();i++)
+			{			
+				Student s = gb.getStudent(i);
+				double percent = s.getAssignment(rowIndex).calculatePercentage();
+	        	String percentText = String.format("%.2f", percent);
+				modelStudents.addRow(new Object[] {s.getFirstName() + " " + gb.getStudent(i).getLastName(),
+						s.getAssignment(rowIndex).getStudentScore(),percentText,s.getAssignment(rowIndex).getLetterScore()
+				});
+			}
 		}
 	}
 }

@@ -45,6 +45,7 @@ public class GradeBookGUI
 	private JTextField txtStudentId;
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
+	public static JButton btnAssignments;
 	public static ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
 	
 	/**
@@ -127,7 +128,7 @@ public class GradeBookGUI
 		scrollPaneStudentAssignments.setBounds(444, 254, 386, 141);
 		frmGradeBook.getContentPane().add(scrollPaneStudentAssignments);
 		
-		JButton btnAssignments = new JButton("Assignments");
+		btnAssignments = new JButton("Assignments");
 		btnAssignments.setEnabled(false);
 		btnAssignments.setToolTipText("View list of assignments");
 		btnAssignments.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/javafx/scene/web/skin/UnorderedListBullets_16x16_JFX.png")));
@@ -408,7 +409,7 @@ public class GradeBookGUI
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				String name = JOptionPane.showInputDialog(null, "Please Enter name of gradebook: ", JOptionPane.OK_CANCEL_OPTION);
+				String name = JOptionPane.showInputDialog(null, "Please Enter name of gradebook: ", "", JOptionPane.OK_CANCEL_OPTION);
 			    if(name != null)
 			    {
 			    	txtStudentId.setText("");
@@ -443,6 +444,8 @@ public class GradeBookGUI
 		        	updateGradeBookComboBox();
 		        	if(cbGradeBookSelect.getItemCount()<1)
 		        	{
+		        		modelAssignments.setRowCount(0);
+		        		modelStudents.setRowCount(0);
 		        		mntmDeleteGradebook.setEnabled(false);
 		        		mntmDeleteStudent.setEnabled(false);
 		        		mntmAddStudent.setEnabled(false);
@@ -539,7 +542,7 @@ public class GradeBookGUI
 			{
 				for(int i = 0;i<gb.getAssignments().size();i++)
 				{
-					double percent = gb.calculateStudentPercentage(gb.getStudent(tableStudents.getSelectedRow()));
+					double percent = gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).calculatePercentage();
 		        	String percentText = String.format("%.2f", percent);
 					modelAssignments.addRow(new Object[] {gb.getAssignmentAt(i).getName(),
 							gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).getStudentScore() + " / " + gb.getAssignmentAt(i).getTotalScore(),
