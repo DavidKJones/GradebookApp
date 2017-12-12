@@ -9,30 +9,22 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.CellEditor;
-import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JSpinner;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 
+@SuppressWarnings("serial")
 public class GradebookAssignmentGUI extends JFrame{
 
 	private JFrame frmAssignments;
@@ -75,10 +67,14 @@ public class GradebookAssignmentGUI extends JFrame{
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@SuppressWarnings("serial")
 	private void initialize() {
+		//prevent the user from changing gradebook when editing assignments
 		GradeBookGUI.cbGradeBookSelect.setEnabled(false);
-		GradeBookGUI.menuBar.setEnabled(false);
+		GradeBookGUI.cbGradeBookSelect.setToolTipText("Close assignment window to re-enable");
+		GradeBookGUI.mnEdit.setEnabled(false);
+		GradeBookGUI.mnEdit.setToolTipText("Close assignment window to re-enable");
+		
+		//Create the frame
 		frmAssignments = new JFrame();
 		frmAssignments.setTitle("Assignments");
 		frmAssignments.setIconImage(Toolkit.getDefaultToolkit().getImage(GradebookAssignmentGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/DetailsView.gif")));
@@ -203,7 +199,7 @@ public class GradebookAssignmentGUI extends JFrame{
 				    int total = (Integer)spinner.getValue();
 			    	gb.addAssignment(new Assignment(name.getText(),total));
 			    	modelAssignments.addRow(new Object[] {gb.getAssignmentAt((gb.getAssignments().size()-1)).getName(),
-			    						gb.getAssignmentAt((gb.getAssignments().size()-1)).getTotalScore()});
+			    			gb.getAssignmentAt((gb.getAssignments().size()-1)).getTotalScore()});
 			    }
 			}
 		});
@@ -244,8 +240,7 @@ public class GradebookAssignmentGUI extends JFrame{
 		//save grades
 		btnSave.addActionListener(new ActionListener()
 		{
-			private JTable studentsTable;
-
+			//private JTable studentsTable;
 			public void actionPerformed(ActionEvent e)
 			{
 				for(int i = 0;i<gb.getStudents().size();i++)
@@ -260,7 +255,9 @@ public class GradebookAssignmentGUI extends JFrame{
 					}
 					catch(InvalidScoreException ex)
 					{
-						JOptionPane.showMessageDialog(null, studentTable.getValueAt(i, 0)+ "'s score has an invalid score of " + studentTable.getValueAt(i, 1).toString(), "invalid input", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, studentTable.getValueAt(i, 0)+ 
+								"'s score has an invalid score of " + studentTable.getValueAt(i, 1).toString(),
+								"invalid input", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 				}
@@ -271,13 +268,9 @@ public class GradebookAssignmentGUI extends JFrame{
 					int selectedRow = assignmentsTable.getSelectedRow();
 					
 					Student stu = gb.getStudent(i);
-					Assignment ass = stu.getAssignment(selectedRow);
-					ass.setStudentScore(score);
-					
-	//				gb.getStudent(i).getAssignment(selectedRow).setStudentScore(score);
-					System.out.println(gb.getStudent(i).getFirstName() + " : " + gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore());
+					Assignment asgn = stu.getAssignment(selectedRow);
+					asgn.setStudentScore(score);
 				}
-				
 				buildStudentTable();
 				GradeBookGUI.buildStudentTable();
 				GradeBookGUI.buildAssignmentTable();
@@ -294,10 +287,13 @@ public class GradebookAssignmentGUI extends JFrame{
 		    	{
 		    		btnDeleteAssignment.setEnabled(true);
 					btnEditAssignment.setEnabled(true);
+					btnSave.setEnabled(true);
 		    	} else {
 		    		btnDeleteAssignment.setEnabled(false);
 					btnEditAssignment.setEnabled(false);
+					btnSave.setEnabled(false);
 		    	}
+		    	
 		    	txtAsgnName.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 0).toString());
 		    	txtTotalPoints.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 1).toString());
 		    	
@@ -309,33 +305,34 @@ public class GradebookAssignmentGUI extends JFrame{
 		    }
 		});
 		
-		//Sets the save button to enable and disabled depending on whether a student is selected
-				assignmentsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-				{
-				    @Override
-				    public void valueChanged(ListSelectionEvent event)
-				    {
-				    	if(assignmentsTable.getRowCount()>0)
-				    	{
-				    		btnSave.setEnabled(true);
-				    	} else {
-							btnSave.setEnabled(false);
-				    	}
-				    }
-				});
+		//Set the editable cells to editing mode
+		studentTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
+		{
+		    @Override
+		    public void valueChanged(ListSelectionEvent event)
+		    {
+				studentTable.editCellAt(studentTable.getSelectedRow(), 1);
+		    }
+		});
+		
 		//close assignment window and re-enable the main window
 		frmAssignments.addWindowListener(new java.awt.event.WindowAdapter()
 		{
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent)
 		    {
-		    	GradeBookGUI.cbGradeBookSelect.setEnabled(true);
-		    	GradeBookGUI.menuBar.setEnabled(true);
+		    	//re-enable buttons inside gradebook
+				GradeBookGUI.cbGradeBookSelect.setEnabled(true);
+				GradeBookGUI.cbGradeBookSelect.setToolTipText("Select a Gradebook");
+				GradeBookGUI.mnEdit.setEnabled(true);
+				GradeBookGUI.mnEdit.setToolTipText("");
 		    }
 		});
 	}
 	
-	//build the table
+	/**
+	 * Builds the visual table of assignments on screen.
+	 */
 	void buildAssignmentTable()
 	{
 		if(gb.getAssignments().size()>0)
@@ -347,25 +344,22 @@ public class GradebookAssignmentGUI extends JFrame{
 		}
 	}
 	
-	//build the table
+	/**
+	 * Builds the visual table of all students for that assignment
+	 */
 	void buildStudentTable()
 	{
 		int rowIndex = assignmentsTable.getSelectedRow();
-		
 		modelStudents.setRowCount(0);
 		
 		for(int i = 0;i<gb.getStudents().size();i++)
-		{
-			System.out.println(gb.getStudent(i).getFirstName() + " : " + gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore());
-			
+		{			
 			Student s = gb.getStudent(i);
 			double percent = s.getAssignment(rowIndex).calculatePercentage();
         	String percentText = String.format("%.2f", percent);
 			modelStudents.addRow(new Object[] {s.getFirstName() + " " + gb.getStudent(i).getLastName(),
-												s.getAssignment(rowIndex).getStudentScore(),
-												percentText,
-												s.getAssignment(rowIndex).getLetterScore()
-												});
+					s.getAssignment(rowIndex).getStudentScore(),percentText,s.getAssignment(rowIndex).getLetterScore()
+			});
 		}
 	}
 }

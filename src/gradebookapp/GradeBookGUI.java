@@ -34,26 +34,31 @@ public class GradeBookGUI
 	private JScrollPane scrollPaneStudentAssignments;
 	private static JTable tableStudents;
 	private JTable tableAssignments;
-	private JPanel addStudent = new JPanel();
 	private static DefaultTableModel modelStudents;
-	public static JMenuBar menuBar;
+	private static DefaultTableModel modelAssignments;
+	private JPanel addStudent = new JPanel();
+	private JMenuBar menuBar;
 	private JMenu mnFile;
-	private JMenuItem mntmExit;
+	public static JMenu mnEdit;
 	public static JComboBox<GradeBook> cbGradeBookSelect = new JComboBox<GradeBook>();
 	private JTextField txtStudentName;
 	private JTextField txtStudentId;
 	private JTextField txtGrade;
 	private JTextField txtPercentage;
 	public static ArrayList<GradeBook> gradebook = new ArrayList<GradeBook>();
-	private static DefaultTableModel modelAssignments;
 	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args)
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			@SuppressWarnings("static-access")
+			public void run()
+			{
+				try
+				{
 					GradeBookGUI window = new GradeBookGUI();
 					window.frmGradeBook.setVisible(true);
 				} catch (Exception e) {
@@ -66,7 +71,8 @@ public class GradeBookGUI
 	/**
 	 * Create the application.
 	 */
-	public GradeBookGUI() {
+	public GradeBookGUI()
+	{
 		initialize();
 	}
 
@@ -81,10 +87,9 @@ public class GradeBookGUI
 		frmGradeBook.setTitle("Grade Book");
 		frmGradeBook.setResizable(false);
 		frmGradeBook.setBounds(100, 100, 800, 167);
-		frmGradeBook.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmGradeBook.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmGradeBook.setSize(848, 500);
 		frmGradeBook.getContentPane().setLayout(null);
-//		totalGradeBook.addStudent(new Student("S0000", null, null));
 
 		//Student Table
 		tableStudents = new JTable(new DefaultTableModel(new Object[]{"Student ID", "First", "Last" , "Percent", "Grade"}, 0)
@@ -118,7 +123,7 @@ public class GradeBookGUI
 		tableAssignments.setSelectionMode(0);
 		modelAssignments = (DefaultTableModel)tableAssignments.getModel();
 		scrollPaneStudentAssignments = new JScrollPane(tableAssignments);
-		scrollPaneStudentAssignments.setToolTipText("List of assignments for the current student");
+		scrollPaneStudentAssignments.setToolTipText("");
 		scrollPaneStudentAssignments.setBounds(444, 254, 386, 141);
 		frmGradeBook.getContentPane().add(scrollPaneStudentAssignments);
 		
@@ -146,7 +151,7 @@ public class GradeBookGUI
 		txtStudentName = new JTextField();
 		txtStudentName.setToolTipText("Student's Name");
 		txtStudentName.setEditable(false);
-		txtStudentName.setFont(new Font("Dialog", Font.PLAIN, 56));
+		txtStudentName.setFont(new Font("Dialog", Font.PLAIN, 48));
 		txtStudentName.setHorizontalAlignment(SwingConstants.CENTER);
 		txtStudentName.setBounds(444, 12, 386, 60);
 		frmGradeBook.getContentPane().add(txtStudentName);
@@ -212,14 +217,7 @@ public class GradeBookGUI
 		mntmSaveAs.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/HardDrive.gif")));
 		mnFile.add(mntmSaveAs);
 		
-		JSeparator separator_1 = new JSeparator();
-		mnFile.add(separator_1);
-		
-		mntmExit = new JMenuItem("Exit");
-		mntmExit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/close.gif")));
-		mnFile.add(mntmExit);
-		
-		JMenu mnEdit = new JMenu("Edit");
+		mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 		
 		JMenuItem mntmAddGradebook = new JMenuItem("Add Gradebook");
@@ -256,9 +254,10 @@ public class GradeBookGUI
 		//Grabs the data from the row and populates the text on the right
 		tableStudents.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 		    @Override
-		    public void valueChanged(ListSelectionEvent event) {
-		        if (tableStudents.getSelectedRow() > -1) {
-		        	
+		    public void valueChanged(ListSelectionEvent event)
+		    {
+		        if (tableStudents.getSelectedRow() > -1)
+		        {
 		        	txtStudentId.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 0).toString());
 		        	txtStudentName.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 1).toString()
 		        				+ " " + tableStudents.getValueAt(tableStudents.getSelectedRow(), 2).toString());
@@ -294,7 +293,7 @@ public class GradeBookGUI
 			}
 		});
 		
-		//save the gradebook array
+		//save as the gradebook array
 		mntmSaveAs.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -378,6 +377,15 @@ public class GradeBookGUI
 			}
 		});
 		
+		//about button
+		mntmAbout.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				JOptionPane.showMessageDialog(null, "Created by: Ayrton Flores, David Jones, & Mason Parry", "About", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		
 		//Grade Book combo box
 		cbGradeBookSelect.addItemListener(new ItemListener()
 		{
@@ -445,6 +453,22 @@ public class GradeBookGUI
 			}
 		});
 		
+		//closing the program
+		frmGradeBook.addWindowListener(new java.awt.event.WindowAdapter()
+		{
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent)
+		    {
+		    	int result = JOptionPane.showConfirmDialog(frmGradeBook,"Are you sure you want to exit the application?",
+		    			"Exit Application",JOptionPane.YES_NO_OPTION);
+		
+		        if (result == JOptionPane.YES_OPTION)
+		        {
+		        	frmGradeBook.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        }
+		    }
+		});
+		
 		//Goto assignments window
 		btnAssignments.addActionListener(new ActionListener()
 		{
@@ -497,14 +521,19 @@ public class GradeBookGUI
 		}
 	}
 	
+	/**
+	 * Builds the visual table for assignments for that particular student on the screen.
+	 */
 	public static void buildAssignmentTable()
 	{
+		//check if the assignment table is empty, and if not make it empty
 		GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
 		if(modelAssignments.getRowCount()>0)
 		{
 			modelAssignments.setRowCount(0);
 		}
 		
+		//rebuild the table
 		if(gb.getAssignments().size()>0)
 		{
 			if(tableStudents.isCellSelected(tableStudents.getSelectedRow(), tableStudents.getSelectedColumn()))
@@ -521,6 +550,4 @@ public class GradeBookGUI
 			}
 		}
 	}
-	
-	
 }
