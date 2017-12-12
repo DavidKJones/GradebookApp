@@ -349,7 +349,7 @@ public class GradebookAssignmentGUI extends JFrame{
 	        	String percentText = String.format("%.2f", percent);
 				modelStudents.addRow(new Object[] {gb.getStudent(i).getFirstName() + " " + gb.getStudent(i).getLastName(),
 													gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore(),
-													percent,
+													percentText,
 													gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getLetterScore()
 													});
 				System.out.println(gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore());
