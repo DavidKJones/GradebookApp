@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -120,6 +121,7 @@ public class GradeBookSerialization
 		}
 		catch(IOException exception)
 		{
+			JOptionPane.showMessageDialog(null, "Failed to save file.", "Error", JOptionPane.ERROR_MESSAGE);
 			System.out.println("Problem occured during serialization.");
 			System.out.println(exception.getMessage());
 		}
@@ -143,6 +145,7 @@ public class GradeBookSerialization
 		}
 		catch(IOException | ClassNotFoundException exception)
 		{
+			JOptionPane.showMessageDialog(null, "Failed to open file.", "Error", JOptionPane.ERROR_MESSAGE);
 			System.out.println("A problem occured during deserialization.");
 			System.out.println(exception.getMessage());
 		}
