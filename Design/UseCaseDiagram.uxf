@@ -2,17 +2,6 @@
 <diagram program="umlet" version="14.2">
   <zoom_level>8</zoom_level>
   <element>
-    <id>UMLActor</id>
-    <coordinates>
-      <x>8</x>
-      <y>200</y>
-      <w>64</w>
-      <h>88</h>
-    </coordinates>
-    <panel_attributes>Teacher</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
       <x>48</x>
@@ -135,18 +124,6 @@
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>248</x>
-      <y>352</y>
-      <w>88</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>90.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLUseCase</id>
     <coordinates>
       <x>320</x>
@@ -194,30 +171,6 @@ fg=black</panel_attributes>
     <additional_attributes>10.0;10.0;150.0;100.0;260.0;100.0</additional_attributes>
   </element>
   <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>0</x>
-      <y>0</y>
-      <w>1000</w>
-      <h>696</h>
-    </coordinates>
-    <panel_attributes>System Boundary
-halign=left</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>96</x>
-      <y>24</y>
-      <w>816</w>
-      <h>648</h>
-    </coordinates>
-    <panel_attributes>Elementary Gradebook System
-halign=left</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLUseCase</id>
     <coordinates>
       <x>160</x>
@@ -238,17 +191,6 @@ halign=left</panel_attributes>
     </coordinates>
     <panel_attributes>Remove Gradebook</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>48</x>
-      <y>224</y>
-      <w>128</w>
-      <h>288</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;10.0;140.0;340.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
