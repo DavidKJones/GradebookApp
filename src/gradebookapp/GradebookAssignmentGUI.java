@@ -37,8 +37,8 @@ public class GradebookAssignmentGUI extends JFrame{
 
 	private JFrame frmAssignments;
 	String[] columns = new String[] {"Assignment name", "Total Points"};
-	private JTable atable;
-	private JTable stable;
+	private JTable assignmentsTable;
+	private JTable studentTable;
 	private CellEditor cell;
 	private JPanel addAssignment = new JPanel();
 	private JScrollPane scrollPaneAssignments;
@@ -86,7 +86,7 @@ public class GradebookAssignmentGUI extends JFrame{
 		frmAssignments.setBounds(100, 100, 800, 500);
 		
 		//assignments table
-		atable = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points"}, 0)
+		assignmentsTable = new JTable(new DefaultTableModel(new Object[]{"Name", "Total Points"}, 0)
 		{
 			public boolean isCellEditable(int row, int column)
 		    {
@@ -94,19 +94,19 @@ public class GradebookAssignmentGUI extends JFrame{
 		    }
 		});
 		
-		atable.setSelectionMode(0);
-		modelAssignments = (DefaultTableModel)atable.getModel();
-		atable.getColumnModel().getColumn(0).setPreferredWidth(120);
-		atable.getColumnModel().getColumn(1).setPreferredWidth(20);
+		assignmentsTable.setSelectionMode(0);
+		modelAssignments = (DefaultTableModel)assignmentsTable.getModel();
+		assignmentsTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+		assignmentsTable.getColumnModel().getColumn(1).setPreferredWidth(20);
 		frmAssignments.getContentPane().setLayout(null);
-		scrollPaneAssignments = new JScrollPane(atable);
+		scrollPaneAssignments = new JScrollPane(assignmentsTable);
 		scrollPaneAssignments.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPaneAssignments.setBounds(12, 13, 318, 389);
 		frmAssignments.getContentPane().add(scrollPaneAssignments);
 		buildAssignmentTable();
 		
 		//students table
-		stable = new JTable(new DefaultTableModel(new Object[]{"Name", "Earned Points", "Percent", "Grade"}, 0)
+		studentTable = new JTable(new DefaultTableModel(new Object[]{"Name", "Earned Points", "Percent", "Grade"}, 0)
 		{
 			public boolean isCellEditable(int row, int column)
 		    {
@@ -114,19 +114,19 @@ public class GradebookAssignmentGUI extends JFrame{
 		    }
 		});
 		
-		stable.setSelectionMode(0);
-		modelStudents = (DefaultTableModel)stable.getModel();
-		stable.getColumnModel().getColumn(0).setPreferredWidth(40);
-		stable.getColumnModel().getColumn(1).setPreferredWidth(40);
-		stable.getColumnModel().getColumn(2).setPreferredWidth(40);
-		stable.getColumnModel().getColumn(3).setPreferredWidth(40);
+		studentTable.setSelectionMode(0);
+		modelStudents = (DefaultTableModel)studentTable.getModel();
+		studentTable.getColumnModel().getColumn(0).setPreferredWidth(40);
+		studentTable.getColumnModel().getColumn(1).setPreferredWidth(40);
+		studentTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+		studentTable.getColumnModel().getColumn(3).setPreferredWidth(40);
 		frmAssignments.getContentPane().setLayout(null);
-		scrollPaneStudents = new JScrollPane(stable);
+		scrollPaneStudents = new JScrollPane(studentTable);
 		scrollPaneStudents.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPaneStudents.setBounds(342, 113, 428, 289);
 		frmAssignments.getContentPane().add(scrollPaneStudents);
-		stable.setCellEditor(new DefaultCellEditor(new JTextField()));
-		cell = stable.getCellEditor();
+		studentTable.setCellEditor(new DefaultCellEditor(new JTextField()));
+		cell = studentTable.getCellEditor();
 		
 		//Buttons
 		JButton btnAddAssignment = new JButton("Add");
@@ -174,9 +174,9 @@ public class GradebookAssignmentGUI extends JFrame{
 		lblTotalPoints.setBounds(637, 13, 133, 30);
 		frmAssignments.getContentPane().add(lblTotalPoints);
 		
-		JButton btnSave = new JButton("Save");
+		JButton btnSave = new JButton("Update");
 		btnSave.setEnabled(false);
-		btnSave.setIcon(new ImageIcon(GradebookAssignmentGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
+		btnSave.setIcon(new ImageIcon(GradebookAssignmentGUI.class.getResource("/javax/swing/plaf/metal/icons/sortUp.png")));
 		btnSave.setBounds(673, 415, 97, 25);
 		frmAssignments.getContentPane().add(btnSave);
 		
@@ -215,8 +215,8 @@ public class GradebookAssignmentGUI extends JFrame{
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				gb.removeAssignment(gb.getAssignmentAt(atable.getSelectedRow()));
-				modelAssignments.removeRow(atable.getSelectedRow());
+				gb.removeAssignment(gb.getAssignmentAt(assignmentsTable.getSelectedRow()));
+				modelAssignments.removeRow(assignmentsTable.getSelectedRow());
 				if(gb.getAssignments().size()==0)
 				{
 					btnDeleteAssignment.setEnabled(false);
@@ -230,15 +230,15 @@ public class GradebookAssignmentGUI extends JFrame{
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				name.setText(atable.getValueAt(atable.getSelectedRow(), 0).toString());
-				spinner.setValue(atable.getValueAt(atable.getSelectedRow(), 1));
+				name.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 0).toString());
+				spinner.setValue(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 1));
 				int result = JOptionPane.showConfirmDialog(null, addAssignment, "Change name and total points", JOptionPane.OK_CANCEL_OPTION);
 			    if (result == JOptionPane.OK_OPTION)
 			    {
 			    	int total = (Integer) spinner.getValue();
-			    	gb.getAssignmentAt(atable.getSelectedRow()).setName(name.getText());
-			    	modelAssignments.setValueAt(name.getText(), atable.getSelectedRow(), 0);
-			    	modelAssignments.setValueAt(total, atable.getSelectedRow(), 1);
+			    	gb.getAssignmentAt(assignmentsTable.getSelectedRow()).setName(name.getText());
+			    	modelAssignments.setValueAt(name.getText(), assignmentsTable.getSelectedRow(), 0);
+			    	modelAssignments.setValueAt(total, assignmentsTable.getSelectedRow(), 1);
 			    }
 			}
 		});
@@ -248,38 +248,38 @@ public class GradebookAssignmentGUI extends JFrame{
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				int score;
-				for(int i = 0;i<stable.getRowCount();i++)
+				for(int i = 0;i<gb.getStudents().size();i++)
 				{
 					try
 					{
 						String regex = "[0-9]+";
-						if(!stable.getValueAt(i, 1).toString().matches(regex))
+						if(!studentTable.getValueAt(i, 1).toString().matches(regex))
 						{
 							throw new InvalidScoreException();
 						}
 						
-						score = Integer.parseInt(stable.getValueAt(i, 1).toString());
-						gb.getStudent(i).getAssignment(atable.getSelectedRow()).setStudentScore(score);
+						int score = Integer.parseInt(studentTable.getValueAt(i, 1).toString());
+						gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).setStudentScore(score);
 					}
 					catch(InvalidScoreException ex)
 					{
-						JOptionPane.showMessageDialog(null, stable.getValueAt(i, 0)+ "'s score has an invalid score of " + stable.getValueAt(i, 1).toString(), "invalid input", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, studentTable.getValueAt(i, 0)+ "'s score has an invalid score of " + studentTable.getValueAt(i, 1).toString(), "invalid input", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				
 				GradeBookGUI.buildStudentTable();
+				GradeBookGUI.buildAssignmentTable();
 				buildStudentTable();
 			}
 		});
 		
 		//Grabs the data from the row and populates the text on the right
-		atable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
+		assignmentsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
 		{
 		    @Override
 		    public void valueChanged(ListSelectionEvent event)
 		    {
-		    	if(atable.getRowCount()>0)
+		    	if(assignmentsTable.getRowCount()>0)
 		    	{
 		    		btnDeleteAssignment.setEnabled(true);
 					btnEditAssignment.setEnabled(true);
@@ -287,19 +287,19 @@ public class GradebookAssignmentGUI extends JFrame{
 		    		btnDeleteAssignment.setEnabled(false);
 					btnEditAssignment.setEnabled(false);
 		    	}
-		    	txtAsgnName.setText(atable.getValueAt(atable.getSelectedRow(), 0).toString());
-		    	txtTotalPoints.setText(atable.getValueAt(atable.getSelectedRow(), 1).toString());
+		    	txtAsgnName.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 0).toString());
+		    	txtTotalPoints.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 1).toString());
 		    	buildStudentTable();
 		    }
 		});
 		
 		//Sets the save button to enable and disabled depending on whether a student is selected
-				atable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
+				assignmentsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
 				{
 				    @Override
 				    public void valueChanged(ListSelectionEvent event)
 				    {
-				    	if(atable.getRowCount()>0)
+				    	if(assignmentsTable.getRowCount()>0)
 				    	{
 				    		btnSave.setEnabled(true);
 				    	} else {
@@ -334,7 +334,7 @@ public class GradebookAssignmentGUI extends JFrame{
 	//build the table
 	void buildStudentTable()
 	{
-		if(stable.getRowCount()>0)
+		if(studentTable.getRowCount()>0)
 		{
 			if(modelStudents.getRowCount()>0)
 			{
@@ -345,10 +345,14 @@ public class GradebookAssignmentGUI extends JFrame{
 		{
 			for(int i = 0;i<gb.getStudents().size();i++)
 			{
+				double percent = gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).calculatePercentage();
+	        	String percentText = String.format("%.2f", percent);
 				modelStudents.addRow(new Object[] {gb.getStudent(i).getFirstName() + " " + gb.getStudent(i).getLastName(),
-													gb.getStudent(i).getAssignment(atable.getSelectedRow()).getStudentScore(),
-													gb.getStudent(i).getAssignment(atable.getSelectedRow()).calculatePercentage(),
-													gb.getStudent(i).getAssignment(atable.getSelectedRow()).getLetterScore()});
+													gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore(),
+													percent,
+													gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getLetterScore()
+													});
+				System.out.println(gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore());
 			}
 		}
 	}

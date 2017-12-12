@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JComboBox;
+import java.awt.Toolkit;
 
 public class GradeBookGUI
 {
@@ -76,6 +77,7 @@ public class GradeBookGUI
 	private void initialize() {
 		
 		frmGradeBook = new JFrame("Students");
+		frmGradeBook.setIconImage(Toolkit.getDefaultToolkit().getImage(GradeBookGUI.class.getResource("/image/gradebook.png")));
 		frmGradeBook.setTitle("Grade Book");
 		frmGradeBook.setResizable(false);
 		frmGradeBook.setBounds(100, 100, 800, 167);
@@ -119,26 +121,6 @@ public class GradeBookGUI
 		scrollPaneStudentAssignments.setToolTipText("List of assignments for the current student");
 		scrollPaneStudentAssignments.setBounds(444, 254, 386, 141);
 		frmGradeBook.getContentPane().add(scrollPaneStudentAssignments);
-		
-		/*
-		 * Buttons and Menus
-		 */
-		JButton btnSave = new JButton("Save");
-		btnSave.setToolTipText("Save the gradebook");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnSave.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
-		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnSave.setBounds(733, 401, 97, 29);
-		frmGradeBook.getContentPane().add(btnSave);
-		
-		JButton btnEdit = new JButton("Edit");
-		btnEdit.setIcon(new ImageIcon(GradeBookGUI.class.getResource("/image/wrench.gif")));
-		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnEdit.setBounds(624, 401, 97, 29);
-		frmGradeBook.getContentPane().add(btnEdit);
 		
 		JButton btnAssignments = new JButton("Assignments");
 		btnAssignments.setEnabled(false);
@@ -276,12 +258,14 @@ public class GradeBookGUI
 		    @Override
 		    public void valueChanged(ListSelectionEvent event) {
 		        if (tableStudents.getSelectedRow() > -1) {
+		        	
 		        	txtStudentId.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 0).toString());
 		        	txtStudentName.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 1).toString()
 		        				+ " " + tableStudents.getValueAt(tableStudents.getSelectedRow(), 2).toString());
-		        	txtPercentage.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 3).toString());
+		        	double percent = Double.parseDouble(tableStudents.getValueAt(tableStudents.getSelectedRow(), 3).toString());
+		        	txtPercentage.setText(String.format("%.2f", percent)+"%");
 		        	txtGrade.setText(tableStudents.getValueAt(tableStudents.getSelectedRow(), 4).toString());
-		        	updateAssignmentTable();
+		        	buildAssignmentTable();
 		        }
 		    }
 
@@ -362,6 +346,10 @@ public class GradeBookGUI
 								gb.getStudent(gb.getStudents().size()-1).getLastName(), 
 								gb.calculateStudentPercentage(gb.getStudent(gb.getStudents().size()-1)),
 								gb.getGrade(gb.getStudent(gb.getStudents().size()-1))});
+						txtStudentId.setText("");
+			        	txtStudentName.setText("");
+			        	txtPercentage.setText("");
+			        	txtGrade.setText("");
 						mntmDeleteStudent.setEnabled(true);
 			    	} else {
 			    		JOptionPane.showMessageDialog(null, "Student must have a first and last name containing only letters. \n"
@@ -379,6 +367,10 @@ public class GradeBookGUI
 			{
 				gradebook.get(cbGradeBookSelect.getSelectedIndex()).removeStudentAt(tableStudents.getSelectedRow());
 				modelStudents.removeRow(tableStudents.getSelectedRow());
+				txtStudentId.setText("");
+	        	txtStudentName.setText("");
+	        	txtPercentage.setText("");
+	        	txtGrade.setText("");
 				if(gradebook.get(cbGradeBookSelect.getSelectedIndex()).getStudents().size()==0)
 				{
 					mntmDeleteStudent.setEnabled(false);
@@ -397,7 +389,10 @@ public class GradeBookGUI
 	        	txtPercentage.setText("");
 	        	txtGrade.setText("");
 				if(cbGradeBookSelect.getSelectedIndex() != -1)
+				{
 					buildStudentTable();
+					buildAssignmentTable();
+				}
 			}
 		});
 		
@@ -409,6 +404,10 @@ public class GradeBookGUI
 				String name = JOptionPane.showInputDialog(null, "Please Enter name of gradebook: ", JOptionPane.OK_CANCEL_OPTION);
 			    if(name != null)
 			    {
+			    	txtStudentId.setText("");
+		        	txtStudentName.setText("");
+		        	txtPercentage.setText("");
+		        	txtGrade.setText("");
 			    	gradebook.add(new TotalPointsGradeBook(name));
 			    	mntmAddStudent.setEnabled(true);
 			    	mntmDeleteGradebook.setEnabled(true);
@@ -429,6 +428,10 @@ public class GradeBookGUI
 				int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete: "+gradebook.get(cbGradeBookSelect.getSelectedIndex()), "Confirm", JOptionPane.YES_NO_OPTION);
 		        if (reply == JOptionPane.YES_OPTION)
 		        {
+		        	txtStudentId.setText("");
+		        	txtStudentName.setText("");
+		        	txtPercentage.setText("");
+		        	txtGrade.setText("");
 		        	gradebook.remove(gradebook.get(cbGradeBookSelect.getSelectedIndex()));
 		        	updateGradeBookComboBox();
 		        	if(cbGradeBookSelect.getItemCount()<1)
@@ -484,15 +487,17 @@ public class GradeBookGUI
 		GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
 		for(int i = 0; i < gb.getStudents().size();i++)
 		{
+			double percent = gb.calculateStudentPercentage(gb.getStudent(i));
+        	String percentText = String.format("%.2f", percent);
 			modelStudents.addRow(new Object[] {gb.getStudent(i).getIdNumber(), 
 					gb.getStudent(i).getFirstName(), 
 					gb.getStudent(i).getLastName(), 
-					gb.calculateStudentPercentage(gb.getStudent(i)),
+					percentText,
 					gb.getGrade(gb.getStudent(i))});
 		}
 	}
 	
-	public static void updateAssignmentTable()
+	public static void buildAssignmentTable()
 	{
 		GradeBook gb = gradebook.get(cbGradeBookSelect.getSelectedIndex());
 		if(modelAssignments.getRowCount()>0)
@@ -502,12 +507,17 @@ public class GradeBookGUI
 		
 		if(gb.getAssignments().size()>0)
 		{
-			for(int i = 0;i<gb.getAssignments().size();i++)
+			if(tableStudents.isCellSelected(tableStudents.getSelectedRow(), tableStudents.getSelectedColumn()))
 			{
-				modelAssignments.addRow(new Object[] {gb.getAssignmentAt(i).getName(),
-						gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).getStudentScore() + " / " + gb.getAssignmentAt(i).getTotalScore(),
-						gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).calculatePercentage(),
-						gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).getLetterScore()});
+				for(int i = 0;i<gb.getAssignments().size();i++)
+				{
+					double percent = gb.calculateStudentPercentage(gb.getStudent(tableStudents.getSelectedRow()));
+		        	String percentText = String.format("%.2f", percent);
+					modelAssignments.addRow(new Object[] {gb.getAssignmentAt(i).getName(),
+							gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).getStudentScore() + " / " + gb.getAssignmentAt(i).getTotalScore(),
+							percentText,
+							gb.getStudent(tableStudents.getSelectedRow()).getAssignment(i).getLetterScore()});
+				}
 			}
 		}
 	}
