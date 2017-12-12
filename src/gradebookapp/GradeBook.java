@@ -74,17 +74,15 @@ public abstract class GradeBook implements Serializable
 	 */
 	public Student getStudent ( int index )
 	{
-		Student student = null;
 		try
 		{
-			student = students.get(index);
+			return students.get(index);
 		}
 		catch(IndexOutOfBoundsException ex)
 		{
 			System.out.print(ex);
+			return null;
 		}
-		
-		return student;
 	}
 	
 	/**
@@ -103,10 +101,12 @@ public abstract class GradeBook implements Serializable
 	public void addAssignment ( Assignment assignment )
 	{
 		assignments.add(assignment);
-		assignment.setStudentScore(assignment.getTotalScore());
+		
 		for( Student s : students )
 		{
-			s.addAssignment(assignment);
+			Assignment newAssignment = new Assignment( assignment.getName(), assignment.getTotalScore());
+			newAssignment.setStudentScore(assignment.getTotalScore());
+			s.addAssignment(newAssignment);
 		}	
 	}
 	

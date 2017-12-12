@@ -16,7 +16,6 @@ public class Assignment implements Serializable
 	private String name;
 	private int totalScore;
 	private int studentScore;
-	public Date dueDate;
 	/**
 	 * is the assignment extra credit
 	 */
@@ -31,7 +30,6 @@ public class Assignment implements Serializable
 		name = "New Assignment";
 		totalScore = 0;
 		studentScore = 0;
-		dueDate = new Date();
 		isEC = false;
 	}
 	
@@ -46,7 +44,6 @@ public class Assignment implements Serializable
 		this.name = name;
 		this.totalScore = totalPoints;
 		studentScore = 0;
-		dueDate = new Date();
 		isEC = false;
 	}
 	
@@ -61,7 +58,6 @@ public class Assignment implements Serializable
 		this.name = name;
 		this.totalScore = totalPoints;
 		studentScore = 0;
-		dueDate = new Date();
 		isEC = false;
 	}
 	
@@ -75,7 +71,6 @@ public class Assignment implements Serializable
 		totalScore = 0;
 		studentScore = 0;
 		isEC = false;
-		dueDate = new Date();
 	}
 	
 	//methods
@@ -208,23 +203,5 @@ public class Assignment implements Serializable
 			grade = "F";
 		
 		return grade;
-	}
-	
-	/**
-	 * Set the due date for the assignment.
-	 * @param date Date
-	 */
-	public void setDueDate( Date date )
-	{
-		dueDate = date;
-	}
-	
-	/**
-	 * Get the due date for the assignment.
-	 * @return the due date
-	 */
-	public Date getDueDate ()
-	{
-		return dueDate;
 	}
 }

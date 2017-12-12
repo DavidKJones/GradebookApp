@@ -39,7 +39,6 @@ public class GradebookAssignmentGUI extends JFrame{
 	String[] columns = new String[] {"Assignment name", "Total Points"};
 	private JTable assignmentsTable;
 	private JTable studentTable;
-	private CellEditor cell;
 	private JPanel addAssignment = new JPanel();
 	private JScrollPane scrollPaneAssignments;
 	private JScrollPane scrollPaneStudents;
@@ -48,6 +47,7 @@ public class GradebookAssignmentGUI extends JFrame{
 	private GradeBook gb = GradeBookGUI.gradebook.get(GradeBookGUI.cbGradeBookSelect.getSelectedIndex());
 	private JTextField txtAsgnName;
 	private JTextField txtTotalPoints;
+	private int previousRowIndex = -1;
 	
 	/**
 	 * Launch the application.
@@ -125,8 +125,6 @@ public class GradebookAssignmentGUI extends JFrame{
 		scrollPaneStudents.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPaneStudents.setBounds(342, 113, 428, 289);
 		frmAssignments.getContentPane().add(scrollPaneStudents);
-		studentTable.setCellEditor(new DefaultCellEditor(new JTextField()));
-		cell = studentTable.getCellEditor();
 		
 		//Buttons
 		JButton btnAddAssignment = new JButton("Add");
@@ -246,6 +244,8 @@ public class GradebookAssignmentGUI extends JFrame{
 		//save grades
 		btnSave.addActionListener(new ActionListener()
 		{
+			private JTable studentsTable;
+
 			public void actionPerformed(ActionEvent e)
 			{
 				for(int i = 0;i<gb.getStudents().size();i++)
@@ -257,19 +257,30 @@ public class GradebookAssignmentGUI extends JFrame{
 						{
 							throw new InvalidScoreException();
 						}
-						
-						int score = Integer.parseInt(studentTable.getValueAt(i, 1).toString());
-						gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).setStudentScore(score);
 					}
 					catch(InvalidScoreException ex)
 					{
 						JOptionPane.showMessageDialog(null, studentTable.getValueAt(i, 0)+ "'s score has an invalid score of " + studentTable.getValueAt(i, 1).toString(), "invalid input", JOptionPane.ERROR_MESSAGE);
+						return;
 					}
 				}
 				
+				for(int i = 0; i < gb.getStudents().size(); i++)
+				{		
+					int score = Integer.parseInt(studentTable.getValueAt(i, 1).toString().trim());
+					int selectedRow = assignmentsTable.getSelectedRow();
+					
+					Student stu = gb.getStudent(i);
+					Assignment ass = stu.getAssignment(selectedRow);
+					ass.setStudentScore(score);
+					
+	//				gb.getStudent(i).getAssignment(selectedRow).setStudentScore(score);
+					System.out.println(gb.getStudent(i).getFirstName() + " : " + gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore());
+				}
+				
+				buildStudentTable();
 				GradeBookGUI.buildStudentTable();
 				GradeBookGUI.buildAssignmentTable();
-				buildStudentTable();
 			}
 		});
 		
@@ -289,7 +300,12 @@ public class GradebookAssignmentGUI extends JFrame{
 		    	}
 		    	txtAsgnName.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 0).toString());
 		    	txtTotalPoints.setText(assignmentsTable.getValueAt(assignmentsTable.getSelectedRow(), 1).toString());
-		    	buildStudentTable();
+		    	
+		    	if(assignmentsTable.getSelectedRow() != previousRowIndex)
+		    	{
+			    	buildStudentTable();
+			    	previousRowIndex = assignmentsTable.getSelectedRow();
+		    	}
 		    }
 		});
 		
@@ -334,26 +350,22 @@ public class GradebookAssignmentGUI extends JFrame{
 	//build the table
 	void buildStudentTable()
 	{
-		if(studentTable.getRowCount()>0)
+		int rowIndex = assignmentsTable.getSelectedRow();
+		
+		modelStudents.setRowCount(0);
+		
+		for(int i = 0;i<gb.getStudents().size();i++)
 		{
-			if(modelStudents.getRowCount()>0)
-			{
-				modelStudents.setRowCount(0);
-			}
-		}
-		if(gb.getStudents().size()>0)
-		{
-			for(int i = 0;i<gb.getStudents().size();i++)
-			{
-				double percent = gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).calculatePercentage();
-	        	String percentText = String.format("%.2f", percent);
-				modelStudents.addRow(new Object[] {gb.getStudent(i).getFirstName() + " " + gb.getStudent(i).getLastName(),
-													gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore(),
-													percent,
-													gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getLetterScore()
-													});
-				System.out.println(gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore());
-			}
+			System.out.println(gb.getStudent(i).getFirstName() + " : " + gb.getStudent(i).getAssignment(assignmentsTable.getSelectedRow()).getStudentScore());
+			
+			Student s = gb.getStudent(i);
+			double percent = s.getAssignment(rowIndex).calculatePercentage();
+        	String percentText = String.format("%.2f", percent);
+			modelStudents.addRow(new Object[] {s.getFirstName() + " " + gb.getStudent(i).getLastName(),
+												s.getAssignment(rowIndex).getStudentScore(),
+												percentText,
+												s.getAssignment(rowIndex).getLetterScore()
+												});
 		}
 	}
 }

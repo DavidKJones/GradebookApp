@@ -113,17 +113,15 @@ public class Student implements Serializable
 	 */
 	public Assignment getAssignment(int index)
 	{
-		Assignment assignment = null;
 		try
 		{
-			assignment = studentAssignments.get(index);
+			return studentAssignments.get(index);
 		}
 		catch(IndexOutOfBoundsException ex)
 		{
 			System.out.println(ex);
+			return null;
 		}
-		
-		return assignment;
 	}
 	
 	/**
